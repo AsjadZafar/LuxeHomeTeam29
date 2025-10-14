@@ -87,53 +87,79 @@
                 </div>
 
                 <!-- Contact Form -->
-                <div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Send Us a Message</h3>
-                    <form class="space-y-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                            <input type="text" id="name" name="name"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5"
-                                placeholder="Enter your name" required>
-                        </div>
+               <div>
+  <h3 class="text-xl font-semibold text-gray-800 mb-4">Send Us a Message</h3>
+  <form id="contactForm" class="space-y-4">
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+      <input type="text" id="name" name="name"
+        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5"
+        placeholder="Enter your name" required>
+    </div>
 
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email
-                                Address</label>
-                            <input type="email" id="email" name="email"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5"
-                                placeholder="Enter your email" required>
-                        </div>
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+      <input type="email" id="email" name="email"
+        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5"
+        placeholder="Enter your email" required>
+    </div>
 
-                        <div>
-                            <label for="product" class="block text-sm font-medium text-gray-700 mb-1">Product
-                                Type</label>
-                            <select id="product" name="product"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5">
-                                <option value="smart-light">Smart Light</option>
-                                <option value="garage-door">Smart Garage Door</option>
-                                <option value="window-blinds">Automated Window Blinds</option>
-                                <option value="smart-socket">Smart Power Socket</option>
-                                <option value="sensor-kit">Sensor Kit</option>
-                            </select>
-                        </div>
+    <div>
+      <label for="product" class="block text-sm font-medium text-gray-700 mb-1">Product Type</label>
+      <select id="product" name="product"
+        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5" required>
+        <option value="">Select a product</option>
+        <option value="smart-light">Smart Light</option>
+        <option value="garage-door">Smart Garage Door</option>
+        <option value="window-blinds">Automated Window Blinds</option>
+        <option value="smart-socket">Smart Power Socket</option>
+        <option value="sensor-kit">Sensor Kit</option>
+      </select>
+    </div>
 
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your
-                                Message</label>
-                            <textarea id="message" name="message" rows="5"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5"
-                                placeholder="Write your message here..." required></textarea>
-                        </div>
+    <div>
+      <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
+      <textarea id="message" name="message" rows="5"
+        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 p-2.5"
+        placeholder="Write your message here..." required></textarea>
+    </div>
 
-                        <button type="submit" class="btn-primary w-full">
-                            Send Message <i class="fas fa-paper-plane ml-2"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+    <button type="submit"
+      class="btn-primary w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700 transition">
+      Send Message <i class="fas fa-paper-plane ml-2"></i>
+    </button>
+  </form>
+
+  <!-- Success Message (hidden by default) -->
+  <p id="successMessage" class="text-green-600 font-medium mt-4 hidden text-center">
+    ✅ Message sent successfully!
+  </p>
+</div>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // prevent actual form submission
+
+    // Get all form fields
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const product = document.getElementById('product').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const successMsg = document.getElementById('successMessage');
+
+    // Check if all fields are filled
+    if (name && email && product && message) {
+      successMsg.classList.remove('hidden');
+      successMsg.textContent = "✅ Message sent successfully!";
+      // Optionally clear form
+      this.reset();
+    } else {
+      successMsg.classList.remove('hidden');
+      successMsg.textContent = "⚠️ Please fill all the fields before sending.";
+      successMsg.classList.replace('text-green-600', 'text-red-600');
+    }
+  });
+</script>
 
     <!-- Footer -->
     <footer class="footer">
@@ -194,4 +220,5 @@
 
 
 </html>
+
 
