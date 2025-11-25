@@ -23,11 +23,12 @@
                 <!--Customer Login Box-->
                 <div class="login-box">
                     <h3> Customer Login</h3>
-                    <form action="customer-home.html">
+                    <form action="login.php" method="POST">
                         <label> Email </label>
-                        <input type="email" required>
+                        <input type="email" name="email" required>
+
                         <label> Password </label>
-                        <input type="password" required>
+                        <input type="password" name="password" required>
 
                         <button type="submit" class="login-btn"> Login As Customer</button>
                     </form>
