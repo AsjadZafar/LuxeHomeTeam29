@@ -83,7 +83,7 @@ input {
 }
 
 
-.text-right {
+.text-center {
     margin-top: 15px;
     text-align: center;
 }
@@ -101,6 +101,7 @@ input {
 .forgot.text{
     margin-top: 8px;
     font-size: 14px;
+
 }
 
 .forgot-text a {
@@ -111,6 +112,7 @@ input {
 
 .forgot.text a:hover {
     text-decoration: underline;
+    
 }
 
 .alternative-option {
@@ -123,8 +125,10 @@ input {
         color: #216f3f;
         text-decoration: none;
         font-weight: bold;
+        text-align: center;
     }
 
 .alternative-option a:hover {
         text-decoration: underline;
+        text-align: center;
     }  
