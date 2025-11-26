@@ -1,3 +1,16 @@
+<?php
+session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$logged_in = false;
+$username = "";
+
+if (isset($_SESSION['username'])) {
+    $logged_in = true;
+    $username = $_SESSION['username'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +58,7 @@
             <span class="cart-badge">3</span>
           </button>
           <?php if ($logged_in): ?>
-            <span class="text-gray-900 font-semibold">Welcome, <?php echo htmlspecialchars($username); ?>!</span>
+            <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
           <?php else: ?>
               <a href="login.html" class="action-btn">
                   <i class="fas fa-user"></i>
