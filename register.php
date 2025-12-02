@@ -1,38 +1,148 @@
-<?php
-// 1. Connect to the database
-$conn = mysqli_connect("localhost", "root", "", "ecommerce");
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+<!DOCTYPE html>
+<html lang="en">
 
-// 2. Make sure the form is submitted
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    // 3. Get form data
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
+    <title>
+        Register | LuxeHome
+    </title>    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    // 4. Check passwords match
-    if ($password !== $confirm_password) {
-        die("Passwords do not match!");
-    }
+    <link rel="stylesheet" href="login.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    // 5. Hash the password
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    <!-- Favicon -->
+  <link rel="icon" href="images/image.png">
 
-    // 6. Insert into users table
-    $sql = "INSERT INTO users (username, email, password) 
-            VALUES ('$username', '$email', '$hashed_password')";
+</head>
+<body>
 
-    if (mysqli_query($conn, $sql)) {
-        echo "Registration successful!";
-    } else {
-        echo "Error: " . mysqli_error($conn);
-    }
-}
+     <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <a href="index.php" class="flex items-center space-x-3">
+          <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+          <div>
+            <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+            <p class="text-xs text-gray-500">Smart Living Elevated</p>
+          </div>
+        </a>
 
-mysqli_close($conn);
-?>
+        <!--Navigation-->
 
+        <nav class="hidden md:flex space-x-8">
+          <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
+          <a href="products.php" class="nav-link text-emerald-600 font-semibold">Shop</a>
+          <a href="#" class="nav-link hover:text-emerald-600 transition">Collections</a>
+          <a href="about_us.php" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
+          <a href="contact.php" class="nav-link hover:text-emerald-600 transition">Contact</a>
+        </nav>
+
+        <!--Actions-->
+
+        <div class="flex items-center space-x-4">
+          <button id="searchToggle" class="action-btn hover:text-emerald-600"><i class="fas fa-search"></i></button>
+          <a href="#basket" id="viewBasket" class="relative action-btn hover:text-emerald-600">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cartCount" class="cart-badge absolute -top-2 -right-2 bg-emerald-600 text-white text-xs px-1.5 rounded-full">0</span>
+          </a>
+          <a href="login.php" class="action-btn hover:text-emerald-600"><i class="fas fa-user"></i></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <section class="login-section">
+        <h2 class="title"> Create A LuxeHome Account</h2>
+        <p class="subtitle"> Become a part of the LuxeHome community </p>
+        <div class="login-container">
+
+            <!--Registration Box-->
+            <div class="login-box">
+                <h3> Register </h3>
+                <form action="php_functions/user_register.php" method="POST">
+                <label> Full Name </label>
+                <input type="text" name="username" required>
+
+                <label> Email </label>
+                <input type="email" name="email" required>
+
+                <label> Password </label>
+                <input type="password" name="password_hash" required>
+
+                <label> Confirm Password </label>
+                <input type="password" name="confirm_password" required>
+
+    <button type="submit">Create LuxeHome Account</button>
+</form>
+
+                <p class="alternative-option">
+                    Already have an account?
+                    <a href="login.php"> Login here</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Brand -->
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+            <div>
+              <h3 class="text-lg font-bold text-white">LuxeHome</h3>
+              <p class="text-sm text-gray-400">Smart Living Elevated</p>
+            </div>
+          </div>
+          <p class="text-gray-400 text-sm mb-4">
+            Experience the pinnacle of intelligent living with our curated collection of premium smart home technology
+            designed for modern lifestyles.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-white font-semibold mb-3">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="index.php" class="hover:text-white">Home</a></li>
+            <li><a href="#" class="hover:text-white">Shop</a></li>
+            <li><a href="#" class="hover:text-white">Collections</a></li>
+            <li><a href="#" class="hover:text-white">Inspiration</a></li>
+            <li><a href="contacttt.php" class="hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="text-white font-semibold mb-3">Contact</h4>
+          <ul class="space-y-2 text-sm">
+            <li>hello@luxehome.com</li>
+            <li>1-800-LUXE-HOME</li>
+            <li>Mon–Fri: 9am–6pm EST</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-400">
+        © 2025 LuxeHome. All rights reserved.
+        <a href="#" class="hover:text-white ml-2">Privacy Policy</a> |
+        <a href="#" class="hover:text-white ml-2">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

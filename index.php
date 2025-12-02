@@ -41,11 +41,11 @@ if (isset($_SESSION['username'])) {
         
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
-          <a href="#" class="nav-link active">Home</a>
-          <a href="#" class="nav-link">Shop</a>
+          <a href="index.php" class="nav-link active">Home</a>
+          <a href="products.php" class="nav-link">Shop</a>
           <a href="#" class="nav-link">Collections</a>
-          <a href="#" class="nav-link">Inspiration</a>
-          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="about_us.php" class="nav-link">Inspiration</a>
+          <a href="contact.php" class="nav-link">Contact</a>
         </nav>
         
         <!-- Actions -->
@@ -54,13 +54,14 @@ if (isset($_SESSION['username'])) {
             <i class="fas fa-search"></i>
           </button>
           <button class="action-btn relative">
+            <a href = "cart.php" class = "action-btn"> 
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-badge">3</span>
           </button>
           <?php if ($logged_in): ?>
             <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
           <?php else: ?>
-              <a href="login.html" class="action-btn">
+              <a href="login.php" class="action-btn">
                   <i class="fas fa-user"></i>
               </a>
           <?php endif; ?>
@@ -278,11 +279,11 @@ if (isset($_SESSION['username'])) {
         <div class="footer-links">
           <h4 class="footer-heading">Quick Links</h4>
           <ul class="footer-list">
-            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="index.php" class="footer-link">Home</a></li>
             <li><a href="#" class="footer-link">Shop</a></li>
             <li><a href="#" class="footer-link">Collections</a></li>
             <li><a href="#" class="footer-link">Inspiration</a></li>
-            <li><a href="contact.html" class="footer-link">Contact</a></li>
+            <li><a href="contact.php" class="footer-link">Contact</a></li>
           </ul>
         </div>
         
