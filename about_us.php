@@ -5,6 +5,7 @@
         <meta name="description" content="LuxeHome">
         <meta name="author" content="Aminah Burctoolla">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
         <title>
             About Us | LuxeHome
         </title>
@@ -25,27 +26,7 @@
   <link rel="stylesheet" href="css/style.css">
 
   <!-- Custom Styles -->
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-
-    .social-link {
-      transition: transform 0.3s, color 0.3s;
-    }
-
-    .social-link:hover {
-      transform: scale(1.1);
-      color: #059669;
-    }
-    
-    .logo-img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  </style>
+   <link rel="stylesheet" href="css/about_us-style.css">
     </head>
 <body class="bg-gray-50">
 
@@ -54,7 +35,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
         <!-- Logo -->
-        <a href="index.html" class="flex items-center space-x-3">
+        <a href="index.php" class="flex items-center space-x-3">
           <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
           <div>
             <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
@@ -64,13 +45,11 @@
 
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
-          <a href="index.html" class="nav-link hover:text-emerald-600 transition">Home</a>
-          <a href="about_us.html"
-          class="nav-link text-emerald-600 font-semibold border-b-2 border-emerald-600 pb-1">About Us</a>
-          <a href="#" class="nav-link hover:text-emerald-600 transition">Shop</a>
+          <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
+          <a href="products.php" class="nav-link hover:text-emerald-600 transition">Shop</a>
           <a href="#" class="nav-link hover:text-emerald-600 transition">Collections</a>
-          <a href="#" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
-          <a href="#" class="nav-link hover:text-emerald-600 transition">Contact</a>
+          <a href="about_us.php" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
+          <a href="contact.php" class="nav-link hover:text-emerald-600 transition">Contact</a>
         </nav>
 
         <!-- Actions -->
@@ -393,11 +372,11 @@
         <div>
           <h4 class="text-white font-semibold mb-3">Quick Links</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="index.html" class="hover:text-white">Home</a></li>
+            <li><a href="index.php" class="hover:text-white">Home</a></li>
             <li><a href="#" class="hover:text-white">Shop</a></li>
             <li><a href="#" class="hover:text-white">Collections</a></li>
             <li><a href="#" class="hover:text-white">Inspiration</a></li>
-            <li><a href="contacttt.html" class="hover:text-white">Contact</a></li>
+            <li><a href="contacttt.php" class="hover:text-white">Contact</a></li>
           </ul>
         </div>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0152)https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.html -->
+<!-- saved from url=(0152)https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
 </style>
@@ -315,7 +315,7 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
                 <div class="section-header">
                     <div class="section-number">1</div>
                     <div class="section-title">Delivery address</div>
-                    <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.html#" class="change-btn">Change</a>
+                    <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php#" class="change-btn">Change</a>
                 </div>
                 <div class="address-info">
                     <p><strong>John Doe</strong></p>
@@ -332,7 +332,7 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
                 <div class="section-header">
                     <div class="section-number">2</div>
                     <div class="section-title">Payment method</div>
-                    <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.html#" class="change-btn">Change</a>
+                    <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php#" class="change-btn">Change</a>
                 </div>
                 <div class="payment-methods">
                     <span class="payment-icon">VISA</span>
@@ -407,7 +407,7 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
                         <label for="delivery2">
                             <strong>FREE Marketplace Day Delivery</strong> - get it Wednesday, Mar. 17<br>
                             <span style="font-size: 13px; color: #565959;">We'll deliver your orders together</span>
-                            <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.html#" style="color: #007185; font-size: 13px; margin-left: 5px;">Choose your Marketplace Day</a>
+                            <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php#" style="color: #007185; font-size: 13px; margin-left: 5px;">Choose your Marketplace Day</a>
                         </label>
                     </div>
                 </div>
@@ -439,7 +439,7 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
                 <span>£329.00</span>
             </div>
 
-            <div class="vat-note">Order totals include VAT <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.html#" style="color: #007185;">See details</a></div>
+            <div class="vat-note">Order totals include VAT <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php#" style="color: #007185;">See details</a></div>
 
             <div class="delivery-info">
                 <strong>How are delivery costs calculated?</strong>

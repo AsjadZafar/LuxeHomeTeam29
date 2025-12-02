@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact & Warranty | LuxeHome</title>
+
+    <meta name="description" content="Contact LuxeHome for enquiries or submit warranty claims for purchased items." />
+
+    <link rel="icon" href="images/image.png">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        #successMessage,
+        #warrantyMessage {
+            transition: opacity 0.5s ease;
+        }
+
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .floating-chatbot {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #10b981;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            transition: transform .2s;
+            z-index: 9999;
+        }
+
+        .floating-chatbot:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.php" class="flex items-center space-x-3">
+                    <img src="images/image.png" class="logo-img">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+                        <p class="text-xs text-gray-500">Smart Living Elevated</p>
+                    </div>
+                </a>
+
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.php" class="hover:text-emerald-600">Home</a>
+                    <a href="products.php" class="hover:text-emerald-600">Shop</a>
+                    <a href="#" class="hover:text-emerald-600">Collections</a>
+                    <a href="about_us.php" class="hover:text-emerald-600">Inspiration</a>
+                    <a href="contact.php"
+                        class="text-emerald-600 font-semibold border-b-2 border-emerald-600">Contact</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-search hover:text-emerald-600 cursor-pointer"></i>
+                    <i class="fas fa-shopping-cart hover:text-emerald-600 cursor-pointer"></i>
+                    <i class="fas fa-user hover:text-emerald-600 cursor-pointer"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTACT HEADER -->
+    <section class="py-20 bg-gray-100">
+        <div class="bg-gray-800 text-center mb-12 py-10">
+            <h2 class="text-3xl text-white font-bold mb-2">Get in Touch</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto">
+                Contact us or submit a warranty claim for purchased LuxeHome products.
+            </p>
+        </div>
+
+        <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-2xl p-8 grid md:grid-cols-2 gap-10">
+
+            <!-- CONTACT INFORMATION -->
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                <ul class="text-gray-700 space-y-3">
+                    <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street, Birmingham, UK</li>
+                    <li><i class="fas fa-phone text-emerald-600 mr-2"></i>+44 1234 567 890</li>
+                    <li><i class="fas fa-envelope text-emerald-600 mr-2"></i>hello@luxehome.com</li>
+                    <li><i class="fas fa-clock text-emerald-600 mr-2"></i>Mon–Fri: 9am–6pm</li>
+                </ul>
+
+                <iframe class="mt-6 rounded-lg w-full h-56"
+                    src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
+            </div>
+
+            <!-- CONTACT FORM -->
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
+
+                <form id="contactForm" class="space-y-4">
+                    <input id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+                    <input id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+
+                    <select id="product" class="w-full p-3 border rounded-md" required>
+                        <option value="">Select Product</option>
+                        <option value="smart-light">Smart Light</option>
+                        <option value="garage-door">Smart Garage Door</option>
+                        <option value="window-blinds">Automated Window Blinds</option>
+                        <option value="smart-socket">Smart Power Socket</option>
+                        <option value="sensor-kit">Sensor Kit</option>
+                    </select>
+
+                    <textarea id="message" rows="4" placeholder="Your Message" class="w-full p-3 border rounded-md" required></textarea>
+
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
+                        <span id="btnText">Send Message</span>
+                        <i id="spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
+                    </button>
+                </form>
+
+                <p id="successMessage" class="text-center text-green-600 hidden mt-3 opacity-0">
+                    Message sent successfully!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- WARRANTY CLAIM SECTION -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
+
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
+                Submit your warranty claim by providing order details and proof of damage.
+            </p>
+
+            <form id="warrantyForm" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
+
+                <input id="wName" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+
+                <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+
+                <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)" class="w-full p-3 border rounded-md" required>
+
+                <select id="wProduct" class="w-full p-3 border rounded-md" required>
+                    <option value="">Product Purchased</option>
+                    <option>Smart Light</option>
+                    <option>Garage Door Controller</option>
+                    <option>Window Blinds System</option>
+                    <option>Smart Socket</option>
+                    <option>Sensor Kit</option>
+                </select>
+
+                <select id="claimReason" class="w-full p-3 border rounded-md" required>
+                    <option value="">Reason for Claim</option>
+                    <option>Device not working</option>
+                    <option>Physical damage</option>
+                    <option>Power issue</option>
+                    <option>Connectivity problem</option>
+                </select>
+
+                <textarea id="issueDetails" rows="4" placeholder="Describe the issue..."
+                    class="w-full p-3 border rounded-md" required></textarea>
+
+                <label class="block font-medium">Upload Proof of Damage</label>
+                <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
+
+                <button type="submit" id="warrantyBtn"
+                    class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
+                    Submit Warranty Claim
+                </button>
+
+                <p id="warrantyMessage" class="text-center mt-3 hidden opacity-0 text-green-600 font-medium"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- FLOATING CHATBOT -->
+    <div onclick="toggleChatbot()" class="floating-chatbot">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <!-- CHATBOT WINDOW -->
+    <div id="chatbotWindow"
+        class="fixed bottom-28 right-6 w-80 bg-white rounded-xl shadow-xl border p-4 hidden transition-all duration-300 z-[9999]">
+
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-semibold text-emerald-700">LuxeHome Assistant</h3>
+            <button onclick="toggleChatbot()" class="text-gray-500 hover:text-red-500 text-xl">&times;</button>
+        </div>
+
+        <div id="chatContent" class="h-64 overflow-y-auto border rounded-md p-2 text-sm">
+            <p class="text-gray-500 text-center">👋 Hi! How can I help you today?</p>
+        </div>
+
+        <div class="mt-3 flex">
+            <input id="chatInput" type="text" placeholder="Type a message..."
+                class="flex-grow p-2 border rounded-l-md outline-none">
+            <button onclick="sendMessage()"
+                class="bg-emerald-600 text-white px-4 rounded-r-md hover:bg-emerald-700">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // -------------------------
+        // CONTACT FORM LOGIC
+        // -------------------------
+        const contactForm = document.getElementById("contactForm");
+        const cMsg = document.getElementById("successMessage");
+        const spinner = document.getElementById("spinner");
+        const btnText = document.getElementById("btnText");
+
+        contactForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+                cMsg.textContent = "⚠️ Invalid Email Address";
+                cMsg.classList.remove("hidden");
+                fadeMsg(cMsg);
+                return;
+            }
+
+            spinner.classList.remove("hidden");
+            btnText.textContent = "Sending...";
+
+            setTimeout(() => {
+                spinner.classList.add("hidden");
+                btnText.textContent = "Send Message";
+                cMsg.textContent = "✅ Message sent successfully!";
+                cMsg.classList.remove("hidden");
+                contactForm.reset();
+                fadeMsg(cMsg);
+            }, 1200);
+        });
+
+        // -------------------------
+        // WARRANTY FORM LOGIC
+        // -------------------------
+        const warrantyForm = document.getElementById("warrantyForm");
+        const wMsg = document.getElementById("warrantyMessage");
+
+        warrantyForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const orderNumber = document.getElementById("orderNumber").value.trim();
+            const damageImage = document.getElementById("damageImage").files.length;
+            const orderPattern = /^LH-\d{5}$/;
+
+            if (!orderPattern.test(orderNumber)) {
+                wMsg.textContent = "❌ Invalid Order Number. Format must be LH-12345";
+                wMsg.classList.remove("hidden");
+                wMsg.classList.add("text-red-600");
+                fadeMsg(wMsg);
+                return;
+            }
+
+            if (damageImage === 0) {
+                wMsg.textContent = "❌ Please upload proof of damage.";
+                wMsg.classList.remove("hidden");
+                wMsg.classList.add("text-red-600");
+                fadeMsg(wMsg);
+                return;
+            }
+
+            wMsg.textContent = "✅ Warranty claim submitted successfully!";
+            wMsg.classList.remove("hidden", "text-red-600");
+            wMsg.classList.add("text-green-600");
+
+            warrantyForm.reset();
+            fadeMsg(wMsg);
+        });
+
+        // -------------------------
+        // COMMON FADE FUNCTION
+        // -------------------------
+        function fadeMsg(el) {
+            setTimeout(() => el.style.opacity = "1", 100);
+            setTimeout(() => el.style.opacity = "0", 3500);
+            setTimeout(() => el.classList.add("hidden"), 4000);
+        }
+
+        // -------------------------
+        // CHATBOT LOGIC
+        // -------------------------
+        function toggleChatbot() {
+            let bot = document.getElementById("chatbotWindow");
+            bot.classList.toggle("hidden");
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("chatInput");
+            let chat = document.getElementById("chatContent");
+
+            if (input.value.trim() === "") return;
+
+            chat.innerHTML += `<p class="text-right text-sm my-1"><span class="bg-emerald-100 p-1 rounded">${input.value}</span></p>`;
+
+            setTimeout(() => {
+                chat.innerHTML += `<p class="text-left text-sm my-1"><span class="bg-gray-200 p-1 rounded">Thanks! We’ll get back to you shortly.</span></p>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 700);
+
+            input.value = "";
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>

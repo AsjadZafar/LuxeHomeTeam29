@@ -1,3 +1,17 @@
+<?php
+require_once 'php_functions/dbh.php';
+
+$sql = "SELECT * from products";
+
+$result = mysqli_query($conn, $sql);
+
+
+?>
+
+
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,7 +30,7 @@
   <header class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
-        <a href="index.html" class="flex items-center space-x-3">
+        <a href="index.php" class="flex items-center space-x-3">
           <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
           <div>
             <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
@@ -25,16 +39,16 @@
         </a>
 
         <nav class="hidden md:flex space-x-8">
-          <a href="index.html" class="nav-link hover:text-emerald-600 transition">Home</a>
-          <a href="products.html" class="nav-link text-emerald-600 font-semibold">Shop</a>
+          <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
+          <a href="products.php" class="nav-link text-emerald-600 font-semibold">Shop</a>
           <a href="#" class="nav-link hover:text-emerald-600 transition">Collections</a>
-          <a href="#" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
-          <a href="contact.html" class="nav-link hover:text-emerald-600 transition">Contact</a>
+          <a href="about_us.php" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
+          <a href="contact.php" class="nav-link hover:text-emerald-600 transition">Contact</a>
         </nav>
 
         <div class="flex items-center space-x-4">
           <button id="searchToggle" class="action-btn hover:text-emerald-600"><i class="fas fa-search"></i></button>
-          <a href="#basket" id="viewBasket" class="relative action-btn hover:text-emerald-600">
+          <a href="cart.php" id="viewBasket" class="relative action-btn hover:text-emerald-600">
             <i class="fas fa-shopping-cart"></i>
             <span id="cartCount" class="cart-badge absolute -top-2 -right-2 bg-emerald-600 text-white text-xs px-1.5 rounded-full">0</span>
           </a>
@@ -88,10 +102,10 @@
         <div>
           <h4 class="text-white font-semibold mb-3">Quick Links</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="index.html" class="hover:text-white">Home</a></li>
-            <li><a href="products.html" class="hover:text-white">Shop</a></li>
+            <li><a href="index.php" class="hover:text-white">Home</a></li>
+            <li><a href="products.php" class="hover:text-white">Shop</a></li>
             <li><a href="#" class="hover:text-white">Collections</a></li>
-            <li><a href="contact.html" class="hover:text-white">Contact</a></li>
+            <li><a href="contact.php" class="hover:text-white">Contact</a></li>
           </ul>
         </div>
         <div>
@@ -109,19 +123,31 @@
     </div>
   </footer>
 
+
+  <?php
+
+  $productArray = [];
+
+  while($row = mysqli_fetch_assoc($result)) {
+
+    $productArray[] = [
+  "id" => $row["product_id"],
+  "title" => $row["name"],
+  "desc" => $row["description"],
+  "price" => floatval($row["price"]),
+  "qty" => intval($row["quantity"]),
+  "install" => $row["installation_available"],
+  "img" => "product_image/". $row["img"],
+  "short" => substr($row["description"], 0, 60) . "...",
+];
+
+
+
+  }
+?>
   <script>
     // Sample product data (9 products)
-    const PRODUCTS = [
-      { id: 'p1', title: 'Aura Smart Lamp', price: 120, category: 'Living Room', img: 'https://picsum.photos/seed/lamp/600/400', short: 'Voice-controlled mood lamp', desc: 'A luxurious smart lamp with adjustable hues, voice control, and scheduling.' },
-      { id: 'p2', title: 'ThermoLux Thermostat', price: 299, category: 'Living Room', img: 'https://picsum.photos/seed/thermo/600/400', short: 'AI temperature control', desc: 'Premium thermostat with learning AI, remote control and energy reports.' },
-      { id: 'p3', title: 'EchoTone Speaker', price: 199, category: 'Living Room', img: 'https://picsum.photos/seed/speaker/600/400', short: 'Hi-fi smart speaker', desc: 'Compact high-fidelity smart speaker with voice assistant support.' },
-      { id: 'p4', title: 'Culinary Smart Oven', price: 749, category: 'Kitchen', img: 'https://picsum.photos/seed/oven/600/400', short: 'Connected convection oven', desc: 'Smart oven with app-controlled presets and remote monitoring.' },
-      { id: 'p5', title: 'AquaSense Shower', price: 399, category: 'Bathroom', img: 'https://picsum.photos/seed/shower/600/400', short: 'Smart shower controller', desc: 'Temperature and flow control with personalised profiles and water-saving mode.' },
-      { id: 'p6', title: 'Guardian Smart Lock', price: 259, category: 'Bedroom', img: 'https://picsum.photos/seed/lock/600/400', short: 'Keyless entry with alerts', desc: 'Sleek keyless smart lock with tamper alerts and remote access.' },
-      { id: 'p7', title: 'Vista Automated Blinds', price: 349, category: 'Living Room', img: 'https://picsum.photos/seed/blinds/600/400', short: 'Motorised blinds with schedules', desc: 'Elegant motorised blinds you can schedule or control remotely.' },
-      { id: 'p8', title: 'GardenGlow Outdoor Light', price: 89, category: 'Outdoor', img: 'https://picsum.photos/seed/outdoor/600/400', short: 'Weatherproof smart light', desc: 'Durable outdoor smart lights with motion sensing and scenes.' },
-      { id: 'p9', title: 'SenseHome Sensor Kit', price: 159, category: 'Bedroom', img: 'https://picsum.photos/seed/sensor/600/400', short: 'Multi-sensor home kit', desc: 'Includes door, motion and environment sensors with push alerts.' }
-    ];
+    const PRODUCTS = <?php echo json_encode($productArray); ?>;
 
     // render products
     const grid = document.getElementById('productsGrid');
@@ -132,7 +158,7 @@
         const card = document.createElement('article');
         card.className = 'bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-md transition';
         card.innerHTML = `
-          <a href="productDetails.html?id=${p.id}" class="block">
+          <a href="productDetails.php?id=${p.id}" class="block">
             <img src="${p.img}" alt="${p.title}" class="w-full h-48 object-cover rounded-md mb-3">
             <h3 class="font-semibold text-lg">${p.title}</h3>
             <p class="text-sm text-gray-500 mb-2">${p.short}</p>
@@ -178,7 +204,7 @@
       // For demo: show a quick summary and a link to a dedicated basket page (not implemented here)
       const total = items.reduce((s,i)=> s + i.price * i.qty, 0);
       if(confirm(`You have ${items.length} item(s) in your basket. Total: £${total.toFixed(2)}.\n\nGo to basket page?`)){
-        window.location.href = 'basket.html';
+        window.location.href = 'cart.php';
       }
     });
 
