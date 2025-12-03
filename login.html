@@ -75,10 +75,24 @@
                     </form>
                     <!--Forgot Password-->
                     <div class=" text-center"> 
-                        <a href="#" class="forgot"> Forgot Your Password?</a>
+                        <a href="#" class="forgot" onclick="toggleReset()"> Forgot Your Password?</a>
                         <p class="forgot-text"> Don’t Have An account?
                             <a href="register.html"> Register</a>
-                        </p>
+                        </p>  
+                    </div>
+
+                    <div id= "resetBox" class="reset-box hidden">
+                      <p> Enter a valid email for a reset link. </p>
+
+                       <form onsubmit="showResetMessage(); return false;">
+
+                     <input type="email" placeholder="Your Email" required>
+                     <button type="submit" class="reset-btn">Send Reset Link</button>
+                   </form>
+
+                      <p id="resetMessage" class="reset-message hidden">
+                        You will receive a link shortly 
+                      </p>
                     </div>
                 </div>
 
@@ -90,21 +104,23 @@
                         <input type="email" required>
 
                         <label> Password </label>
-                        <input type="password required">
+                        <input type="password" required>
                         <button type="submit" class="login-btn admin"> Login As Admin</button>
                     </form>
-                    <!--Forgot Password-->
-                    <div class=" text-center"> 
-                        <a href="#" class="forgot"> Forgot Your Password?</a>
-                        <p class="forgot-text"> Don’t Have An account?
-                            <a href="register.html"> Register</a>
-                        </p>
-                    </div>
+                        </div>
+                    
                 </div>
       </section>
-            </form>
-        </div>
-      </section>
+          
+ <script>
+function toggleReset() {
+    document.getElementById("resetBox").classList.toggle("hidden");
+}
+
+function showResetMessage() {
+    document.getElementById("resetMessage").classList.remove("hidden");
+}
+    </script>
 
       <!-- Footer -->
   <footer class="bg-gray-900 text-gray-300 py-10">
