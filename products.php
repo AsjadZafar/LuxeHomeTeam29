@@ -1,10 +1,17 @@
 <?php
 require_once 'php_functions/dbh.php';
 
-$sql = "SELECT * from products";
+$search = "";
+
+$sql = "SELECT * FROM products";
+
+// If user typed something in the search bar
+if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
+    $search = mysqli_real_escape_string($conn, trim($_GET['search']));
+    $sql .= " WHERE name LIKE '%$search%' OR description LIKE '%$search%'";
+}
 
 $result = mysqli_query($conn, $sql);
-
 
 ?>
 
@@ -59,12 +66,22 @@ $result = mysqli_query($conn, $sql);
   </header>
 
   <!-- Search Bar -->
-  <section class="py-8 bg-gray-100">
-    <div class="max-w-6xl mx-auto px-4">
+<section class="py-8 bg-gray-100">
+  <div class="max-w-6xl mx-auto px-4">
+    <form action="" method="GET">
       <div class="bg-white rounded-xl shadow-sm p-6 flex gap-4 items-center">
-        <input id="searchInput" type="text" placeholder="Search products, e.g. Smart Lamp, Thermostat"
-          class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500" />
-        <select id="categoryFilter" class="p-3 border rounded-md">
+        
+        <!-- Search -->
+        <input 
+          id="searchInput" 
+          type="text" 
+          name="search"
+          placeholder="Search products, e.g. Smart Lamp, Thermostat"
+          class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+        />
+
+        <!-- NEED TO ADD CATEGORY!!!!! -->
+        <select id="categoryFilter" name="category" class="p-3 border rounded-md">
           <option value="">All categories</option>
           <option value="Living Room">Living Room</option>
           <option value="Kitchen">Kitchen</option>
@@ -72,10 +89,19 @@ $result = mysqli_query($conn, $sql);
           <option value="Bathroom">Bathroom</option>
           <option value="Outdoor">Outdoor</option>
         </select>
-        <button id="searchBtn" class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700">Search</button>
+
+        <button 
+          type="submit" 
+          class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
+        >
+          Search
+        </button>
+
       </div>
-    </div>
-  </section>
+    </form>
+  </div>
+</section>
+
 
   <!-- Products Grid -->
   <main class="max-w-7xl mx-auto px-4 py-8">
@@ -146,52 +172,5 @@ $result = mysqli_query($conn, $sql);
 
 
  
-  <script>
-    // search/filter
-    document.getElementById('searchBtn').addEventListener('click', () => applyFilters());
-    document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') applyFilters(); });
-    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
-
-    function applyFilters(){
-      const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      const cat = document.getElementById('categoryFilter').value;
-      const filtered = PRODUCTS.filter(p => {
-        const matchQ = q ? (p.title.toLowerCase().includes(q) || p.short.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)) : true;
-        const matchCat = cat ? p.category === cat : true;
-        return matchQ && matchCat;
-      });
-      renderProducts(filtered);
-    }
-
-    // Simple basket using localStorage
-    function getCart(){ return JSON.parse(localStorage.getItem('luxehome_cart') || '[]'); }
-    function setCart(c){ localStorage.setItem('luxehome_cart', JSON.stringify(c)); updateCartCount(); }
-    function updateCartCount(){ document.getElementById('cartCount').textContent = getCart().length; }
-    updateCartCount();
-
-    // view basket click -> simple alert or link
-    document.getElementById('viewBasket').addEventListener('click', (e)=>{
-      e.preventDefault();
-      const items = getCart();
-      if(items.length===0){ alert('Your basket is empty.'); return; }
-      // For demo: show a quick summary and a link to a dedicated basket page (not implemented here)
-      const total = items.reduce((s,i)=> s + i.price * i.qty, 0);
-      if(confirm(`You have ${items.length} item(s) in your basket. Total: £${total.toFixed(2)}.\n\nGo to basket page?`)){
-        window.location.href = 'cart.php';
-      }
-    });
-
-    // expose addToCart globally so productDetails page can use it
-    window.luxeAddToCart = function(productId, qty=1){
-      const p = PRODUCTS.find(x=>x.id===productId);
-      if(!p) return;
-      const cart = getCart();
-      const existing = cart.find(i=>i.id===p.id);
-      if(existing) existing.qty += qty; else cart.push({ id: p.id, title: p.title, desc: p.desc , price: p.price, img: p.img, qty });
-      setCart(cart);
-      alert('Added to basket: ' + p.title);
-    }
-
-  </script>
 </body>
 </html>
