@@ -113,7 +113,7 @@
             <div>
                 <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
 
-                <form action="https://formsubmit.io/send/luxehometeam29@gmail.com" method="POST" id="contactForm" class="space-y-4">
+                <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
                     <input id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
                     <input id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
 
