@@ -114,19 +114,19 @@
                 <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
 
                 <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
-                    <input id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
-                    <input id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+                    <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+                    <input name="email" id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
 
-                    <select id="product" class="w-full p-3 border rounded-md" required>
+                    <select name="product" id="product" class="w-full p-3 border rounded-md" required>
                         <option value="">Select Product</option>
-                        <option value="smart-light">Smart Light</option>
-                        <option value="garage-door">Smart Garage Door</option>
-                        <option value="window-blinds">Automated Window Blinds</option>
-                        <option value="smart-socket">Smart Power Socket</option>
-                        <option value="sensor-kit">Sensor Kit</option>
+                        <option value="Smart Light">Smart Light</option>
+                        <option value="Garage Door">Smart Garage Door</option>
+                        <option value="Window Blinds">Automated Window Blinds</option>
+                        <option value="Smart Socket">Smart Power Socket</option>
+                        <option value="Sensor Kit">Sensor Kit</option>
                     </select>
 
-                    <textarea id="message" rows="4" placeholder="Your Message" class="w-full p-3 border rounded-md" required></textarea>
+                    <textarea name="message" id="message" rows="4" placeholder="Your Message" class="w-full p-3 border rounded-md" required></textarea>
 
                     <button type="submit" id="submitBtn"
                         class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
@@ -222,35 +222,50 @@
         // -------------------------
         // CONTACT FORM LOGIC
         // -------------------------
-        const contactForm = document.getElementById("contactForm");
-        const cMsg = document.getElementById("successMessage");
-        const spinner = document.getElementById("spinner");
-        const btnText = document.getElementById("btnText");
+const contactForm = document.getElementById("contactForm");
+const cMsg = document.getElementById("successMessage");
+const spinner = document.getElementById("spinner");
+const btnText = document.getElementById("btnText");
 
-        contactForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const email = document.getElementById("email").value;
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+contactForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-            if (!emailPattern.test(email)) {
-                cMsg.textContent = "⚠️ Invalid Email Address";
-                cMsg.classList.remove("hidden");
-                fadeMsg(cMsg);
-                return;
-            }
+    const email = document.getElementById("email").value;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            spinner.classList.remove("hidden");
-            btnText.textContent = "Sending...";
+    if (!emailPattern.test(email)) {
+        cMsg.textContent = "⚠️ Invalid Email Address";
+        cMsg.classList.remove("hidden");
+        fadeMsg(cMsg);
+        return;
+    }
 
-            setTimeout(() => {
-                spinner.classList.add("hidden");
-                btnText.textContent = "Send Message";
-                cMsg.textContent = "✅ Message sent successfully!";
-                cMsg.classList.remove("hidden");
-                contactForm.reset();
-                fadeMsg(cMsg);
-            }, 1200);
-        });
+    spinner.classList.remove("hidden");
+    btnText.textContent = "Sending...";
+
+    // send to Formspree
+    const formData = new FormData(contactForm);
+
+    const response = await fetch("https://formspree.io/f/mzznvdon", {
+        method: "POST",
+        body: formData,
+        headers: { "Accept": "application/json" }
+    });
+
+    spinner.classList.add("hidden");
+    btnText.textContent = "Send Message";
+
+    if (response.ok) {
+        cMsg.textContent = "✅ Message sent successfully!";
+        cMsg.classList.remove("hidden");
+        contactForm.reset();
+    } else {
+        cMsg.textContent = "❌ Error sending message.";
+        cMsg.classList.remove("hidden");
+    }
+
+    fadeMsg(cMsg);
+});
 
         // -------------------------
         // WARRANTY FORM LOGIC
