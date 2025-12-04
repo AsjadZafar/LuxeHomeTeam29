@@ -103,7 +103,7 @@ $result = mysqli_query($conn, $sql);
 </section>
 
 
-  <!-- Products Grid -->
+  <!-- Products Grid with php -->
   <main class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
     <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
