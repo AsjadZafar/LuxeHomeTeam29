@@ -53,11 +53,13 @@ if (isset($_SESSION['username'])) {
           <button class="action-btn">
             <i class="fas fa-search"></i>
           </button>
+          <?php if ($logged_in): ?>
           <button class="action-btn relative">
             <a href = "cart.php" class = "action-btn"> 
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-badge">3</span>
           </button>
+          <?php endif;?>
           <?php if ($logged_in): ?>
             <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
           <?php else: ?>
@@ -66,6 +68,17 @@ if (isset($_SESSION['username'])) {
               </a>
           <?php endif; ?>
         </div>
+        <?php if ($logged_in): ?>
+        <form method="POST" action="php_functions/logout.php">
+                <button type="submit" class="buy-now-btn">Log out</button>
+            </form>
+          <?php endif;?>
+          <?php if ($logged_in): ?>
+        <form method="POST" action="admin_dash.php">
+                <button type="submit" class="buy-now-btn">Admin Dash</button>
+            </form>
+          <?php endif;?>
+
       </div>
     </div>
   </header>

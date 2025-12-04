@@ -1,311 +1,27 @@
+<?php
+session_start();
+require_once 'php_functions/dbh.php';
+
+// If cart is empty redirect back
+if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+    header("Location: cart.php");
+    exit;
+}
+?>
+
+
+
+
+
+
 <!DOCTYPE html>
 <!-- saved from url=(0152)https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
-body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
-</style>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - E-commerce</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="css/checkout.css">
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-
-        .checkout-section {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .section-number {
-            background: #f0f0f0;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            flex: 1;
-        }
-
-        .change-btn {
-            color: #007185;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .change-btn:hover {
-            text-decoration: underline;
-        }
-
-        .address-info {
-            margin: 15px 0;
-            color: #333;
-        }
-
-        .address-info p {
-            margin: 5px 0;
-        }
-
-        .link-text {
-            color: #007185;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 10px 0;
-        }
-
-        .link-text:hover {
-            text-decoration: underline;
-        }
-
-        .payment-methods {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .payment-icon {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .promo-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .promo-input {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .apply-btn {
-            padding: 8px 20px;
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .apply-btn:hover {
-            background: #e0e0e0;
-        }
-
-        .alert-box {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
-            display: flex;
-            align-items: start;
-            gap: 10px;
-        }
-
-        .alert-icon {
-            color: #ff9800;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .info-box {
-            background: #e7f4f9;
-            border: 2px solid #00a8e1;
-            border-left: 4px solid #00a8e1;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-
-        .info-box-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .delivery-guarantee {
-            margin: 15px 0;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 4px;
-        }
-
-        .product-item {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-        }
-
-        .product-image {
-            width: 80px;
-            height: 80px;
-            background: #f0f0f0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .product-details {
-            flex: 1;
-        }
-
-        .product-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .product-price {
-            color: #b12704;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-
-        .delivery-options {
-            margin: 15px 0;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: start;
-            gap: 10px;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .radio-option:hover {
-            background: #f9f9f9;
-        }
-
-        .radio-option input[type="radio"] {
-            margin-top: 3px;
-        }
-
-        .order-summary {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .buy-now-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-            border: 1px solid #a88734;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-
-        .buy-now-btn:hover {
-            background: linear-gradient(to bottom, #f5d78e, #edb932);
-        }
-
-        .terms-text {
-            font-size: 11px;
-            color: #565959;
-            text-align: center;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .summary-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            margin: 15px 0;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-            font-weight: bold;
-            color: #b12704;
-            font-size: 18px;
-        }
-
-        .vat-note {
-            font-size: 12px;
-            color: #565959;
-        }
-
-        .delivery-info {
-            font-size: 12px;
-            color: #565959;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-
-            .order-summary {
-                position: static;
-            }
-        }
-    </style>
 </head>
 <body data-new-gr-c-s-check-loaded="14.1256.0" data-gr-ext-installed="">
     <div class="container">
@@ -350,52 +66,44 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
 
             <!-- Review Items Section -->
             <div class="checkout-section">
-                <div class="section-header">
-                    <div class="section-number">3</div>
-                    <div class="section-title">Review items and delivery</div>
-                </div>
+    <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-title">Review items and delivery</div>
+    </div>
 
-                <div class="alert-box">
-                    <span class="alert-icon">⚠</span>
-                    <div>
-                        <strong>Signature required at time of delivery.</strong>
-                        <p>Please ensure someone will be available to sign for this delivery.</p>
-                    </div>
-                </div>
+<?php
+$total = 0;
 
-                <div class="info-box">
-                    <div class="info-box-title">Delivery on the day that you choose, in fewer boxes</div>
-                    <p>Select FREE Delivery below to have orders delivered together, on the day of your choice</p>
-                </div>
+foreach ($_SESSION['cart'] as $product_id => $qty) {
 
-                <div class="delivery-guarantee">
-                    <strong>Guaranteed delivery: 16 Mar. 2021</strong>
-                    <p style="font-size: 13px; color: #565959;">If you order in the next 4 hours and 20 minutes. Details</p>
-                    <p style="font-size: 12px; color: #565959;">Items dispatched from EU Sarl</p>
-                </div>
+    $sql = "SELECT name, price, img FROM products WHERE product_id = $product_id";
+    $result = mysqli_query($conn, $sql);
 
-                <div class="product-item">
-                    <div class="product-image">
-                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b6b, #feca57); border-radius: 8px;"></div>
-                    </div>
-                    <div class="product-details">
-                        <div class="product-title">New Apple iPad (10.2-inch, Wi-Fi, 32GB) - Space Grey (Latest Model, 8th Generation)</div>
-                        <div class="product-price">£329.00</div>
-                        <div style="font-size: 13px; color: #007600; margin: 5px 0;">In Stock</div>
-                        <div style="font-size: 13px; color: #565959;">Sold by: Marketplace EU Sarl</div>
-                        <div style="font-size: 13px; color: #565959; margin-top: 5px;">
-                            <strong>Gift options:</strong> not available
-                        </div>
-                        <div style="font-size: 13px; color: #007185; margin-top: 5px;">
-                            Pay in 5 monthly payments of £65.80
-                        </div>
-                    </div>
-                </div>
+    if ($row = mysqli_fetch_assoc($result)) {
 
-                <div class="delivery-options">
-                    <p style="font-weight: bold; margin-bottom: 10px;">Choose your Prime delivery option:</p>
+        $lineTotal = $row['price'] * $qty;
+        $total += $lineTotal;
+
+        echo "
+        <div class='product-item'>
+            <div class='product-image'>
+                <img src='product_image/{$row['img']}' width='60'>
+            </div>
+            <div class='product-details'>
+                <div class='product-title'>{$row['name']}</div>
+                <div class='product-price'>£" . number_format($lineTotal,2) . "</div>
+                <div>Qty: {$qty}</div>
+            </div>
+        </div>";
+    }
+}
+?>
+</div>
+     
+    <div class="delivery-options">
+             <p style="font-weight: bold; margin-bottom: 10px;">Choose your Prime delivery option:</p>
                     
-                    <div class="radio-option">
+             <div class="radio-option">
                         <input type="radio" name="delivery" id="delivery1" checked="">
                         <label for="delivery1">
                             <strong>FREE One-Day Delivery</strong> - get it Tomorrow, Mar. 16
@@ -416,7 +124,10 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
 
         <!-- Order Summary Sidebar -->
         <div class="order-summary">
-            <button class="buy-now-btn">Buy now</button>
+            <form method="POST" action="php_functions/place_order.php">
+                <button type="submit" class="buy-now-btn">Buy now</button>
+            </form>
+
             
             <div class="terms-text">
                 By placing your order, you agree to our Conditions of Use &amp; Sale. Please see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
@@ -424,22 +135,29 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
 
             <div class="summary-title">Order Summary</div>
 
-            <div class="summary-row">
-                <span>Items:</span>
-                <span>£329.00</span>
-            </div>
+            <?php
+$shipping = 0;
+$grandTotal = $total + $shipping;
+?>
 
-            <div class="summary-row">
-                <span>Postage &amp; Packing:</span>
-                <span>£0.00</span>
-            </div>
+<div class="summary-row">
+    <span>Items:</span>
+    <span>£<?= number_format($total,2) ?></span>
+</div>
 
-            <div class="summary-total">
-                <span>Order Total:</span>
-                <span>£329.00</span>
-            </div>
+<div class="summary-row">
+    <span>Postage & Packing:</span>
+    <span>£<?= number_format($shipping,2) ?></span>
+</div>
 
-            <div class="vat-note">Order totals include VAT <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php#" style="color: #007185;">See details</a></div>
+<div class="summary-total">
+    <span>Order Total:</span>
+    <span>£<?= number_format($grandTotal,2) ?></span>
+</div>
+
+
+            <div class="vat-note">Order totals include VAT 
+            <a href="https://storage.tutorbin.com/production/media/tasks/68e6d30bfbf57b4225fb5f46/task-invites/68e6d30bfbf57b4225fb5f46/solutions/checkout-1759962156703.php#" style="color: #007185;">See details</a></div>
 
             <div class="delivery-info">
                 <strong>How are delivery costs calculated?</strong>
@@ -448,24 +166,12 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
         </div>
     </div>
 
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
-      div.grammarly-desktop-integration {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select:none;
-        user-select:none;
-      }
 
-      div.grammarly-desktop-integration:before {
-        content: attr(data-content);
-      }
-    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open">
+    
+<div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration>
+    
+
+
+    
+    </html>

@@ -1,42 +1,170 @@
-<?php
-session_start(); // start session to keep user logged in
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Login | LuxeHome
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="login.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-// 1. Connect to the database
-$conn = mysqli_connect("localhost", "root", "", "ecommerce");
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+    <!-- Favicon -->
+  <link rel="icon" href="images/image.png">
 
-// 2. Check if form submitted
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+</head>
+<body>
 
-    // 3. Fetch user from DB
-    $sql = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
-    $result = mysqli_query($conn, $sql);
+    <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <a href="index.php" class="flex items-center space-x-3">
+          <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+          <div>
+            <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+            <p class="text-xs text-gray-500">Smart Living Elevated</p>
+          </div>
+        </a>
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
+        <!--Navigation-->
 
-        // 4. Verify password
-        if (password_verify($password, $user['password'])) {
-            // Password correct, set session variables
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['username'] = $user['username'];
+        <nav class="hidden md:flex space-x-8">
+          <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
+          <a href="products.php" class="nav-link text-emerald-600 font-semibold">Shop</a>
+          <a href="#" class="nav-link hover:text-emerald-600 transition">Collections</a>
+          <a href="about_us.php" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
+          <a href="contact.php" class="nav-link hover:text-emerald-600 transition">Contact</a>
+        </nav>
 
-            // Redirect to customer home
-            header("Location: index.php");
-            exit();
-        } else {
-            echo "Incorrect password!";
-        }
-    } else {
-        echo "No user found with that email!";
-    }
-}
+        <!--Actions-->
 
-mysqli_close($conn);
-?>
+        <div class="flex items-center space-x-4">
+          <button id="searchToggle" class="action-btn hover:text-emerald-600"><i class="fas fa-search"></i></button>
+          <a href="#basket" id="viewBasket" class="relative action-btn hover:text-emerald-600">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cartCount" class="cart-badge absolute -top-2 -right-2 bg-emerald-600 text-white text-xs px-1.5 rounded-full">0</span>
+          </a>
+          <a href="login.php" class="action-btn hover:text-emerald-600"><i class="fas fa-user"></i></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+      <!--LOGIN-->
+      <section class="login-section">
+            <h2 class ="title"> Welcome to LuxeHome</h2>
+            <p class="subtitle">Choose How To Login </p>
+        
+            <div class="login-container">
+
+                <!--Customer Login Box-->
+                <div class="login-box">
+                    <h3> Customer Login</h3>
+                    <form action="php_functions/user_login.php" method="POST">
+                        <label> Email </label>
+                        <input type="email" name="email" required>
+
+                        <label> Password </label>
+                        <input type="password" name="password" required>
+
+                        <button type="submit" class="login-btn"> Login As Customer</button>
+                    </form>
+                    <!--Forgot Password-->
+                    <div class=" text-center"> 
+                        <a href="#" class="forgot"> Forgot Your Password?</a>
+                        <p class="forgot-text"> Don’t Have An account?
+                            <a href="register.php"> Register</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!--Admin Login-->
+                <div class = "login-box"> 
+                    <h3> Admin Login</h3>
+                    <form action="admin-page.php"> 
+                        <label> Email </label>
+                        <input type="email" required>
+
+                        <label> Password </label>
+                        <input type="password required">
+                        <button type="submit" class="login-btn admin"> Login As Admin</button>
+                    </form>
+                    <!--Forgot Password-->
+                    <div class=" text-center"> 
+                        <a href="#" class="forgot"> Forgot Your Password?</a>
+                        <p class="forgot-text"> Don’t Have An account?
+                            <a href="register.php"> Register</a>
+                        </p>
+                    </div>
+                </div>
+      </section>
+            </form>
+        </div>
+      </section>
+
+      <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Brand -->
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+            <div>
+              <h3 class="text-lg font-bold text-white">LuxeHome</h3>
+              <p class="text-sm text-gray-400">Smart Living Elevated</p>
+            </div>
+          </div>
+          <p class="text-gray-400 text-sm mb-4">
+            Experience the pinnacle of intelligent living with our curated collection of premium smart home technology
+            designed for modern lifestyles.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-white font-semibold mb-3">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="index.php" class="hover:text-white">Home</a></li>
+            <li><a href="#" class="hover:text-white">Shop</a></li>
+            <li><a href="#" class="hover:text-white">Collections</a></li>
+            <li><a href="#" class="hover:text-white">Inspiration</a></li>
+            <li><a href="contacttt.php" class="hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="text-white font-semibold mb-3">Contact</h4>
+          <ul class="space-y-2 text-sm">
+            <li>hello@luxehome.com</li>
+            <li>1-800-LUXE-HOME</li>
+            <li>Mon–Fri: 9am–6pm EST</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-400">
+        © 2025 LuxeHome. All rights reserved.
+        <a href="#" class="hover:text-white ml-2">Privacy Policy</a> |
+        <a href="#" class="hover:text-white ml-2">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+      </body>
+      
+      </html>
+
+
+

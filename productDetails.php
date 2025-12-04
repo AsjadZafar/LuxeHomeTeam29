@@ -61,8 +61,35 @@ if (isset($_GET['id'])) {
 
   <main class="max-w-6xl mx-auto px-4 py-10">
     <div id="productWrap" class="bg-white rounded-xl shadow p-6 grid lg:grid-cols-2 gap-6">
-      <!-- content injected by JS -->
+
+  <div>
+    <img src="product_image/<?= $row['img'] ?>" class="w-full rounded-lg object-cover h-80">
+  </div>
+
+  <div>
+    <h1 class="text-2xl font-bold mb-2"><?= $row['name'] ?></h1>
+    <p class="text-emerald-600 font-semibold text-xl mb-4">£<?= number_format($row['price'], 2) ?></p>
+    <p class="text-gray-600 mb-4"><?= $row['description'] ?></p>
+
+    <div class="mb-4">
+      <label class="block text-sm text-gray-600 mb-2"><?= $row['quantity']?></label>
+      <input id="qty" type="number" min="1" value="1" class="w-24 p-2 border rounded-md" />
     </div>
+
+    <div class="flex gap-3">
+      <form action="php_functions/addToCart.php" method="POST">
+   <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+   <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-md">Add to Basket</button>
+</form>
+
+
+    </div>
+
+    <p id="addedMsg" class="text-green-600 mt-4 hidden">Added to basket</p>
+  </div>
+
+</div>
+
   </main>
 
   <footer class="bg-gray-900 text-gray-300 py-10 mt-12">
@@ -104,37 +131,7 @@ if (isset($_GET['id'])) {
 
 
  <script>
-  const PRODUCT = <?php echo json_encode($row); ?>;
 
-  const wrap = document.getElementById('productWrap');
-
-  function formatPrice(p){ return '£' + Number(p).toFixed(2); }
-
-  wrap.innerHTML = `
-    <div>
-      <img src="product_image/${PRODUCT.img}" alt="${PRODUCT.name}" class="w-full rounded-lg object-cover h-80">
-      <div class="grid grid-cols-3 gap-3 mt-3">
-        <img src="product_image/${PRODUCT.img}" class="h-24 w-full rounded-md object-cover">
-      </div>
-    </div>
-    <div>
-      <h1 class="text-2xl font-bold mb-2">${PRODUCT.name}</h1>
-      <p class="text-emerald-600 font-semibold text-xl mb-4">${formatPrice(PRODUCT.price)}</p>
-      <p class="text-gray-600 mb-4">${PRODUCT.description}</p>
-
-      <div class="mb-4">
-        <label class="block text-sm text-gray-600 mb-2">Quantity</label>
-        <input id="qty" type="number" min="1" value="1" class="w-24 p-2 border rounded-md" />
-      </div>
-
-      <div class="flex gap-3">
-        <button id="addBtn" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700">Add to Basket</button>
-        <button id="buyBtn" class="border px-4 py-2 rounded-md">Buy Now</button>
-      </div>
-
-      <p id="addedMsg" class="text-green-600 mt-4 hidden">Added to basket ✅</p>
-    </div>
-  `;
 
   function getCart(){ return JSON.parse(localStorage.getItem('luxehome_cart') || '[]'); }
   function setCart(c){ localStorage.setItem('luxehome_cart', JSON.stringify(c)); updateCartCount(); }
@@ -146,7 +143,7 @@ if (isset($_GET['id'])) {
     const cart = getCart();
     const existing = cart.find(i=>i.id===PRODUCT.product_id);
     if(existing) existing.qty += qty; 
-    else cart.push({ id: PRODUCT.product_id, title: PRODUCT.name, price: PRODUCT.price, qty });
+    else cart.push({ id: PRODUCT.product_id, title: PRODUCT.name, desc: PRODUCT.desc ,price: PRODUCT.price,img: PRODUCT.img,qty });
     setCart(cart);
     document.getElementById('addedMsg').classList.remove('hidden');
     setTimeout(()=> document.getElementById('addedMsg').classList.add('hidden'), 1800);

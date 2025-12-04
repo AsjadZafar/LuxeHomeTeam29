@@ -81,8 +81,29 @@ $result = mysqli_query($conn, $sql);
   <main class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
     <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Product cards inserted by JS -->
-    </div>
+
+<?php while($row = mysqli_fetch_assoc($result)) { ?>
+    <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
+        <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="block">
+            <img src="product_image/<?php echo $row['img']; ?>" 
+                 alt="<?php echo htmlspecialchars($row['name']); ?>" 
+                 class="w-full h-48 object-cover rounded-md mb-3">
+
+            <h3 class="font-semibold text-lg"><?php echo htmlspecialchars($row['name']); ?></h3>
+
+            <p class="text-sm text-gray-500 mb-2">
+                <?php echo substr($row['description'], 0, 60) . "..."; ?>
+            </p>
+
+            <div class="flex items-center justify-between">
+                <span class="text-emerald-600 font-semibold">£<?php echo number_format($row['price'], 2); ?></span>
+            </div>
+        </a>
+    </article>
+<?php } ?>
+
+</div>
+
   </main>
 
   <!-- Footer (same style as contact page) -->
@@ -124,56 +145,8 @@ $result = mysqli_query($conn, $sql);
   </footer>
 
 
-  <?php
-
-  $productArray = [];
-
-  while($row = mysqli_fetch_assoc($result)) {
-
-    $productArray[] = [
-  "id" => $row["product_id"],
-  "title" => $row["name"],
-  "desc" => $row["description"],
-  "price" => floatval($row["price"]),
-  "qty" => intval($row["quantity"]),
-  "install" => $row["installation_available"],
-  "img" => "product_image/". $row["img"],
-  "short" => substr($row["description"], 0, 60) . "...",
-];
-
-
-
-  }
-?>
+ 
   <script>
-    // Sample product data (9 products)
-    const PRODUCTS = <?php echo json_encode($productArray); ?>;
-
-    // render products
-    const grid = document.getElementById('productsGrid');
-    function formatPrice(p){ return '£' + p.toFixed(2); }
-    function renderProducts(list){
-      grid.innerHTML = '';
-      list.forEach(p => {
-        const card = document.createElement('article');
-        card.className = 'bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-md transition';
-        card.innerHTML = `
-          <a href="productDetails.php?id=${p.id}" class="block">
-            <img src="${p.img}" alt="${p.title}" class="w-full h-48 object-cover rounded-md mb-3">
-            <h3 class="font-semibold text-lg">${p.title}</h3>
-            <p class="text-sm text-gray-500 mb-2">${p.short}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-emerald-600 font-semibold">${formatPrice(p.price)}</span>
-              <span class="text-xs text-gray-400">${p.category}</span>
-            </div>
-          </a>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    renderProducts(PRODUCTS);
-
     // search/filter
     document.getElementById('searchBtn').addEventListener('click', () => applyFilters());
     document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') applyFilters(); });
@@ -214,7 +187,7 @@ $result = mysqli_query($conn, $sql);
       if(!p) return;
       const cart = getCart();
       const existing = cart.find(i=>i.id===p.id);
-      if(existing) existing.qty += qty; else cart.push({ id: p.id, title: p.title, price: p.price, qty });
+      if(existing) existing.qty += qty; else cart.push({ id: p.id, title: p.title, desc: p.desc , price: p.price, img: p.img, qty });
       setCart(cart);
       alert('Added to basket: ' + p.title);
     }
