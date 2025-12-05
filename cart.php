@@ -1,11 +1,25 @@
 <?php
 session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$logged_in = false;
+$username = "";
+
+if (isset($_SESSION['username'])) {
+  $logged_in = true;
+  $username = $_SESSION['username'];
+}
+
 require_once 'php_functions/dbh.php';
 
 // Ensure cart exists
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
+
+// Calculate cart count for badge
+$cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 
 // REMOVE ONE item
 if (isset($_POST['remove_one'])) {
@@ -15,193 +29,347 @@ if (isset($_POST['remove_one'])) {
     } else {
         unset($_SESSION['cart'][$remove_id]);
     }
+    // Refresh cart count
+    $cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 }
 
 // REMOVE ALL of this item
 if (isset($_POST['remove_all'])) {
     $remove_id = intval($_POST['remove_all']);
     unset($_SESSION['cart'][$remove_id]);
+    // Refresh cart count
+    $cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 }
 ?>
 
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart | LuxeHome</title>
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="images/image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/cart-style.css">
-      <style>
-    .logo-img{ width:48px; height:48px; border-radius:50%; object-fit:cover }
-  </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <style>
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .nav-link {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link.active {
+            color: #047857;
+            border-bottom: 2px solid #047857;
+            padding-bottom: 0.25rem;
+        }
+        
+        .nav-link:hover {
+            color: #047857;
+        }
+        
+        .action-btn {
+            color: #4b5563;
+            transition: color 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            color: #047857;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background: #059669;
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 50%;
+            width: 1.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-50">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Header -->
-   <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center py-4">
-      <a href="index.html" class="flex items-center space-x-3">
-      <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
-      <div>
-        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
-        <p class="text-xs text-gray-500">Smart Living Elevated</p>
-      </div>
-      </a>
+    <!-- Accessibility Panel -->
+    <div id="accessibilityPanel" class="accessibility-panel">
+        <div class="accessibility-header">
+            <h2 class="accessibility-title">Accessibility Settings</h2>
+            <p class="accessibility-subtitle">Customize your browsing experience</p>
+            <button id="closePanel" class="accessibility-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="accessibility-content">
+            <div class="accessibility-section">
+                <h3 class="accessibility-section-title">
+                    <i class="fas fa-eye"></i>
+                    Visual Preferences
+                </h3>
+                <div class="accessibility-options">
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="darkMode">
+                        <label for="darkMode">Dark Mode</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="highContrast">
+                        <label for="highContrast">High Contrast</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <label for="fontSize">Font Size</label>
+                        <input type="range" id="fontSize" min="0" max="3" value="1">
+                        <div class="font-size-display" id="fontSizeDisplay">Normal</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accessibility-section">
+                <h3 class="accessibility-section-title">
+                    <i class="fas fa-text-height"></i>
+                    Text & Reading
+                </h3>
+                <div class="accessibility-options">
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="dyslexiaFont">
+                        <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="lineSpacing">
+                        <label for="lineSpacing">Increased Line Spacing</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accessibility-section">
+                <h3 class="accessibility-section-title">
+                    <i class="fas fa-mouse-pointer"></i>
+                    Navigation
+                </h3>
+                <div class="accessibility-options">
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="focusIndicator">
+                        <label for="focusIndicator">Enhanced Focus Indicators</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="skipLinks">
+                        <label for="skipLinks">Enable Skip Links</label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="resetSettings" class="accessibility-reset">
+                <i class="fas fa-undo"></i> Reset All Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Accessibility Panel Overlay -->
+    <div id="panelOverlay" class="panel-overlay"></div>
+
+    <!-- Accessibility Toggle Button -->
+    <button id="togglePanel" class="accessibility-toggle">
+        <i class="fas fa-universal-access"></i>
+    </button>
+
+    <!-- Header - SAME AS INDEX.PHP -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.php" class="flex items-center space-x-3">
+                    <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+                        <p class="text-xs text-gray-500">Smart Living Elevated</p>
+                    </div>
+                </a>
 
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="index.php" class="nav-link">Home</a>
                     <a href="products.php" class="nav-link">Shop</a>
-                    <a href="#" class="nav-link">Collections</a>
-                    <a href="about_us.php" class="nav-link">Inspiration</a>
-                    <a href="contact.php" class="nav-link active text-emerald-600 font-semibold">Contact</a>
+                    <a href="about_us.php" class="nav-link">About us</a>
+                    <a href="contact.php" class="nav-link">Contact</a>
                 </nav>
 
                 <!-- Actions -->
                 <div class="flex items-center space-x-4">
-                    <button class="action-btn"><i class="fas fa-search"></i></button>
-                    <button class="action-btn relative">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge">3</span>
+                    <button class="action-btn">
+                        <i class="fas fa-search"></i>
                     </button>
-                    <button class="action-btn"><i class="fas fa-user"></i></button>
+                    
+                    <?php if ($logged_in): ?>
+                        <a href="cart.php" class="action-btn relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge"><?php echo $cart_count; ?></span>
+                        </a>
+                        <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
+                    <?php else: ?>
+                        <a href="cart.php" class="action-btn relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge"><?php echo $cart_count; ?></span>
+                        </a>
+                        <a href="login.php" class="action-btn">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
+                
+                <?php if ($logged_in): ?>
+                    <div class="flex items-center space-x-2 ml-4">
+                        <form method="POST" action="php_functions/logout.php">
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
+                        </form>
+                        <form method="POST" action="admin_dash.php">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </header>
 
-    <!-- Customer's Basket. KEEP IN MIND THIS WILL BE CONVERTED TO PHP SOON! EVERYTHING IS HARD CODED. A SEPERATE CSS FILE IS UPLOADED TO AVOID ANY POTENTIAL CONFLICTS. TY -->
-<div class="small-container cart-page">
-    <table class="w-full border-collapse" id="cartTable">
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-        </tr>
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Customer's Basket -->
+        <div class="small-container cart-page">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Your Shopping Cart</h1>
+            <table class="w-full border-collapse" id="cartTable">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
 
-        <?php
-        $subtotal = 0;
+                <?php
+                $subtotal = 0;
 
-        if (!empty($_SESSION['cart'])) {
+                if (!empty($_SESSION['cart'])) {
+                    foreach ($_SESSION['cart'] as $product_id => $qty) {
+                        $product_id = intval($product_id);
+                        $sql = "SELECT name, price, img FROM products WHERE product_id = $product_id";
+                        $result = mysqli_query($conn, $sql);
 
-            foreach ($_SESSION['cart'] as $product_id => $qty) {
+                        if ($row = mysqli_fetch_assoc($result)) {
+                            $lineTotal = $row['price'] * $qty;
+                            $subtotal += $lineTotal;
 
-                $product_id = intval($product_id);
-                $sql = "SELECT name, price, img FROM products WHERE product_id = $product_id";
-                $result = mysqli_query($conn, $sql);
-
-                if ($row = mysqli_fetch_assoc($result)) {
-                    
-                    $lineTotal = $row['price'] * $qty;
-                    $subtotal += $lineTotal;
-
-                    echo "<tr>
-                        <td>
-                            <div class='cart-info'>
-                                <img src='product_image/{$row['img']}' width='80'>
-                                <div>
-                                    <p>{$row['name']}</p>
-                                    <small>Price: £" . number_format($row['price'],2) . "</small><br>
-                                    
-                                    <form method='POST'>
-                                        <button type='submit' name='remove_all' value='$product_id' class='text-red-600 text-sm'>
-                                            Remove
-                                        </button>
+                            echo "<tr>
+                                <td>
+                                    <div class='cart-info'>
+                                        <img src='product_image/{$row['img']}' width='80'>
+                                        <div>
+                                            <p>{$row['name']}</p>
+                                            <small>Price: &pound;" . number_format($row['price'],2) . "</small><br>
+                                            
+                                            <form method='POST'>
+                                                <button type='submit' name='remove_all' value='$product_id' class='text-red-600 text-sm'>
+                                                    Remove
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <form method='POST' style='display:inline-block'>
+                                        <button type='submit' name='remove_one' value='$product_id' class='px-2'>-</button>
                                     </form>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <form method='POST' style='display:inline-block'>
-                                <button type='submit' name='remove_one' value='$product_id' class='px-2'>-</button>
-                            </form>
-                            
-                            <span class='px-2'>$qty</span>
-                            
-                        </td>
-                        <td>£" . number_format($lineTotal,2) . "</td>
-                    </tr>";
+                                    
+                                    <span class='px-2'>$qty</span>
+                                    
+                                </td>
+                                <td>&pound;" . number_format($lineTotal,2) . "</td>
+                            </tr>";
+                        }
+                    }
+                } else {
+                    echo "<tr><td colspan='3' class='text-center py-4'>Your cart is empty.</td></tr>";
                 }
-            }
-        } else {
-            echo "<tr><td colspan='3'>Your cart is empty.</td></tr>";
-        }
-        ?>
-    </table>
+                ?>
+            </table>
 
-    <div class="total-price mt-4">
-        <table>
-            <tr>
-                <td>Subtotal:</td>
-                <td>£<?= number_format($subtotal,2) ?></td>
-            </tr>
-            <tr>
-                <td>Tax (13%):</td>
-                <td>£<?= number_format($subtotal * 0.13,2) ?></td>
-            </tr>
-            <tr>
-                <td>Total:</td>
-                <td>£<?= number_format($subtotal * 1.13,2) ?></td>
-            </tr>
-        </table>
-    </div>
-    <div class="text-right mt-6">
-    <form action="check out page.php" method="POST">
-        <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded-md">
-            Proceed to Checkout
-        </button>
-    </form>
-</div>
+            <div class="total-price mt-8">
+                <table class="w-64 ml-auto">
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td>&pound;<?= number_format($subtotal,2) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Tax (13%):</td>
+                        <td>&pound;<?= number_format($subtotal * 0.13,2) ?></td>
+                    </tr>
+                    <tr class="font-bold text-lg">
+                        <td>Total:</td>
+                        <td>&pound;<?= number_format($subtotal * 1.13,2) ?></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="text-right mt-6">
+                <form action="check_out_page.php" method="POST">
+                    <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-md hover:bg-emerald-700 transition-colors">
+                        Proceed to Checkout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
 
-</div>
-
-    <!-- Footer -->
+    <!-- Footer - SAME AS INDEX.PHP -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="brand-logo">
-                        <div class="logo-icon"><i class="fas fa-home text-white"></i></div>
-                        <div>
-                            <h3 class="brand-name">LuxeHome</h3>
-                            <p class="brand-tagline">Smart Living Elevated</p>
+                        <div class="brand-text">
+                            <h3 class="brand-name text-white">LuxeHome</h3>
+                            <p class="brand-tagline text-gray-400">Smart Living Elevated</p>
                         </div>
                     </div>
                     <p class="brand-description">
-                        Experience the pinnacle of intelligent living with our curated collection of premium smart home
-                        technology designed for modern lifestyles.
+                        Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
                     </p>
                     <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
                     </div>
                 </div>
-
                 <div class="footer-links">
                     <h4 class="footer-heading">Quick Links</h4>
                     <ul class="footer-list">
                         <li><a href="index.php" class="footer-link">Home</a></li>
-                        <li><a href="#" class="footer-link">Shop</a></li>
-                        <li><a href="#" class="footer-link">Collections</a></li>
-                        <li><a href="#" class="footer-link">Inspiration</a></li>
-                        <li><a href="contacttt.php" class="footer-link">Contact</a></li>
+                        <li><a href="products.php" class="footer-link">Shop</a></li>
+                        <li><a href="about_us.php" class="footer-link">About us</a></li>
+                        <li><a href="contact.php" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-contact">
                     <h4 class="footer-heading">Contact</h4>
                     <ul class="footer-list">
@@ -211,23 +379,17 @@ if (isset($_POST['remove_all'])) {
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    © 2023 LuxeHome. All rights reserved. |
-                    <a href="#" class="footer-legal-link">Privacy Policy</a> |
+                    © 2023 LuxeHome. All rights reserved. | 
+                    <a href="#" class="footer-legal-link">Privacy Policy</a> | 
                     <a href="#" class="footer-legal-link">Terms of Service</a>
                 </p>
             </div>
         </div>
     </footer>
-
-
-
-
+    
+    <script src="js/script.js"></script>
+    <script src="js/accessibility.js"></script>
 </body>
- 
-
-
-
 </html>
