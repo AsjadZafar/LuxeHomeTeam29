@@ -19,7 +19,7 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact & Warranty | LuxeHome</title>
     <meta name="description" content="Contact LuxeHome for enquiries or submit warranty claims for purchased items." />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+    <link rel="icon" href="images/image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -104,6 +104,89 @@ if (isset($_SESSION['username'])) {
 </head>
 
 <body class="bg-gray-50">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Accessibility Panel -->
+    <div id="accessibilityPanel" class="accessibility-panel">
+        <div class="accessibility-header">
+            <h2 class="accessibility-title">Accessibility Settings</h2>
+            <p class="accessibility-subtitle">Customize your browsing experience</p>
+            <button id="closePanel" class="accessibility-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="accessibility-content">
+            <div class="accessibility-section">
+                <h3 class="accessibility-section-title">
+                    <i class="fas fa-eye"></i>
+                    Visual Preferences
+                </h3>
+                <div class="accessibility-options">
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="darkMode">
+                        <label for="darkMode">Dark Mode</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="highContrast">
+                        <label for="highContrast">High Contrast</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <label for="fontSize">Font Size</label>
+                        <input type="range" id="fontSize" min="0" max="3" value="1">
+                        <div class="font-size-display" id="fontSizeDisplay">Normal</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accessibility-section">
+                <h3 class="accessibility-section-title">
+                    <i class="fas fa-text-height"></i>
+                    Text & Reading
+                </h3>
+                <div class="accessibility-options">
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="dyslexiaFont">
+                        <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="lineSpacing">
+                        <label for="lineSpacing">Increased Line Spacing</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accessibility-section">
+                <h3 class="accessibility-section-title">
+                    <i class="fas fa-mouse-pointer"></i>
+                    Navigation
+                </h3>
+                <div class="accessibility-options">
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="focusIndicator">
+                        <label for="focusIndicator">Enhanced Focus Indicators</label>
+                    </div>
+                    <div class="accessibility-option">
+                        <input type="checkbox" id="skipLinks">
+                        <label for="skipLinks">Enable Skip Links</label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="resetSettings" class="accessibility-reset">
+                <i class="fas fa-undo"></i> Reset All Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Accessibility Panel Overlay -->
+    <div id="panelOverlay" class="panel-overlay"></div>
+
+    <!-- Accessibility Toggle Button -->
+    <button id="togglePanel" class="accessibility-toggle">
+        <i class="fas fa-universal-access"></i>
+    </button>
+
     <!-- HEADER -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -166,113 +249,116 @@ if (isset($_SESSION['username'])) {
         </div>
     </header>
 
-    <!-- CONTACT HEADER -->
-    <section class="py-20 bg-gray-100">
-        <div class="bg-gray-800 text-center mb-12 py-10">
-            <h2 class="text-3xl text-white font-bold mb-2">Get in Touch</h2>
-            <p class="text-gray-300 max-w-2xl mx-auto">
-                Contact us or submit a warranty claim for purchased LuxeHome products.
-            </p>
-        </div>
-
-        <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-2xl p-8 grid md:grid-cols-2 gap-10">
-
-            <!-- CONTACT INFORMATION -->
-            <div>
-                <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
-                <ul class="text-gray-700 space-y-3">
-                    <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street, Birmingham, UK</li>
-                    <li><i class="fas fa-phone text-emerald-600 mr-2"></i>+44 1234 567 890</li>
-                    <li><i class="fas fa-envelope text-emerald-600 mr-2"></i>hello@luxehome.com</li>
-                    <li><i class="fas fa-clock text-emerald-600 mr-2"></i>Mon–Fri: 9am–6pm</li>
-                </ul>
-
-                <iframe class="mt-6 rounded-lg w-full h-56"
-                    src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
-            </div>
-
-            <!-- CONTACT FORM -->
-            <div>
-                <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
-
-                <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
-                    <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
-                    <input name="email" id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
-
-                    <select name="product" id="product" class="w-full p-3 border rounded-md" required>
-                        <option value="">Select Product</option>
-                        <option value="Smart Light">Smart Light</option>
-                        <option value="Garage Door">Smart Garage Door</option>
-                        <option value="Window Blinds">Automated Window Blinds</option>
-                        <option value="Smart Socket">Smart Power Socket</option>
-                        <option value="Sensor Kit">Sensor Kit</option>
-                    </select>
-
-                    <textarea name="message" id="message" rows="4" placeholder="Your Message" class="w-full p-3 border rounded-md" required></textarea>
-
-                    <button type="submit" id="submitBtn"
-                        class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
-                        <span id="btnText">Send Message</span>
-                        <i id="spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
-                    </button>
-                </form>
-
-                <p id="successMessage" class="text-center text-green-600 hidden mt-3 opacity-0">
-                    Message sent successfully!
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- CONTACT HEADER -->
+        <section class="py-20 bg-gray-100">
+            <div class="bg-gray-800 text-center mb-12 py-10">
+                <h2 class="text-3xl text-white font-bold mb-2">Get in Touch</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Contact us or submit a warranty claim for purchased LuxeHome products.
                 </p>
             </div>
-        </div>
-    </section>
 
-    <!-- WARRANTY CLAIM SECTION -->
-    <section class="py-20 bg-white">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
+            <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-2xl p-8 grid md:grid-cols-2 gap-10">
 
-            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
-                Submit your warranty claim by providing order details and proof of damage.
-            </p>
+                <!-- CONTACT INFORMATION -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                    <ul class="text-gray-700 space-y-3">
+                        <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street, Birmingham, UK</li>
+                        <li><i class="fas fa-phone text-emerald-600 mr-2"></i>+44 1234 567 890</li>
+                        <li><i class="fas fa-envelope text-emerald-600 mr-2"></i>hello@luxehome.com</li>
+                        <li><i class="fas fa-clock text-emerald-600 mr-2"></i>Mon–Fri: 9am–6pm</li>
+                    </ul>
 
-            <form id="warrantyForm" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
+                    <iframe class="mt-6 rounded-lg w-full h-56"
+                        src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
+                </div>
 
-                <input id="wName" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+                <!-- CONTACT FORM -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
 
-                <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+                    <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
+                        <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+                        <input name="email" id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
 
-                <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)" class="w-full p-3 border rounded-md" required>
+                        <select name="product" id="product" class="w-full p-3 border rounded-md" required>
+                            <option value="">Select Product</option>
+                            <option value="Smart Light">Smart Light</option>
+                            <option value="Garage Door">Smart Garage Door</option>
+                            <option value="Window Blinds">Automated Window Blinds</option>
+                            <option value="Smart Socket">Smart Power Socket</option>
+                            <option value="Sensor Kit">Sensor Kit</option>
+                        </select>
 
-                <select id="wProduct" class="w-full p-3 border rounded-md" required>
-                    <option value="">Product Purchased</option>
-                    <option>Smart Light</option>
-                    <option>Garage Door Controller</option>
-                    <option>Window Blinds System</option>
-                    <option>Smart Socket</option>
-                    <option>Sensor Kit</option>
-                </select>
+                        <textarea name="message" id="message" rows="4" placeholder="Your Message" class="w-full p-3 border rounded-md" required></textarea>
 
-                <select id="claimReason" class="w-full p-3 border rounded-md" required>
-                    <option value="">Reason for Claim</option>
-                    <option>Device not working</option>
-                    <option>Physical damage</option>
-                    <option>Power issue</option>
-                    <option>Connectivity problem</option>
-                </select>
+                        <button type="submit" id="submitBtn"
+                            class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
+                            <span id="btnText">Send Message</span>
+                            <i id="spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
+                        </button>
+                    </form>
 
-                <textarea id="issueDetails" rows="4" placeholder="Describe the issue..."
-                    class="w-full p-3 border rounded-md" required></textarea>
+                    <p id="successMessage" class="text-center text-green-600 hidden mt-3 opacity-0">
+                        Message sent successfully!
+                    </p>
+                </div>
+            </div>
+        </section>
 
-                <label class="block font-medium">Upload Proof of Damage</label>
-                <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
+        <!-- WARRANTY CLAIM SECTION -->
+        <section class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
 
-                <button type="submit" id="warrantyBtn"
-                    class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
-                    Submit Warranty Claim
-                </button>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
+                    Submit your warranty claim by providing order details and proof of damage.
+                </p>
 
-                <p id="warrantyMessage" class="text-center mt-3 hidden opacity-0 text-green-600 font-medium"></p>
-            </form>
-        </div>
-    </section>
+                <form id="warrantyForm" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
+
+                    <input id="wName" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+
+                    <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+
+                    <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)" class="w-full p-3 border rounded-md" required>
+
+                    <select id="wProduct" class="w-full p-3 border rounded-md" required>
+                        <option value="">Product Purchased</option>
+                        <option>Smart Light</option>
+                        <option>Garage Door Controller</option>
+                        <option>Window Blinds System</option>
+                        <option>Smart Socket</option>
+                        <option>Sensor Kit</option>
+                    </select>
+
+                    <select id="claimReason" class="w-full p-3 border rounded-md" required>
+                        <option value="">Reason for Claim</option>
+                        <option>Device not working</option>
+                        <option>Physical damage</option>
+                        <option>Power issue</option>
+                        <option>Connectivity problem</option>
+                    </select>
+
+                    <textarea id="issueDetails" rows="4" placeholder="Describe the issue..."
+                        class="w-full p-3 border rounded-md" required></textarea>
+
+                    <label class="block font-medium">Upload Proof of Damage</label>
+                    <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
+
+                    <button type="submit" id="warrantyBtn"
+                        class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
+                        Submit Warranty Claim
+                    </button>
+
+                    <p id="warrantyMessage" class="text-center mt-3 hidden opacity-0 text-green-600 font-medium"></p>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <!-- FLOATING CHATBOT -->
     <div onclick="toggleChatbot()" class="floating-chatbot">
