@@ -34,7 +34,7 @@ $result = mysqli_query($conn, $sql);
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Products | LuxeHome</title>
   <meta name="description" content="Browse LuxeHome premium smart home products for living room, kitchen, bedroom and outdoors." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+  <link rel="icon" href="images/image.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
@@ -90,6 +90,89 @@ $result = mysqli_query($conn, $sql);
   </style>
 </head>
 <body class="bg-gray-50">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Accessibility Panel -->
+  <div id="accessibilityPanel" class="accessibility-panel">
+    <div class="accessibility-header">
+      <h2 class="accessibility-title">Accessibility Settings</h2>
+      <p class="accessibility-subtitle">Customize your browsing experience</p>
+      <button id="closePanel" class="accessibility-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="accessibility-content">
+      <div class="accessibility-section">
+        <h3 class="accessibility-section-title">
+          <i class="fas fa-eye"></i>
+          Visual Preferences
+        </h3>
+        <div class="accessibility-options">
+          <div class="accessibility-option">
+            <input type="checkbox" id="darkMode">
+            <label for="darkMode">Dark Mode</label>
+          </div>
+          <div class="accessibility-option">
+            <input type="checkbox" id="highContrast">
+            <label for="highContrast">High Contrast</label>
+          </div>
+          <div class="accessibility-option">
+            <label for="fontSize">Font Size</label>
+            <input type="range" id="fontSize" min="0" max="3" value="1">
+            <div class="font-size-display" id="fontSizeDisplay">Normal</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accessibility-section">
+        <h3 class="accessibility-section-title">
+          <i class="fas fa-text-height"></i>
+          Text & Reading
+        </h3>
+        <div class="accessibility-options">
+          <div class="accessibility-option">
+            <input type="checkbox" id="dyslexiaFont">
+            <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
+          </div>
+          <div class="accessibility-option">
+            <input type="checkbox" id="lineSpacing">
+            <label for="lineSpacing">Increased Line Spacing</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="accessibility-section">
+        <h3 class="accessibility-section-title">
+          <i class="fas fa-mouse-pointer"></i>
+          Navigation
+        </h3>
+        <div class="accessibility-options">
+          <div class="accessibility-option">
+            <input type="checkbox" id="focusIndicator">
+            <label for="focusIndicator">Enhanced Focus Indicators</label>
+          </div>
+          <div class="accessibility-option">
+            <input type="checkbox" id="skipLinks">
+            <label for="skipLinks">Enable Skip Links</label>
+          </div>
+        </div>
+      </div>
+
+      <button id="resetSettings" class="accessibility-reset">
+        <i class="fas fa-undo"></i> Reset All Settings
+      </button>
+    </div>
+  </div>
+
+  <!-- Accessibility Panel Overlay -->
+  <div id="panelOverlay" class="panel-overlay"></div>
+
+  <!-- Accessibility Toggle Button -->
+  <button id="togglePanel" class="accessibility-toggle">
+    <i class="fas fa-universal-access"></i>
+  </button>
+
   <!-- Header -->
   <header class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -152,68 +235,71 @@ $result = mysqli_query($conn, $sql);
     </div>
   </header>
 
-  <!-- Search Bar -->
-  <section class="py-8 bg-gray-100">
-    <div class="max-w-6xl mx-auto px-4">
-      <form action="" method="GET">
-        <div class="bg-white rounded-xl shadow-sm p-6 flex gap-4 items-center">
-          
-          <!-- Search -->
-          <input 
-            id="searchInput" 
-            type="text" 
-            name="search"
-            placeholder="Search products, e.g. Smart Lamp, Thermostat"
-            class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
-          />
+  <!-- Main Content -->
+  <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Search Bar -->
+    <section class="py-8 bg-gray-100">
+      <div class="max-w-6xl mx-auto px-4">
+        <form action="" method="GET">
+          <div class="bg-white rounded-xl shadow-sm p-6 flex gap-4 items-center">
+            
+            <!-- Search -->
+            <input 
+              id="searchInput" 
+              type="text" 
+              name="search"
+              placeholder="Search products, e.g. Smart Lamp, Thermostat"
+              class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+            />
 
-          <!-- NEED TO ADD CATEGORY!!!!! -->
-          <select id="categoryFilter" name="category" class="p-3 border rounded-md">
-            <option value="">All categories</option>
-            <option value="Living Room">Living Room</option>
-            <option value="Kitchen">Kitchen</option>
-            <option value="Bedroom">Bedroom</option>
-            <option value="Bathroom">Bathroom</option>
-            <option value="Outdoor">Outdoor</option>
-          </select>
+            <!-- NEED TO ADD CATEGORY!!!!! -->
+            <select id="categoryFilter" name="category" class="p-3 border rounded-md">
+              <option value="">All categories</option>
+              <option value="Living Room">Living Room</option>
+              <option value="Kitchen">Kitchen</option>
+              <option value="Bedroom">Bedroom</option>
+              <option value="Bathroom">Bathroom</option>
+              <option value="Outdoor">Outdoor</option>
+            </select>
 
-          <button 
-            type="submit" 
-            class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
-          >
-            Search
-          </button>
+            <button 
+              type="submit" 
+              class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
+            >
+              Search
+            </button>
 
-        </div>
-      </form>
-    </div>
-  </section>
+          </div>
+        </form>
+      </div>
+    </section>
 
-  <!-- Products Grid with php -->
-  <main class="max-w-7xl mx-auto px-4 py-8">
-    <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
-    <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Products Grid with php -->
+    <div class="py-8">
+      <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
+      <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
-      <?php while($row = mysqli_fetch_assoc($result)) { ?>
-      <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
-          <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="block">
-              <img src="product_image/<?php echo $row['img']; ?>" 
-                   alt="<?php echo htmlspecialchars($row['name']); ?>" 
-                   class="w-full h-48 object-cover rounded-md mb-3">
+        <?php while($row = mysqli_fetch_assoc($result)) { ?>
+        <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
+            <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="block">
+                <img src="product_image/<?php echo $row['img']; ?>" 
+                     alt="<?php echo htmlspecialchars($row['name']); ?>" 
+                     class="w-full h-48 object-cover rounded-md mb-3">
 
-              <h3 class="font-semibold text-lg"><?php echo htmlspecialchars($row['name']); ?></h3>
+                <h3 class="font-semibold text-lg"><?php echo htmlspecialchars($row['name']); ?></h3>
 
-              <p class="text-sm text-gray-500 mb-2">
-                  <?php echo substr($row['description'], 0, 60) . "..."; ?>
-              </p>
+                <p class="text-sm text-gray-500 mb-2">
+                    <?php echo substr($row['description'], 0, 60) . "..."; ?>
+                </p>
 
-              <div class="flex items-center justify-between">
-                  <span class="text-emerald-600 font-semibold">£<?php echo number_format($row['price'], 2); ?></span>
-              </div>
-          </a>
-      </article>
-      <?php } ?>
+                <div class="flex items-center justify-between">
+                    <span class="text-emerald-600 font-semibold">&pound;<?php echo number_format($row['price'], 2); ?></span>
+                </div>
+            </a>
+        </article>
+        <?php } ?>
 
+      </div>
     </div>
   </main>
 
