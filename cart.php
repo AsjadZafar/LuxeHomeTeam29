@@ -41,24 +41,24 @@ if (isset($_POST['remove_all'])) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/cart-style.css">
+      <style>
+    .logo-img{ width:48px; height:48px; border-radius:50%; object-fit:cover }
+  </style>
 </head>
 
 <body class="bg-gray-50">
 
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <!-- Logo -->
-                <a href="index.php" class="flex items-center space-x-3">
-                    <div class="logo-icon">
-                        <i class="fas fa-home text-white"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
-                        <p class="text-xs text-gray-500">Smart Living Elevated</p>
-                    </div>
-                </a>
+   <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-4">
+      <a href="index.html" class="flex items-center space-x-3">
+      <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+      <div>
+        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+        <p class="text-xs text-gray-500">Smart Living Elevated</p>
+      </div>
+      </a>
 
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
