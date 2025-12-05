@@ -18,7 +18,7 @@ if (isset($_SESSION['username'])) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login | LuxeHome</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ� </text></svg>">
+    <link rel="icon" href="images/image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="login.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -211,9 +211,8 @@ if (isset($_SESSION['username'])) {
           <h4 class="text-white font-semibold mb-3">Quick Links</h4>
           <ul class="space-y-2 text-sm">
             <li><a href="index.php" class="hover:text-white">Home</a></li>
-            <li><a href="#" class="hover:text-white">Shop</a></li>
-            <li><a href="#" class="hover:text-white">Collections</a></li>
-            <li><a href="#" class="hover:text-white">Inspiration</a></li>
+            <li><a href="products.php" class="hover:text-white">Shop</a></li>
+            <li><a href="about_us.php" class="hover:text-white">About us</a></li>
             <li><a href="contacttt.php" class="hover:text-white">Contact</a></li>
           </ul>
         </div>
