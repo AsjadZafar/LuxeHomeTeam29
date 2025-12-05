@@ -108,6 +108,8 @@ if (isset($_GET['id'])) {
     }
   </style>
 </head>
+
+<!-- Header -->
 <body class="bg-gray-50">
   <!-- Skip Link for Accessibility -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -210,6 +212,15 @@ if (isset($_GET['id'])) {
           <a href="about_us.php" class="nav-link">About us</a>
           <a href="contact.php" class="nav-link">Contact</a>
         </nav>
+
+              <!-- Navigation -->
+      <nav class="hidden md:flex space-x-8">
+      <a href="index.php" class="nav-link active">Home</a>
+      <a href="products.php" class="nav-link">Shop</a>
+      <a href="about_us.php" class="nav-link">About us</a>
+      <a href="contact.php" class="nav-link">Contact</a>
+      </nav>
+
 
         <div class="flex items-center space-x-4">
           <a href="products.php" class="nav-link hover:text-emerald-600">Back to products</a>
