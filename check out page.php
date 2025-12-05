@@ -14,6 +14,7 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 <html lang="en"><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/style.css">
     <title>Checkout - E-commerce</title>
     <style>
         * {
@@ -578,4 +579,3 @@ $grandTotal = $total + $shipping;
     }
   }
 </style><div><div class="gf-app"></div></div></template></div></body></html>
-
