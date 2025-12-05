@@ -45,12 +45,11 @@
 
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
-          <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
-          <a href="products.php" class="nav-link hover:text-emerald-600 transition">Shop</a>
-          <a href="#" class="nav-link hover:text-emerald-600 transition">Collections</a>
-          <a href="about_us.php" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
-          <a href="contact.php" class="nav-link hover:text-emerald-600 transition">Contact</a>
-        </nav>
+      <a href="index.php" class="nav-link">Home</a>
+      <a href="products.php" class="nav-link">Shop</a>
+      <a href="about_us.php" class="nav-link active">About us</a>
+      <a href="contact.php" class="nav-link">Contact</a>
+      </nav>
 
         <!-- Actions -->
         <div class="flex items-center space-x-4">
@@ -373,9 +372,8 @@
           <h4 class="text-white font-semibold mb-3">Quick Links</h4>
           <ul class="space-y-2 text-sm">
             <li><a href="index.php" class="hover:text-white">Home</a></li>
-            <li><a href="#" class="hover:text-white">Shop</a></li>
-            <li><a href="#" class="hover:text-white">Collections</a></li>
-            <li><a href="#" class="hover:text-white">Inspiration</a></li>
+            <li><a href="products.php" class="hover:text-white">Shop</a></li>
+            <li><a href="about_us.php" class="hover:text-white">About us</a></li>
             <li><a href="contacttt.php" class="hover:text-white">Contact</a></li>
           </ul>
         </div>
