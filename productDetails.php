@@ -36,6 +36,8 @@ if (isset($_GET['id'])) {
     .logo-img{ width:48px; height:48px; border-radius:50%; object-fit:cover }
   </style>
 </head>
+
+<!-- Header -->
 <body class="bg-gray-50">
   <header class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,6 +49,15 @@ if (isset($_GET['id'])) {
             <p class="text-xs text-gray-500">Smart Living Elevated</p>
           </div>
         </a>
+
+              <!-- Navigation -->
+      <nav class="hidden md:flex space-x-8">
+      <a href="index.php" class="nav-link active">Home</a>
+      <a href="products.php" class="nav-link">Shop</a>
+      <a href="about_us.php" class="nav-link">About us</a>
+      <a href="contact.php" class="nav-link">Contact</a>
+      </nav>
+
 
         <div class="flex items-center space-x-4">
           <a href="products.php" class="nav-link hover:text-emerald-600">Back to products</a>

@@ -45,6 +45,7 @@ $result = mysqli_query($conn, $sql);
           </div>
         </a>
 
+        <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
           <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
           <a href="products.php" class="nav-link text-emerald-600 font-semibold">Shop</a>
