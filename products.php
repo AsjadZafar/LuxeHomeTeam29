@@ -1,10 +1,17 @@
 <?php
 require_once 'php_functions/dbh.php';
 
-$sql = "SELECT * from products";
+$search = "";
+
+$sql = "SELECT * FROM products";
+
+// If user typed something in the search bar
+if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
+    $search = mysqli_real_escape_string($conn, trim($_GET['search']));
+    $sql .= " WHERE name LIKE '%$search%' OR description LIKE '%$search%'";
+}
 
 $result = mysqli_query($conn, $sql);
-
 
 ?>
 
@@ -59,12 +66,22 @@ $result = mysqli_query($conn, $sql);
   </header>
 
   <!-- Search Bar -->
-  <section class="py-8 bg-gray-100">
-    <div class="max-w-6xl mx-auto px-4">
+<section class="py-8 bg-gray-100">
+  <div class="max-w-6xl mx-auto px-4">
+    <form action="" method="GET">
       <div class="bg-white rounded-xl shadow-sm p-6 flex gap-4 items-center">
-        <input id="searchInput" type="text" placeholder="Search products, e.g. Smart Lamp, Thermostat"
-          class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500" />
-        <select id="categoryFilter" class="p-3 border rounded-md">
+        
+        <!-- Search -->
+        <input 
+          id="searchInput" 
+          type="text" 
+          name="search"
+          placeholder="Search products, e.g. Smart Lamp, Thermostat"
+          class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+        />
+
+        <!-- NEED TO ADD CATEGORY!!!!! -->
+        <select id="categoryFilter" name="category" class="p-3 border rounded-md">
           <option value="">All categories</option>
           <option value="Living Room">Living Room</option>
           <option value="Kitchen">Kitchen</option>
@@ -72,17 +89,47 @@ $result = mysqli_query($conn, $sql);
           <option value="Bathroom">Bathroom</option>
           <option value="Outdoor">Outdoor</option>
         </select>
-        <button id="searchBtn" class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700">Search</button>
-      </div>
-    </div>
-  </section>
 
-  <!-- Products Grid -->
+        <button 
+          type="submit" 
+          class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
+        >
+          Search
+        </button>
+
+      </div>
+    </form>
+  </div>
+</section>
+
+
+  <!-- Products Grid with php -->
   <main class="max-w-7xl mx-auto px-4 py-8">
     <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
     <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Product cards inserted by JS -->
-    </div>
+
+<?php while($row = mysqli_fetch_assoc($result)) { ?>
+    <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
+        <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="block">
+            <img src="product_image/<?php echo $row['img']; ?>" 
+                 alt="<?php echo htmlspecialchars($row['name']); ?>" 
+                 class="w-full h-48 object-cover rounded-md mb-3">
+
+            <h3 class="font-semibold text-lg"><?php echo htmlspecialchars($row['name']); ?></h3>
+
+            <p class="text-sm text-gray-500 mb-2">
+                <?php echo substr($row['description'], 0, 60) . "..."; ?>
+            </p>
+
+            <div class="flex items-center justify-between">
+                <span class="text-emerald-600 font-semibold">£<?php echo number_format($row['price'], 2); ?></span>
+            </div>
+        </a>
+    </article>
+<?php } ?>
+
+</div>
+
   </main>
 
   <!-- Footer (same style as contact page) -->
@@ -124,101 +171,6 @@ $result = mysqli_query($conn, $sql);
   </footer>
 
 
-  <?php
-
-  $productArray = [];
-
-  while($row = mysqli_fetch_assoc($result)) {
-
-    $productArray[] = [
-  "id" => $row["product_id"],
-  "title" => $row["name"],
-  "desc" => $row["description"],
-  "price" => floatval($row["price"]),
-  "qty" => intval($row["quantity"]),
-  "install" => $row["installation_available"],
-  "img" => "product_image/". $row["img"],
-  "short" => substr($row["description"], 0, 60) . "...",
-];
-
-
-
-  }
-?>
-  <script>
-    // Sample product data (9 products)
-    const PRODUCTS = <?php echo json_encode($productArray); ?>;
-
-    // render products
-    const grid = document.getElementById('productsGrid');
-    function formatPrice(p){ return '£' + p.toFixed(2); }
-    function renderProducts(list){
-      grid.innerHTML = '';
-      list.forEach(p => {
-        const card = document.createElement('article');
-        card.className = 'bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-md transition';
-        card.innerHTML = `
-          <a href="productDetails.php?id=${p.id}" class="block">
-            <img src="${p.img}" alt="${p.title}" class="w-full h-48 object-cover rounded-md mb-3">
-            <h3 class="font-semibold text-lg">${p.title}</h3>
-            <p class="text-sm text-gray-500 mb-2">${p.short}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-emerald-600 font-semibold">${formatPrice(p.price)}</span>
-              <span class="text-xs text-gray-400">${p.category}</span>
-            </div>
-          </a>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    renderProducts(PRODUCTS);
-
-    // search/filter
-    document.getElementById('searchBtn').addEventListener('click', () => applyFilters());
-    document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') applyFilters(); });
-    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
-
-    function applyFilters(){
-      const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      const cat = document.getElementById('categoryFilter').value;
-      const filtered = PRODUCTS.filter(p => {
-        const matchQ = q ? (p.title.toLowerCase().includes(q) || p.short.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)) : true;
-        const matchCat = cat ? p.category === cat : true;
-        return matchQ && matchCat;
-      });
-      renderProducts(filtered);
-    }
-
-    // Simple basket using localStorage
-    function getCart(){ return JSON.parse(localStorage.getItem('luxehome_cart') || '[]'); }
-    function setCart(c){ localStorage.setItem('luxehome_cart', JSON.stringify(c)); updateCartCount(); }
-    function updateCartCount(){ document.getElementById('cartCount').textContent = getCart().length; }
-    updateCartCount();
-
-    // view basket click -> simple alert or link
-    document.getElementById('viewBasket').addEventListener('click', (e)=>{
-      e.preventDefault();
-      const items = getCart();
-      if(items.length===0){ alert('Your basket is empty.'); return; }
-      // For demo: show a quick summary and a link to a dedicated basket page (not implemented here)
-      const total = items.reduce((s,i)=> s + i.price * i.qty, 0);
-      if(confirm(`You have ${items.length} item(s) in your basket. Total: £${total.toFixed(2)}.\n\nGo to basket page?`)){
-        window.location.href = 'cart.php';
-      }
-    });
-
-    // expose addToCart globally so productDetails page can use it
-    window.luxeAddToCart = function(productId, qty=1){
-      const p = PRODUCTS.find(x=>x.id===productId);
-      if(!p) return;
-      const cart = getCart();
-      const existing = cart.find(i=>i.id===p.id);
-      if(existing) existing.qty += qty; else cart.push({ id: p.id, title: p.title, price: p.price, qty });
-      setCart(cart);
-      alert('Added to basket: ' + p.title);
-    }
-
-  </script>
+ 
 </body>
 </html>

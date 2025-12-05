@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initRoomCards();
     initSmoothScrolling();
     initMobileMenu();
+    initSearch();
+    initCart();
+    initAuth();
     
     console.log('LuxeHome - Premium Smart Living initialized');
 });
@@ -65,25 +68,6 @@ function initSmoothScrolling() {
 function initMobileMenu() {
     // This would be implemented when adding a mobile menu
     console.log('Mobile menu ready for implementation');
-}
-
-// Newsletter subscription
-function initNewsletter() {
-    const newsletterForm = document.querySelector('.newsletter-form');
-    
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            
-            // Simulate API call
-            console.log(`Subscribing email: ${email}`);
-            
-            // Show success message
-            alert('Thank you for subscribing to our newsletter!');
-            this.reset();
-        });
-    }
 }
 
 // Product search functionality

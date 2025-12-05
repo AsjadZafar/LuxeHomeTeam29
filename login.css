@@ -28,6 +28,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 45px;
+       align-items: flex-start; 
 }
 
 /* Login boxes */
@@ -39,6 +40,7 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     border-radius: 12px;
 }
+
 
 .login-box h3 {
     text-align: center;
@@ -101,6 +103,7 @@ input {
 .forgot.text{
     margin-top: 8px;
     font-size: 14px;
+    text-align: center;
 
 }
 
@@ -125,10 +128,44 @@ input {
         color: #216f3f;
         text-decoration: none;
         font-weight: bold;
-        text-align: center;
     }
 
 .alternative-option a:hover {
         text-decoration: underline;
-        text-align: center;
     }  
+
+.hidden {
+    display: none;
+}
+
+.reset-box {
+
+     margin-top: 15px;
+    padding: 10px;
+     background: #e3f7f8;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+   
+}
+
+.reset-message {
+    margin-top: 10px;
+    color: #0f766e;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.reset-btn:hover {
+    background: #0d5f57;
+}
+
+.reset-btn {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #0f766e;
+    color: white;
+    border: none;
+}
