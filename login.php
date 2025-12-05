@@ -1,58 +1,135 @@
+<?php
+session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$logged_in = false;
+$username = "";
+
+if (isset($_SESSION['username'])) {
+  $logged_in = true;
+  $username = $_SESSION['username'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-        Login | LuxeHome
-    </title>
+    <title>Login | LuxeHome</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ� </text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="login.css">
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Favicon -->
-  <link rel="icon" href="images/image.png">
-
+    <style>
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .nav-link {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link.active {
+            color: #047857;
+            border-bottom: 2px solid #047857;
+            padding-bottom: 0.25rem;
+        }
+        
+        .nav-link:hover {
+            color: #047857;
+        }
+        
+        .action-btn {
+            color: #4b5563;
+            transition: color 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            color: #047857;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background: #059669;
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 50%;
+            width: 1.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-
     <!-- Header -->
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center py-4">
-        <a href="index.php" class="flex items-center space-x-3">
-          <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
-          <div>
-            <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
-            <p class="text-xs text-gray-500">Smart Living Elevated</p>
-          </div>
-        </a>
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.php" class="flex items-center space-x-3">
+                    <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+                        <p class="text-xs text-gray-500">Smart Living Elevated</p>
+                    </div>
+                </a>
 
-        <!--Navigation-->
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.php" class="nav-link">Home</a>
+                    <a href="products.php" class="nav-link">Shop</a>
+                    <a href="about_us.php" class="nav-link">About us</a>
+                    <a href="contact.php" class="nav-link">Contact</a>
+                </nav>
 
-        <nav class="hidden md:flex space-x-8">
-          <a href="index.php" class="nav-link hover:text-emerald-600 transition">Home</a>
-          <a href="products.php" class="nav-link text-emerald-600 font-semibold">Shop</a>
-          <a href="#" class="nav-link hover:text-emerald-600 transition">Collections</a>
-          <a href="about_us.php" class="nav-link hover:text-emerald-600 transition">Inspiration</a>
-          <a href="contact.php" class="nav-link hover:text-emerald-600 transition">Contact</a>
-        </nav>
-
-        <!--Actions-->
-
-        <div class="flex items-center space-x-4">
-          <button id="searchToggle" class="action-btn hover:text-emerald-600"><i class="fas fa-search"></i></button>
-          <a href="#basket" id="viewBasket" class="relative action-btn hover:text-emerald-600">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="cartCount" class="cart-badge absolute -top-2 -right-2 bg-emerald-600 text-white text-xs px-1.5 rounded-full">0</span>
-          </a>
-          <a href="login.php" class="action-btn hover:text-emerald-600"><i class="fas fa-user"></i></a>
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="action-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <?php if ($logged_in): ?>
+                        <a href="cart.php" class="action-btn relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">3</span>
+                        </a>
+                        <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
+                    <?php else: ?>
+                        <a href="cart.php" class="action-btn relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge">0</span>
+                        </a>
+                        <a href="login.php" class="action-btn">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    <?php endif; ?>
+                </div>
+                
+                <?php if ($logged_in): ?>
+                <div class="flex items-center space-x-2">
+                    <form method="POST" action="php_functions/logout.php">
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
+                    </form>
+                    
+                    <form method="POST" action="admin_dash.php">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
+                    </form>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
       <!--LOGIN-->
       <section class="login-section">
@@ -76,7 +153,7 @@
                     <!--Forgot Password-->
                     <div class=" text-center"> 
                         <a href="#" class="forgot"> Forgot Your Password?</a>
-                        <p class="forgot-text"> Don’t Have An account?
+                        <p class="forgot-text"> Don't Have An account?
                             <a href="register.php"> Register</a>
                         </p>
                     </div>
@@ -96,14 +173,12 @@
                     <!--Forgot Password-->
                     <div class=" text-center"> 
                         <a href="#" class="forgot"> Forgot Your Password?</a>
-                        <p class="forgot-text"> Don’t Have An account?
+                        <p class="forgot-text"> Don't Have An account?
                             <a href="register.php"> Register</a>
                         </p>
                     </div>
                 </div>
-      </section>
-            </form>
-        </div>
+            </div>
       </section>
 
       <!-- Footer -->
@@ -149,13 +224,13 @@
           <ul class="space-y-2 text-sm">
             <li>hello@luxehome.com</li>
             <li>1-800-LUXE-HOME</li>
-            <li>Mon–Fri: 9am–6pm EST</li>
+            <li>Monâ€“Fri: 9amâ€“6pm EST</li>
           </ul>
         </div>
       </div>
 
       <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-400">
-        © 2025 LuxeHome. All rights reserved.
+        Â© 2025 LuxeHome. All rights reserved.
         <a href="#" class="hover:text-white ml-2">Privacy Policy</a> |
         <a href="#" class="hover:text-white ml-2">Terms of Service</a>
       </div>
@@ -163,8 +238,4 @@
   </footer>
 
       </body>
-      
-      </html>
-
-
-
+</html>
