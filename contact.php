@@ -101,6 +101,13 @@ if (isset($_SESSION['username'])) {
         }
     </style>
 </head>
+    <script>
+  console.log("CHATBOT SCRIPT LOADED");
+  function getBotReply(text) {
+      return "test reply: " + text;
+  }
+</script>
+
 <body class="bg-gray-50">
     <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
