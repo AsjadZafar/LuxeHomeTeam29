@@ -441,7 +441,7 @@ if (isset($_SESSION['username'])) {
             </div>
 
             <div class="footer-bottom">
-                <p class="footer-copyright">
+                <p class="footeropyright">
                     © 2023 LuxeHome. All rights reserved. |
                     <a href="#" class="footer-legal-link">Privacy Policy</a> |
                     <a href="#" class="footer-legal-link">Terms of Service</a>
@@ -605,6 +605,24 @@ if (isset($_SESSION['username'])) {
             "I can help with order queries, warranty, and basic product info. Try asking: “How do I submit a warranty claim?”"
         ];
 
+        // Detect dissatisfaction / not satisfied phrases
+        function isUserDissatisfied(text) {
+            const t = text.toLowerCase();
+            const negativePhrases = [
+                "not satisfied",
+                "not happy",
+                "unhappy",
+                "this is bad",
+                "bad bot",
+                "useless",
+                "not helpful",
+                "this didn't help",
+                "this did not help",
+                "disappointed"
+            ];
+            return negativePhrases.some(p => t.includes(p));
+        }
+
         function toggleChatbot() {
             chatbotWindow.classList.toggle("hidden");
         }
@@ -614,6 +632,11 @@ if (isset($_SESSION['username'])) {
 
             if (!text) {
                 return "Please type a message so I can help.";
+            }
+
+            // If user expresses dissatisfaction, escalate to human contact
+            if (isUserDissatisfied(text)) {
+                return "If you’re not satisfied with my help, you can contact our team at hello@luxehome.com or call +44 1234 567 890 during business hours.";
             }
 
             for (const rule of botRules) {
