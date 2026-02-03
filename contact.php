@@ -451,9 +451,9 @@ if (isset($_SESSION['username'])) {
     </footer>
 
     <script>
-        // -------------------------
-        // CONTACT FORM LOGIC
-        // -------------------------
+        // -------------------------  
+        // CONTACT FORM LOGIC  
+        // -------------------------  
         const contactForm = document.getElementById("contactForm");
         const cMsg = document.getElementById("successMessage");
         const spinner = document.getElementById("spinner");
@@ -498,9 +498,9 @@ if (isset($_SESSION['username'])) {
             fadeMsg(cMsg);
         });
 
-        // -------------------------
-        // WARRANTY FORM LOGIC
-        // -------------------------
+        // -------------------------  
+        // WARRANTY FORM LOGIC  
+        // -------------------------  
         const warrantyForm = document.getElementById("warrantyForm");
         const wMsg = document.getElementById("warrantyMessage");
 
@@ -535,18 +535,18 @@ if (isset($_SESSION['username'])) {
             fadeMsg(wMsg);
         });
 
-        // -------------------------
-        // COMMON FADE FUNCTION
-        // -------------------------
+        // -------------------------  
+        // COMMON FADE FUNCTION  
+        // -------------------------  
         function fadeMsg(el) {
             setTimeout(() => el.style.opacity = "1", 100);
             setTimeout(() => el.style.opacity = "0", 3500);
             setTimeout(() => el.classList.add("hidden"), 4000);
         }
 
-        // -------------------------
-        // CHATBOT LOGIC (rule‑based)
-        // -------------------------
+        // -------------------------  
+        // CHATBOT LOGIC (rule‑based)  
+        // -------------------------  
         const chatbotWindow = document.getElementById("chatbotWindow");
         const chatContent = document.getElementById("chatContent");
         const chatInput = document.getElementById("chatInput");
@@ -610,12 +610,18 @@ if (isset($_SESSION['username'])) {
         }
 
         function getBotReply(userText) {
-            const text = userText.toLowerCase();
+            const text = userText.toLowerCase().trim();
+
+            if (!text) {
+                return "Please type a message so I can help.";
+            }
 
             for (const rule of botRules) {
-                if (rule.patterns.some(p => text.includes(p))) {
-                    const idx = Math.floor(Math.random() * rule.responses.length);
-                    return rule.responses[idx];
+                for (const p of rule.patterns) {
+                    if (text.includes(p.toLowerCase())) {
+                        const idx = Math.floor(Math.random() * rule.responses.length);
+                        return rule.responses[idx];
+                    }
                 }
             }
 
@@ -654,4 +660,3 @@ if (isset($_SESSION['username'])) {
     <script src="js/accessibility.js"></script>
 </body>
 </html>
-
