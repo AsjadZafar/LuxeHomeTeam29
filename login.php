@@ -21,6 +21,8 @@ if (isset($_SESSION['username'])) {
     <link rel="icon" href="images/image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accessibility.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .logo-img {
@@ -73,6 +75,89 @@ if (isset($_SESSION['username'])) {
     </style>
 </head>
 <body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Accessibility Panel -->
+    <div id="accessibilityPanel" class="accessibility-panel">
+      <div class="accessibility-header">
+        <h2 class="accessibility-title">Accessibility Settings</h2>
+        <p class="accessibility-subtitle">Customize your browsing experience</p>
+        <button id="closePanel" class="accessibility-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="accessibility-content">
+        <div class="accessibility-section">
+          <h3 class="accessibility-section-title">
+            <i class="fas fa-eye"></i>
+            Visual Preferences
+          </h3>
+          <div class="accessibility-options">
+            <div class="accessibility-option">
+              <input type="checkbox" id="darkMode">
+              <label for="darkMode">Dark Mode</label>
+            </div>
+            <div class="accessibility-option">
+              <input type="checkbox" id="highContrast">
+              <label for="highContrast">High Contrast</label>
+            </div>
+            <div class="accessibility-option">
+              <label for="fontSize">Font Size</label>
+              <input type="range" id="fontSize" min="0" max="3" value="1">
+              <div class="font-size-display" id="fontSizeDisplay">Normal</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accessibility-section">
+          <h3 class="accessibility-section-title">
+            <i class="fas fa-text-height"></i>
+            Text & Reading
+          </h3>
+          <div class="accessibility-options">
+            <div class="accessibility-option">
+              <input type="checkbox" id="dyslexiaFont">
+              <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
+            </div>
+            <div class="accessibility-option">
+              <input type="checkbox" id="lineSpacing">
+              <label for="lineSpacing">Increased Line Spacing</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="accessibility-section">
+          <h3 class="accessibility-section-title">
+            <i class="fas fa-mouse-pointer"></i>
+            Navigation
+          </h3>
+          <div class="accessibility-options">
+            <div class="accessibility-option">
+              <input type="checkbox" id="focusIndicator">
+              <label for="focusIndicator">Enhanced Focus Indicators</label>
+            </div>
+            <div class="accessibility-option">
+              <input type="checkbox" id="skipLinks">
+              <label for="skipLinks">Enable Skip Links</label>
+            </div>
+          </div>
+        </div>
+
+        <button id="resetSettings" class="accessibility-reset">
+          <i class="fas fa-undo"></i> Reset All Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- Accessibility Panel Overlay -->
+    <div id="panelOverlay" class="panel-overlay"></div>
+
+    <!-- Accessibility Toggle Button -->
+    <button id="togglePanel" class="accessibility-toggle">
+      <i class="fas fa-universal-access"></i>
+    </button>
+
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,110 +216,112 @@ if (isset($_SESSION['username'])) {
         </div>
     </header>
 
-      <!--LOGIN-->
-      <section class="login-section">
-            <h2 class ="title"> Welcome to LuxeHome</h2>
-            <p class="subtitle">Choose How To Login </p>
-        
-            <div class="login-container">
+    <!-- Main Content -->
+    <section id="main-content" class="login-section">
+        <h2 class="title">Welcome to LuxeHome</h2>
+        <p class="subtitle">Choose How To Login</p>
+    
+        <div class="login-container">
 
-                <!--Customer Login Box-->
-                <div class="login-box">
-                    <h3> Customer Login</h3>
-                    <form action="php_functions/user_login.php" method="POST">
-                        <label> Email </label>
-                        <input type="email" name="email" required>
+            <!--Customer Login Box-->
+            <div class="login-box">
+                <h3>Customer Login</h3>
+                <form action="php_functions/user_login.php" method="POST">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
 
-                        <label> Password </label>
-                        <input type="password" name="password" required>
+                    <label>Password</label>
+                    <input type="password" name="password" required>
 
-                        <button type="submit" class="login-btn"> Login As Customer</button>
-                    </form>
-                    <!--Forgot Password-->
-                    <div class=" text-center"> 
-                        <a href="#" class="forgot"> Forgot Your Password?</a>
-                        <p class="forgot-text"> Don't Have An account?
-                            <a href="register.php"> Register</a>
-                        </p>
-                    </div>
-                </div>
-
-                <!--Admin Login-->
-                <div class = "login-box"> 
-                    <h3> Admin Login</h3>
-                    <form action="admin-page.php"> 
-                        <label> Email </label>
-                        <input type="email" required>
-
-                        <label> Password </label>
-                        <input type="password required">
-                        <button type="submit" class="login-btn admin"> Login As Admin</button>
-                    </form>
-                    <!--Forgot Password-->
-                    <div class=" text-center"> 
-                        <a href="#" class="forgot"> Forgot Your Password?</a>
-                        <p class="forgot-text"> Don't Have An account?
-                            <a href="register.php"> Register</a>
-                        </p>
-                    </div>
+                    <button type="submit" class="login-btn">Login As Customer</button>
+                </form>
+                <!--Forgot Password-->
+                <div class="text-center"> 
+                    <a href="#" class="forgot">Forgot Your Password?</a>
+                    <p class="forgot-text">Don't Have An account?
+                        <a href="register.php">Register</a>
+                    </p>
                 </div>
             </div>
-      </section>
 
-      <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Brand -->
-        <div>
-          <div class="flex items-center space-x-3 mb-4">
-            <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
-            <div>
-              <h3 class="text-lg font-bold text-white">LuxeHome</h3>
-              <p class="text-sm text-gray-400">Smart Living Elevated</p>
+            <!--Admin Login-->
+            <div class="login-box"> 
+                <h3>Admin Login</h3>
+                <form action="admin_dash.php"> 
+                    <label>Email</label>
+                    <input type="email" required>
+
+                    <label>Password</label>
+                    <input type="password" required>
+                    <button type="submit" class="login-btn admin">Login As Admin</button>
+                </form>
+                <!--Forgot Password-->
+                <div class="text-center"> 
+                    <a href="#" class="forgot">Forgot Your Password?</a>
+                    <p class="forgot-text">Don't Have An account?
+                        <a href="register.php">Register</a>
+                    </p>
+                </div>
             </div>
-          </div>
-          <p class="text-gray-400 text-sm mb-4">
-            Experience the pinnacle of intelligent living with our curated collection of premium smart home technology
-            designed for modern lifestyles.
-          </p>
-          <div class="flex space-x-4">
-            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
-          </div>
         </div>
+    </section>
 
-        <!-- Quick Links -->
-        <div>
-          <h4 class="text-white font-semibold mb-3">Quick Links</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="index.php" class="hover:text-white">Home</a></li>
-            <li><a href="products.php" class="hover:text-white">Shop</a></li>
-            <li><a href="about_us.php" class="hover:text-white">About us</a></li>
-            <li><a href="contacttt.php" class="hover:text-white">Contact</a></li>
-          </ul>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Brand -->
+                <div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+                    <div>
+                    <h3 class="text-lg font-bold text-white">LuxeHome</h3>
+                    <p class="text-sm text-gray-400">Smart Living Elevated</p>
+                    </div>
+                </div>
+                <p class="text-gray-400 text-sm mb-4">
+                    Experience the pinnacle of intelligent living with our curated collection of premium smart home technology
+                    designed for modern lifestyles.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                <h4 class="text-white font-semibold mb-3">Quick Links</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="index.php" class="hover:text-white">Home</a></li>
+                    <li><a href="products.php" class="hover:text-white">Shop</a></li>
+                    <li><a href="about_us.php" class="hover:text-white">About us</a></li>
+                    <li><a href="contact.php" class="hover:text-white">Contact</a></li>
+                </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                <h4 class="text-white font-semibold mb-3">Contact</h4>
+                <ul class="space-y-2 text-sm">
+                    <li>hello@luxehome.com</li>
+                    <li>1-800-LUXE-HOME</li>
+                    <li>Mon–Fri: 9am–6pm EST</li>
+                </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-400">
+                © 2025 LuxeHome. All rights reserved.
+                <a href="#" class="hover:text-white ml-2">Privacy Policy</a> |
+                <a href="#" class="hover:text-white ml-2">Terms of Service</a>
+            </div>
         </div>
+    </footer>
 
-        <!-- Contact -->
-        <div>
-          <h4 class="text-white font-semibold mb-3">Contact</h4>
-          <ul class="space-y-2 text-sm">
-            <li>hello@luxehome.com</li>
-            <li>1-800-LUXE-HOME</li>
-            <li>Monâ€“Fri: 9amâ€“6pm EST</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-400">
-        Â© 2025 LuxeHome. All rights reserved.
-        <a href="#" class="hover:text-white ml-2">Privacy Policy</a> |
-        <a href="#" class="hover:text-white ml-2">Terms of Service</a>
-      </div>
-    </div>
-  </footer>
-
-      </body>
+    <script src="js/script.js"></script>
+    <script src="js/accessibility.js"></script>
+</body>
 </html>
