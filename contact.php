@@ -7,11 +7,10 @@ $logged_in = false;
 $username = "";
 
 if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,33 +58,33 @@ if (isset($_SESSION['username'])) {
         .floating-chatbot:hover {
             transform: scale(1.1);
         }
-        
+
         .nav-link {
             font-size: 0.875rem;
             font-weight: 500;
             color: #4b5563;
             transition: color 0.3s ease;
         }
-        
+
         .nav-link.active {
             color: #047857;
             border-bottom: 2px solid #047857;
             padding-bottom: 0.25rem;
         }
-        
+
         .nav-link:hover {
             color: #047857;
         }
-        
+
         .action-btn {
             color: #4b5563;
             transition: color 0.3s ease;
         }
-        
+
         .action-btn:hover {
             color: #047857;
         }
-        
+
         .cart-badge {
             position: absolute;
             top: -0.5rem;
@@ -102,6 +101,12 @@ if (isset($_SESSION['username'])) {
         }
     </style>
 </head>
+    <script>
+  console.log("CHATBOT SCRIPT LOADED");
+  function getBotReply(text) {
+      return "test reply: " + text;
+  }
+</script>
 
 <body class="bg-gray-50">
     <!-- Skip Link for Accessibility -->
@@ -212,13 +217,15 @@ if (isset($_SESSION['username'])) {
                     <button class="action-btn">
                         <i class="fas fa-search"></i>
                     </button>
-                    
+
                     <?php if ($logged_in): ?>
                         <a href="cart.php" class="action-btn relative">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="cart-badge">3</span>
                         </a>
-                        <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
+                        <span class="text-gray-900 font-semibold">
+                            <?php echo htmlspecialchars($username) ?>!
+                        </span>
                     <?php else: ?>
                         <a href="cart.php" class="action-btn relative">
                             <i class="fas fa-shopping-cart"></i>
@@ -229,21 +236,20 @@ if (isset($_SESSION['username'])) {
                         </a>
                     <?php endif; ?>
                 </div>
-                
+
                 <?php if ($logged_in): ?>
-                <div class="flex items-center space-x-2">
-                    <form method="POST" action="php_functions/logout.php">
-                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
-                    </form>
-                    
-                    <?php 
-                    // Check if user is admin (you'll need to adjust this based on your user roles)
-                    // For now, showing admin dash for all logged-in users
-                    ?>
-                    <form method="POST" action="admin_dash.php">
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
-                    </form>
-                </div>
+                    <div class="flex items-center space-x-2">
+                        <form method="POST" action="php_functions/logout.php">
+                            <button type="submit"
+                                    class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
+                        </form>
+
+                        <form method="POST" action="admin_dash.php">
+                            <button type="submit"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin
+                                Dash</button>
+                        </form>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -261,19 +267,19 @@ if (isset($_SESSION['username'])) {
             </div>
 
             <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-2xl p-8 grid md:grid-cols-2 gap-10">
-
                 <!-- CONTACT INFORMATION -->
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
                     <ul class="text-gray-700 space-y-3">
-                        <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street, Birmingham, UK</li>
+                        <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street,
+                            Birmingham, UK</li>
                         <li><i class="fas fa-phone text-emerald-600 mr-2"></i>+44 1234 567 890</li>
                         <li><i class="fas fa-envelope text-emerald-600 mr-2"></i>hello@luxehome.com</li>
                         <li><i class="fas fa-clock text-emerald-600 mr-2"></i>Mon–Fri: 9am–6pm</li>
                     </ul>
 
                     <iframe class="mt-6 rounded-lg w-full h-56"
-                        src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
+                            src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
                 </div>
 
                 <!-- CONTACT FORM -->
@@ -281,8 +287,10 @@ if (isset($_SESSION['username'])) {
                     <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
 
                     <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
-                        <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
-                        <input name="email" id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+                        <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md"
+                               required>
+                        <input name="email" id="email" type="email" placeholder="Email Address"
+                               class="w-full p-3 border rounded-md" required>
 
                         <select name="product" id="product" class="w-full p-3 border rounded-md" required>
                             <option value="">Select Product</option>
@@ -293,10 +301,11 @@ if (isset($_SESSION['username'])) {
                             <option value="Sensor Kit">Sensor Kit</option>
                         </select>
 
-                        <textarea name="message" id="message" rows="4" placeholder="Your Message" class="w-full p-3 border rounded-md" required></textarea>
+                        <textarea name="message" id="message" rows="4" placeholder="Your Message"
+                                  class="w-full p-3 border rounded-md" required></textarea>
 
                         <button type="submit" id="submitBtn"
-                            class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
+                                class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
                             <span id="btnText">Send Message</span>
                             <i id="spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
                         </button>
@@ -319,12 +328,11 @@ if (isset($_SESSION['username'])) {
                 </p>
 
                 <form id="warrantyForm" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
-
                     <input id="wName" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
-
-                    <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
-
-                    <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)" class="w-full p-3 border rounded-md" required>
+                    <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md"
+                           required>
+                    <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)"
+                           class="w-full p-3 border rounded-md" required>
 
                     <select id="wProduct" class="w-full p-3 border rounded-md" required>
                         <option value="">Product Purchased</option>
@@ -344,13 +352,14 @@ if (isset($_SESSION['username'])) {
                     </select>
 
                     <textarea id="issueDetails" rows="4" placeholder="Describe the issue..."
-                        class="w-full p-3 border rounded-md" required></textarea>
+                              class="w-full p-3 border rounded-md" required></textarea>
 
                     <label class="block font-medium">Upload Proof of Damage</label>
-                    <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
+                    <input id="damageImage" type="file" accept="image/*"
+                           class="w-full p-3 border rounded-md bg-white" required>
 
                     <button type="submit" id="warrantyBtn"
-                        class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
+                            class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
                         Submit Warranty Claim
                     </button>
 
@@ -367,8 +376,7 @@ if (isset($_SESSION['username'])) {
 
     <!-- CHATBOT WINDOW -->
     <div id="chatbotWindow"
-        class="fixed bottom-28 right-6 w-80 bg-white rounded-xl shadow-xl border p-4 hidden transition-all duration-300 z-[9999]">
-
+         class="fixed bottom-28 right-6 w-80 bg-white rounded-xl shadow-xl border p-4 hidden transition-all duration-300 z-[9999]">
         <div class="flex justify-between items-center mb-3">
             <h3 class="text-lg font-semibold text-emerald-700">LuxeHome Assistant</h3>
             <button onclick="toggleChatbot()" class="text-gray-500 hover:text-red-500 text-xl">&times;</button>
@@ -380,9 +388,10 @@ if (isset($_SESSION['username'])) {
 
         <div class="mt-3 flex">
             <input id="chatInput" type="text" placeholder="Type a message..."
-                class="flex-grow p-2 border rounded-l-md outline-none">
+                   class="flex-grow p-2 border rounded-l-md outline-none"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();sendMessage();}">
             <button onclick="sendMessage()"
-                class="bg-emerald-600 text-white px-4 rounded-r-md hover:bg-emerald-700">Send</button>
+                    class="bg-emerald-600 text-white px-4 rounded-r-md hover:bg-emerald-700">Send</button>
         </div>
     </div>
 
@@ -399,7 +408,8 @@ if (isset($_SESSION['username'])) {
                         </div>
                     </div>
                     <p class="brand-description">
-                        Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
+                        Experience the pinnacle of intelligent living with our curated collection of premium smart home
+                        technology designed for modern lifestyles.
                     </p>
                     <div class="social-links">
                         <a href="#" class="social-link">
@@ -416,7 +426,7 @@ if (isset($_SESSION['username'])) {
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="footer-links">
                     <h4 class="footer-heading">Quick Links</h4>
                     <ul class="footer-list">
@@ -426,7 +436,7 @@ if (isset($_SESSION['username'])) {
                         <li><a href="contact.php" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-contact">
                     <h4 class="footer-heading">Contact</h4>
                     <ul class="footer-list">
@@ -436,21 +446,21 @@ if (isset($_SESSION['username'])) {
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
-                <p class="footer-copyright">
-                © 2023 LuxeHome. All rights reserved. | 
-                <a href="#" class="footer-legal-link">Privacy Policy</a> | 
-                <a href="#" class="footer-legal-link">Terms of Service</a>
+                <p class="footeropyright">
+                    © 2023 LuxeHome. All rights reserved. |
+                    <a href="#" class="footer-legal-link">Privacy Policy</a> |
+                    <a href="#" class="footer-legal-link">Terms of Service</a>
                 </p>
             </div>
         </div>
     </footer>
 
     <script>
-        // -------------------------
-        // CONTACT FORM LOGIC
-        // -------------------------
+        // -------------------------  
+        // CONTACT FORM LOGIC  
+        // -------------------------  
         const contactForm = document.getElementById("contactForm");
         const cMsg = document.getElementById("successMessage");
         const spinner = document.getElementById("spinner");
@@ -472,7 +482,6 @@ if (isset($_SESSION['username'])) {
             spinner.classList.remove("hidden");
             btnText.textContent = "Sending...";
 
-            // send to Formspree
             const formData = new FormData(contactForm);
 
             const response = await fetch("https://formspree.io/f/mzznvdon", {
@@ -496,9 +505,9 @@ if (isset($_SESSION['username'])) {
             fadeMsg(cMsg);
         });
 
-        // -------------------------
-        // WARRANTY FORM LOGIC
-        // -------------------------
+        // -------------------------  
+        // WARRANTY FORM LOGIC  
+        // -------------------------  
         const warrantyForm = document.getElementById("warrantyForm");
         const wMsg = document.getElementById("warrantyMessage");
 
@@ -533,41 +542,150 @@ if (isset($_SESSION['username'])) {
             fadeMsg(wMsg);
         });
 
-        // -------------------------
-        // COMMON FADE FUNCTION
-        // -------------------------
+        // -------------------------  
+        // COMMON FADE FUNCTION  
+        // -------------------------  
         function fadeMsg(el) {
             setTimeout(() => el.style.opacity = "1", 100);
             setTimeout(() => el.style.opacity = "0", 3500);
             setTimeout(() => el.classList.add("hidden"), 4000);
         }
 
-        // -------------------------
-        // CHATBOT LOGIC
-        // -------------------------
+        // -------------------------  
+        // CHATBOT LOGIC (rule‑based)  
+        // -------------------------  
+        const chatbotWindow = document.getElementById("chatbotWindow");
+        const chatContent = document.getElementById("chatContent");
+        const chatInput = document.getElementById("chatInput");
+
+        // Simple intent mappings
+        const botRules = [
+            {
+                patterns: ["hi", "hello", "hey"],
+                responses: [
+                    "Hi there 👋 How can I help with LuxeHome products?",
+                    "Hello! Need help with an order, product, or warranty?"
+                ]
+            },
+            {
+                patterns: ["hours", "opening", "time"],
+                responses: [
+                    "Our support hours are Mon–Fri, 9am–6pm (UK time)."
+                ]
+            },
+            {
+                patterns: ["warranty", "claim", "guarantee"],
+                responses: [
+                    "You can submit a warranty claim in the form on this page. Make sure to include your order number (format LH-12345) and a photo of the issue."
+                ]
+            },
+            {
+                patterns: ["order", "track", "shipping", "delivery"],
+                responses: [
+                    "For order or delivery questions, please include your order number and I’ll tell you what to do next.",
+                    "You can track your order from the confirmation email, or contact us at hello@luxehome.com with your order number."
+                ]
+            },
+            {
+                patterns: ["contact", "email", "phone"],
+                responses: [
+                    "You can contact us at hello@luxehome.com or call +44 1234 567 890 during business hours."
+                ]
+            },
+            {
+                patterns: ["product", "smart light", "garage", "socket", "blinds", "sensor"],
+                responses: [
+                    "We offer Smart Lights, Garage Door controllers, Automated Window Blinds, Smart Sockets and Sensor Kits. Let me know which product you have a question about."
+                ]
+            },
+            {
+                patterns: ["thanks", "thank you", "thankyou"],
+                responses: [
+                    "You’re welcome!",
+                    "Glad I could help."
+                ]
+            }
+        ];
+
+        const defaultResponses = [
+            "I’m not sure I understood that. Could you rephrase or ask about warranty, orders, or contact details?",
+            "I can help with order queries, warranty, and basic product info. Try asking: “How do I submit a warranty claim?”"
+        ];
+
+        // Detect dissatisfaction / not satisfied phrases
+        function isUserDissatisfied(text) {
+            const t = text.toLowerCase();
+            const negativePhrases = [
+                "not satisfied",
+                "not happy",
+                "unhappy",
+                "this is bad",
+                "bad bot",
+                "useless",
+                "not helpful",
+                "this didn't help",
+                "this did not help",
+                "disappointed"
+            ];
+            return negativePhrases.some(p => t.includes(p));
+        }
+
         function toggleChatbot() {
-            let bot = document.getElementById("chatbotWindow");
-            bot.classList.toggle("hidden");
+            chatbotWindow.classList.toggle("hidden");
+        }
+
+        function getBotReply(userText) {
+            const text = userText.toLowerCase().trim();
+
+            if (!text) {
+                return "Please type a message so I can help.";
+            }
+
+            // If user expresses dissatisfaction, escalate to human contact
+            if (isUserDissatisfied(text)) {
+                return "If you’re not satisfied with my help, you can contact our team at hello@luxehome.com or call +44 1234 567 890 during business hours.";
+            }
+
+            for (const rule of botRules) {
+                for (const p of rule.patterns) {
+                    if (text.includes(p.toLowerCase())) {
+                        const idx = Math.floor(Math.random() * rule.responses.length);
+                        return rule.responses[idx];
+                    }
+                }
+            }
+
+            const idx = Math.floor(Math.random() * defaultResponses.length);
+            return defaultResponses[idx];
+        }
+
+        function appendMessage(text, fromBot = false) {
+            const wrapper = document.createElement("p");
+            wrapper.className = "text-sm my-1 " + (fromBot ? "text-left" : "text-right");
+            const span = document.createElement("span");
+            span.className = (fromBot ? "bg-gray-200" : "bg-emerald-100") + " p-1 rounded inline-block";
+            span.textContent = text;
+            wrapper.appendChild(span);
+            chatContent.appendChild(wrapper);
+            chatContent.scrollTop = chatContent.scrollHeight;
         }
 
         function sendMessage() {
-            let input = document.getElementById("chatInput");
-            let chat = document.getElementById("chatContent");
+            const value = chatInput.value.trim();
+            if (!value) return;
 
-            if (input.value.trim() === "") return;
+            appendMessage(value, false);
 
-            chat.innerHTML += `<p class="text-right text-sm my-1"><span class="bg-emerald-100 p-1 rounded">${input.value}</span></p>`;
+            const reply = getBotReply(value);
 
             setTimeout(() => {
-                chat.innerHTML += `<p class="text-left text-sm my-1"><span class="bg-gray-200 p-1 rounded">Thanks! We'll get back to you shortly.</span></p>`;
-                chat.scrollTop = chat.scrollHeight;
-            }, 700);
+                appendMessage(reply, true);
+            }, 500);
 
-            input.value = "";
-            chat.scrollTop = chat.scrollHeight;
+            chatInput.value = "";
         }
     </script>
-    
+
     <script src="js/script.js"></script>
     <script src="js/accessibility.js"></script>
 </body>
