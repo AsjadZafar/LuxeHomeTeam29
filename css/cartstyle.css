@@ -1,0 +1,304 @@
+/* ===== CART PAGE STYLES – LuxeHome ===== */
+/* This file contains all cart-specific styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #059669;
+    --primary-dark: #047857;
+    --primary-light: #10b981;
+    --secondary-dark: #065f46;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-900: #111827;
+}
+
+.cart-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.cart-page h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 2rem;
+    letter-spacing: -0.025em;
+    position: relative;
+}
+.cart-page h1:after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 2px;
+}
+
+/* Cart table – card style */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-200);
+}
+
+.cart-table thead tr {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+.cart-table th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cart-table td {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+    color: var(--gray-700);
+}
+
+.cart-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.cart-table tbody tr:hover {
+    background-color: var(--gray-50);
+    transition: background-color 0.2s ease;
+}
+
+/* Product info */
+.cart-info {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.cart-info img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-200);
+}
+
+.cart-info div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.cart-info p {
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.cart-info small {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.remove-link {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.remove-link:hover {
+    color: #dc2626;
+    text-decoration: underline;
+}
+
+/* Quantity controls */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    border: 1px solid var(--gray-200);
+    background: white;
+    color: var(--gray-700);
+    font-size: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.quantity-number {
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+    color: var(--gray-900);
+}
+
+td:last-child {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+/* Totals card */
+.total-price {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.total-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-200);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.total-row:last-of-type {
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--gray-900);
+    padding-top: 1rem;
+}
+
+.total-row span:first-child {
+    color: var(--gray-600);
+}
+
+.total-row span:last-child {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+/* Checkout button – matches .btn-primary */
+.checkout-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.checkout-btn:hover {
+    background: linear-gradient(90deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty cart */
+.empty-cart {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-200);
+}
+
+.empty-cart i {
+    font-size: 4rem;
+    color: var(--gray-200);
+    margin-bottom: 1rem;
+}
+
+.empty-cart p {
+    color: var(--gray-600);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.empty-cart a {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.empty-cart a:hover {
+    background: var(--primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cart-table th,
+    .cart-table td {
+        padding: 1rem;
+    }
+
+    .cart-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-info img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .total-card {
+        max-width: 100%;
+    }
+}

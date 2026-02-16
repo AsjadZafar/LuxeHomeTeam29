@@ -18,7 +18,6 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Calculate cart count for badge
 $cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 
 // REMOVE ONE item
@@ -29,7 +28,6 @@ if (isset($_POST['remove_one'])) {
     } else {
         unset($_SESSION['cart'][$remove_id]);
     }
-    // Refresh cart count
     $cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 }
 
@@ -37,23 +35,20 @@ if (isset($_POST['remove_one'])) {
 if (isset($_POST['remove_all'])) {
     $remove_id = intval($_POST['remove_all']);
     unset($_SESSION['cart'][$remove_id]);
-    // Refresh cart count
     $cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart | LuxeHome</title>
-    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="images/image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/cart-style.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cartstyle.css">  <!-- New cart CSS -->
     <link rel="stylesheet" href="css/accessibility.css">
     <style>
         .logo-img {
@@ -62,55 +57,13 @@ if (isset($_POST['remove_all'])) {
             border-radius: 50%;
             object-fit: cover;
         }
-        
-        .nav-link {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #4b5563;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link.active {
-            color: #047857;
-            border-bottom: 2px solid #047857;
-            padding-bottom: 0.25rem;
-        }
-        
-        .nav-link:hover {
-            color: #047857;
-        }
-        
-        .action-btn {
-            color: #4b5563;
-            transition: color 0.3s ease;
-        }
-        
-        .action-btn:hover {
-            color: #047857;
-        }
-        
-        .cart-badge {
-            position: absolute;
-            top: -0.5rem;
-            right: -0.5rem;
-            background: #059669;
-            color: white;
-            font-size: 0.75rem;
-            border-radius: 50%;
-            width: 1.25rem;
-            height: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
     </style>
 </head>
-
 <body class="bg-gray-50">
     <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Accessibility Panel -->
+    <!-- Accessibility Panel (unchanged) -->
     <div id="accessibilityPanel" class="accessibility-panel">
         <div class="accessibility-header">
             <h2 class="accessibility-title">Accessibility Settings</h2>
@@ -182,15 +135,12 @@ if (isset($_POST['remove_all'])) {
         </div>
     </div>
 
-    <!-- Accessibility Panel Overlay -->
     <div id="panelOverlay" class="panel-overlay"></div>
-
-    <!-- Accessibility Toggle Button -->
     <button id="togglePanel" class="accessibility-toggle">
         <i class="fas fa-universal-access"></i>
     </button>
 
-    <!-- Header - SAME AS INDEX.PHP -->
+    <!-- Header (same as index.php) -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -202,7 +152,6 @@ if (isset($_POST['remove_all'])) {
                     </div>
                 </a>
 
-                <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="index.php" class="nav-link">Home</a>
                     <a href="products.php" class="nav-link">Shop</a>
@@ -210,7 +159,6 @@ if (isset($_POST['remove_all'])) {
                     <a href="contact.php" class="nav-link">Contact</a>
                 </nav>
 
-                <!-- Actions -->
                 <div class="flex items-center space-x-4">
                     <button class="action-btn">
                         <i class="fas fa-search"></i>
@@ -247,92 +195,93 @@ if (isset($_POST['remove_all'])) {
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Customer's Basket -->
-        <div class="small-container cart-page">
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Your Shopping Cart</h1>
-            <table class="w-full border-collapse" id="cartTable">
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                </tr>
+    <!-- Main Cart Content -->
+    <main id="main-content" class="cart-page">
+        <h1>Your Shopping Cart</h1>
 
-                <?php
-                $subtotal = 0;
-
-                if (!empty($_SESSION['cart'])) {
-                    foreach ($_SESSION['cart'] as $product_id => $qty) {
+        <?php if (!empty($_SESSION['cart'])): ?>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $subtotal = 0;
+                    foreach ($_SESSION['cart'] as $product_id => $qty):
                         $product_id = intval($product_id);
                         $sql = "SELECT name, price, img FROM products WHERE product_id = $product_id";
                         $result = mysqli_query($conn, $sql);
-
-                        if ($row = mysqli_fetch_assoc($result)) {
+                        if ($row = mysqli_fetch_assoc($result)):
                             $lineTotal = $row['price'] * $qty;
                             $subtotal += $lineTotal;
-
-                            echo "<tr>
-                                <td>
-                                    <div class='cart-info'>
-                                        <img src='product_image/{$row['img']}' width='80'>
-                                        <div>
-                                            <p>{$row['name']}</p>
-                                            <small>Price: &pound;" . number_format($row['price'],2) . "</small><br>
-                                            
-                                            <form method='POST'>
-                                                <button type='submit' name='remove_all' value='$product_id' class='text-red-600 text-sm'>
-                                                    Remove
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <form method='POST' style='display:inline-block'>
-                                        <button type='submit' name='remove_one' value='$product_id' class='px-2'>-</button>
+                    ?>
+                    <tr>
+                        <td>
+                            <div class="cart-info">
+                                <img src="product_image/<?= htmlspecialchars($row['img']) ?>" alt="<?= htmlspecialchars($row['name']) ?>" onerror="this.style.display='none'">
+                                <div>
+                                    <p><?= htmlspecialchars($row['name']) ?></p>
+                                    <small>Price: &pound;<?= number_format($row['price'], 2) ?></small>
+                                    <form method="POST">
+                                        <button type="submit" name="remove_all" value="<?= $product_id ?>" class="remove-link">
+                                            <i class="fas fa-trash-alt"></i> Remove
+                                        </button>
                                     </form>
-                                    
-                                    <span class='px-2'>$qty</span>
-                                    
-                                </td>
-                                <td>&pound;" . number_format($lineTotal,2) . "</td>
-                            </tr>";
-                        }
-                    }
-                } else {
-                    echo "<tr><td colspan='3' class='text-center py-4'>Your cart is empty.</td></tr>";
-                }
-                ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="quantity-control">
+                                <form method="POST" style="display: inline;">
+                                    <button type="submit" name="remove_one" value="<?= $product_id ?>" class="quantity-btn">−</button>
+                                </form>
+                                <span class="quantity-number"><?= $qty ?></span>
+                            </div>
+                        </td>
+                        <td>&pound;<?= number_format($lineTotal, 2) ?></td>
+                    </tr>
+                    <?php
+                        endif;
+                    endforeach;
+                    ?>
+                </tbody>
             </table>
 
-            <div class="total-price mt-8">
-                <table class="w-64 ml-auto">
-                    <tr>
-                        <td>Subtotal:</td>
-                        <td>&pound;<?= number_format($subtotal,2) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Tax (13%):</td>
-                        <td>&pound;<?= number_format($subtotal * 0.13,2) ?></td>
-                    </tr>
-                    <tr class="font-bold text-lg">
-                        <td>Total:</td>
-                        <td>&pound;<?= number_format($subtotal * 1.13,2) ?></td>
-                    </tr>
-                </table>
+            <div class="total-price">
+                <div class="total-card">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>&pound;<?= number_format($subtotal, 2) ?></span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (13%)</span>
+                        <span>&pound;<?= number_format($subtotal * 0.13, 2) ?></span>
+                    </div>
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span>&pound;<?= number_format($subtotal * 1.13, 2) ?></span>
+                    </div>
+                    <form action="check_out_page.php" method="POST">
+                        <button type="submit" class="checkout-btn">
+                            <i class="fas fa-lock mr-2"></i> Proceed to Checkout
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="text-right mt-6">
-                <form action="check_out_page.php" method="POST">
-                    <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-md hover:bg-emerald-700 transition-colors">
-                        Proceed to Checkout
-                    </button>
-                </form>
+        <?php else: ?>
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty.</p>
+                <a href="products.php">Continue Shopping</a>
             </div>
-        </div>
+        <?php endif; ?>
     </main>
 
-    <!-- Footer - SAME AS INDEX.PHP -->
+    <!-- Footer (same as index.php) -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-grid">
@@ -347,18 +296,10 @@ if (isset($_POST['remove_all'])) {
                         Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
                     </p>
                     <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
@@ -388,7 +329,7 @@ if (isset($_POST['remove_all'])) {
             </div>
         </div>
     </footer>
-    
+
     <script src="js/script.js"></script>
     <script src="js/accessibility.js"></script>
 </body>
