@@ -13,6 +13,7 @@ if (isset($_SESSION['username'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -101,12 +102,13 @@ if (isset($_SESSION['username'])) {
         }
     </style>
 </head>
-    <script>
-  console.log("CHATBOT SCRIPT LOADED");
-  function getBotReply(text) {
-      return "test reply: " + text;
-  }
+<script>
+    console.log("CHATBOT SCRIPT LOADED");
+    function getBotReply(text) {
+        return "test reply: " + text;
+    }
 </script>
+
 
 <body class="bg-gray-50">
     <!-- Skip Link for Accessibility -->
@@ -219,37 +221,37 @@ if (isset($_SESSION['username'])) {
                     </button>
 
                     <?php if ($logged_in): ?>
-                        <a href="cart.php" class="action-btn relative">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">3</span>
-                        </a>
-                        <span class="text-gray-900 font-semibold">
-                            <?php echo htmlspecialchars($username) ?>!
-                        </span>
+                    <a href="cart.php" class="action-btn relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge">3</span>
+                    </a>
+                    <span class="text-gray-900 font-semibold">
+                        <?php echo htmlspecialchars($username) ?>!
+                    </span>
                     <?php else: ?>
-                        <a href="cart.php" class="action-btn relative">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">0</span>
-                        </a>
-                        <a href="login.php" class="action-btn">
-                            <i class="fas fa-user"></i>
-                        </a>
+                    <a href="cart.php" class="action-btn relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="login.php" class="action-btn">
+                        <i class="fas fa-user"></i>
+                    </a>
                     <?php endif; ?>
                 </div>
 
                 <?php if ($logged_in): ?>
-                    <div class="flex items-center space-x-2">
-                        <form method="POST" action="php_functions/logout.php">
-                            <button type="submit"
-                                    class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
-                        </form>
+                <div class="flex items-center space-x-2">
+                    <form method="POST" action="php_functions/logout.php">
+                        <button type="submit"
+                            class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
+                    </form>
 
-                        <form method="POST" action="admin_dash.php">
-                            <button type="submit"
-                                    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin
-                                Dash</button>
-                        </form>
-                    </div>
+                    <form method="POST" action="admin_dash.php">
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin
+                            Dash</button>
+                    </form>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -279,7 +281,7 @@ if (isset($_SESSION['username'])) {
                     </ul>
 
                     <iframe class="mt-6 rounded-lg w-full h-56"
-                            src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
+                        src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
                 </div>
 
                 <!-- CONTACT FORM -->
@@ -288,9 +290,9 @@ if (isset($_SESSION['username'])) {
 
                     <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
                         <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md"
-                               required>
+                            required>
                         <input name="email" id="email" type="email" placeholder="Email Address"
-                               class="w-full p-3 border rounded-md" required>
+                            class="w-full p-3 border rounded-md" required>
 
                         <select name="product" id="product" class="w-full p-3 border rounded-md" required>
                             <option value="">Select Product</option>
@@ -302,10 +304,10 @@ if (isset($_SESSION['username'])) {
                         </select>
 
                         <textarea name="message" id="message" rows="4" placeholder="Your Message"
-                                  class="w-full p-3 border rounded-md" required></textarea>
+                            class="w-full p-3 border rounded-md" required></textarea>
 
                         <button type="submit" id="submitBtn"
-                                class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
+                            class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
                             <span id="btnText">Send Message</span>
                             <i id="spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
                         </button>
@@ -330,9 +332,9 @@ if (isset($_SESSION['username'])) {
                 <form id="warrantyForm" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
                     <input id="wName" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
                     <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md"
-                           required>
+                        required>
                     <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)"
-                           class="w-full p-3 border rounded-md" required>
+                        class="w-full p-3 border rounded-md" required>
 
                     <select id="wProduct" class="w-full p-3 border rounded-md" required>
                         <option value="">Product Purchased</option>
@@ -352,14 +354,14 @@ if (isset($_SESSION['username'])) {
                     </select>
 
                     <textarea id="issueDetails" rows="4" placeholder="Describe the issue..."
-                              class="w-full p-3 border rounded-md" required></textarea>
+                        class="w-full p-3 border rounded-md" required></textarea>
 
                     <label class="block font-medium">Upload Proof of Damage</label>
-                    <input id="damageImage" type="file" accept="image/*"
-                           class="w-full p-3 border rounded-md bg-white" required>
+                    <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white"
+                        required>
 
                     <button type="submit" id="warrantyBtn"
-                            class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
+                        class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
                         Submit Warranty Claim
                     </button>
 
@@ -376,7 +378,7 @@ if (isset($_SESSION['username'])) {
 
     <!-- CHATBOT WINDOW -->
     <div id="chatbotWindow"
-         class="fixed bottom-28 right-6 w-80 bg-white rounded-xl shadow-xl border p-4 hidden transition-all duration-300 z-[9999]">
+        class="fixed bottom-28 right-6 w-80 bg-white rounded-xl shadow-xl border p-4 hidden transition-all duration-300 z-[9999]">
         <div class="flex justify-between items-center mb-3">
             <h3 class="text-lg font-semibold text-emerald-700">LuxeHome Assistant</h3>
             <button onclick="toggleChatbot()" class="text-gray-500 hover:text-red-500 text-xl">&times;</button>
@@ -388,10 +390,10 @@ if (isset($_SESSION['username'])) {
 
         <div class="mt-3 flex">
             <input id="chatInput" type="text" placeholder="Type a message..."
-                   class="flex-grow p-2 border rounded-l-md outline-none"
-                   onkeydown="if(event.key==='Enter'){event.preventDefault();sendMessage();}">
+                class="flex-grow p-2 border rounded-l-md outline-none"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();sendMessage();}">
             <button onclick="sendMessage()"
-                    class="bg-emerald-600 text-white px-4 rounded-r-md hover:bg-emerald-700">Send</button>
+                class="bg-emerald-600 text-white px-4 rounded-r-md hover:bg-emerald-700">Send</button>
         </div>
     </div>
 
@@ -689,4 +691,5 @@ if (isset($_SESSION['username'])) {
     <script src="js/script.js"></script>
     <script src="js/accessibility.js"></script>
 </body>
+
 </html>
