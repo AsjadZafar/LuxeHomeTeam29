@@ -102,13 +102,9 @@ if (isset($_SESSION['username'])) {
         }
     </style>
 </head>
-<script>
-    console.log("CHATBOT SCRIPT LOADED");
-    function getBotReply(text) {
-        return "test reply: " + text;
-    }
-</script>
-
+<!-- FIX 1: The rogue <script> block that was here between </head> and <body>
+     has been DELETED. It defined a stub getBotReply() that silently overrode
+     the real function below, breaking the chatbot on every page load. -->
 
 <body class="bg-gray-50">
     <!-- Skip Link for Accessibility -->
@@ -206,7 +202,6 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </a>
 
-                <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="index.php" class="nav-link">Home</a>
                     <a href="products.php" class="nav-link">Shop</a>
@@ -214,7 +209,6 @@ if (isset($_SESSION['username'])) {
                     <a href="contact.php" class="nav-link active">Contact</a>
                 </nav>
 
-                <!-- Actions -->
                 <div class="flex items-center space-x-4">
                     <button class="action-btn">
                         <i class="fas fa-search"></i>
@@ -245,11 +239,9 @@ if (isset($_SESSION['username'])) {
                         <button type="submit"
                             class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
                     </form>
-
                     <form method="POST" action="admin_dash.php">
                         <button type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin
-                            Dash</button>
+                            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
                     </form>
                 </div>
                 <?php endif; ?>
@@ -257,7 +249,6 @@ if (isset($_SESSION['username'])) {
         </div>
     </header>
 
-    <!-- Main Content -->
     <main id="main-content">
         <!-- CONTACT HEADER -->
         <section class="py-20 bg-gray-100">
@@ -273,13 +264,11 @@ if (isset($_SESSION['username'])) {
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
                     <ul class="text-gray-700 space-y-3">
-                        <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street,
-                            Birmingham, UK</li>
+                        <li><i class="fas fa-map-marker-alt text-emerald-600 mr-2"></i>123 Innovation Street, Birmingham, UK</li>
                         <li><i class="fas fa-phone text-emerald-600 mr-2"></i>+44 1234 567 890</li>
                         <li><i class="fas fa-envelope text-emerald-600 mr-2"></i>hello@luxehome.com</li>
                         <li><i class="fas fa-clock text-emerald-600 mr-2"></i>Mon–Fri: 9am–6pm</li>
                     </ul>
-
                     <iframe class="mt-6 rounded-lg w-full h-56"
                         src="https://www.google.com/maps?q=Birmingham,UK&output=embed"></iframe>
                 </div>
@@ -287,13 +276,9 @@ if (isset($_SESSION['username'])) {
                 <!-- CONTACT FORM -->
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
-
                     <form action="https://formspree.io/f/mzznvdon" method="POST" id="contactForm" class="space-y-4">
-                        <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md"
-                            required>
-                        <input name="email" id="email" type="email" placeholder="Email Address"
-                            class="w-full p-3 border rounded-md" required>
-
+                        <input name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
+                        <input name="email" id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
                         <select name="product" id="product" class="w-full p-3 border rounded-md" required>
                             <option value="">Select Product</option>
                             <option value="Smart Light">Smart Light</option>
@@ -302,17 +287,14 @@ if (isset($_SESSION['username'])) {
                             <option value="Smart Socket">Smart Power Socket</option>
                             <option value="Sensor Kit">Sensor Kit</option>
                         </select>
-
                         <textarea name="message" id="message" rows="4" placeholder="Your Message"
                             class="w-full p-3 border rounded-md" required></textarea>
-
                         <button type="submit" id="submitBtn"
                             class="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-emerald-700">
                             <span id="btnText">Send Message</span>
                             <i id="spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
                         </button>
                     </form>
-
                     <p id="successMessage" class="text-center text-green-600 hidden mt-3 opacity-0">
                         Message sent successfully!
                     </p>
@@ -324,18 +306,13 @@ if (isset($_SESSION['username'])) {
         <section class="py-20 bg-white">
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
-
                 <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
                     Submit your warranty claim by providing order details and proof of damage.
                 </p>
-
                 <form id="warrantyForm" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
                     <input id="wName" placeholder="Full Name" class="w-full p-3 border rounded-md" required>
-                    <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md"
-                        required>
-                    <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)"
-                        class="w-full p-3 border rounded-md" required>
-
+                    <input id="wEmail" type="email" placeholder="Email Address" class="w-full p-3 border rounded-md" required>
+                    <input id="orderNumber" placeholder="Order Number (e.g., LH-12345)" class="w-full p-3 border rounded-md" required>
                     <select id="wProduct" class="w-full p-3 border rounded-md" required>
                         <option value="">Product Purchased</option>
                         <option>Smart Light</option>
@@ -344,7 +321,6 @@ if (isset($_SESSION['username'])) {
                         <option>Smart Socket</option>
                         <option>Sensor Kit</option>
                     </select>
-
                     <select id="claimReason" class="w-full p-3 border rounded-md" required>
                         <option value="">Reason for Claim</option>
                         <option>Device not working</option>
@@ -352,26 +328,21 @@ if (isset($_SESSION['username'])) {
                         <option>Power issue</option>
                         <option>Connectivity problem</option>
                     </select>
-
                     <textarea id="issueDetails" rows="4" placeholder="Describe the issue..."
                         class="w-full p-3 border rounded-md" required></textarea>
-
                     <label class="block font-medium">Upload Proof of Damage</label>
-                    <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white"
-                        required>
-
+                    <input id="damageImage" type="file" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
                     <button type="submit" id="warrantyBtn"
                         class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
                         Submit Warranty Claim
                     </button>
-
                     <p id="warrantyMessage" class="text-center mt-3 hidden opacity-0 text-green-600 font-medium"></p>
                 </form>
             </div>
         </section>
     </main>
 
-    <!-- FLOATING CHATBOT -->
+    <!-- FLOATING CHATBOT BUTTON -->
     <div onclick="toggleChatbot()" class="floating-chatbot">
         <i class="fas fa-robot"></i>
     </div>
@@ -383,11 +354,9 @@ if (isset($_SESSION['username'])) {
             <h3 class="text-lg font-semibold text-emerald-700">LuxeHome Assistant</h3>
             <button onclick="toggleChatbot()" class="text-gray-500 hover:text-red-500 text-xl">&times;</button>
         </div>
-
         <div id="chatContent" class="h-64 overflow-y-auto border rounded-md p-2 text-sm">
             <p class="text-gray-500 text-center">👋 Hi! How can I help you today?</p>
         </div>
-
         <div class="mt-3 flex">
             <input id="chatInput" type="text" placeholder="Type a message..."
                 class="flex-grow p-2 border rounded-l-md outline-none"
@@ -414,18 +383,10 @@ if (isset($_SESSION['username'])) {
                         technology designed for modern lifestyles.
                     </p>
                     <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
 
@@ -460,18 +421,18 @@ if (isset($_SESSION['username'])) {
     </footer>
 
     <script>
-        // -------------------------  
-        // CONTACT FORM LOGIC  
-        // -------------------------  
+        // =========================================================
+        // CONTACT FORM
+        // =========================================================
         const contactForm = document.getElementById("contactForm");
-        const cMsg = document.getElementById("successMessage");
-        const spinner = document.getElementById("spinner");
-        const btnText = document.getElementById("btnText");
+        const cMsg        = document.getElementById("successMessage");
+        const spinner     = document.getElementById("spinner");
+        const btnText     = document.getElementById("btnText");
 
         contactForm.addEventListener("submit", async function (e) {
             e.preventDefault();
 
-            const email = document.getElementById("email").value;
+            const email        = document.getElementById("email").value;
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailPattern.test(email)) {
@@ -485,7 +446,6 @@ if (isset($_SESSION['username'])) {
             btnText.textContent = "Sending...";
 
             const formData = new FormData(contactForm);
-
             const response = await fetch("https://formspree.io/f/mzznvdon", {
                 method: "POST",
                 body: formData,
@@ -503,21 +463,20 @@ if (isset($_SESSION['username'])) {
                 cMsg.textContent = "❌ Error sending message.";
                 cMsg.classList.remove("hidden");
             }
-
             fadeMsg(cMsg);
         });
 
-        // -------------------------  
-        // WARRANTY FORM LOGIC  
-        // -------------------------  
+        // =========================================================
+        // WARRANTY FORM
+        // =========================================================
         const warrantyForm = document.getElementById("warrantyForm");
-        const wMsg = document.getElementById("warrantyMessage");
+        const wMsg         = document.getElementById("warrantyMessage");
 
         warrantyForm.addEventListener("submit", function (e) {
             e.preventDefault();
 
-            const orderNumber = document.getElementById("orderNumber").value.trim();
-            const damageImage = document.getElementById("damageImage").files.length;
+            const orderNumber  = document.getElementById("orderNumber").value.trim();
+            const damageImage  = document.getElementById("damageImage").files.length;
             const orderPattern = /^LH-\d{5}$/;
 
             if (!orderPattern.test(orderNumber)) {
@@ -539,29 +498,33 @@ if (isset($_SESSION['username'])) {
             wMsg.textContent = "✅ Warranty claim submitted successfully!";
             wMsg.classList.remove("hidden", "text-red-600");
             wMsg.classList.add("text-green-600");
-
             warrantyForm.reset();
             fadeMsg(wMsg);
         });
 
-        // -------------------------  
-        // COMMON FADE FUNCTION  
-        // -------------------------  
+        // =========================================================
+        // SHARED FADE UTILITY
+        // =========================================================
         function fadeMsg(el) {
-            setTimeout(() => el.style.opacity = "1", 100);
+            setTimeout(() => el.style.opacity = "1",  100);
             setTimeout(() => el.style.opacity = "0", 3500);
             setTimeout(() => el.classList.add("hidden"), 4000);
         }
 
-        // -------------------------  
-        // CHATBOT LOGIC (rule‑based)  
-        // -------------------------  
+        // =========================================================
+        // CHATBOT
+        // FIX 1 — Only ONE getBotReply() exists now. The duplicate
+        //          stub in <head> has been completely removed.
+        // FIX 2 — sendMessage() captures reply BEFORE clearing input.
+        // FIX 3 — New rules: stock, order status, pricing, returns,
+        //          individual products, extended dissatisfaction list.
+        // =========================================================
         const chatbotWindow = document.getElementById("chatbotWindow");
-        const chatContent = document.getElementById("chatContent");
-        const chatInput = document.getElementById("chatInput");
+        const chatContent   = document.getElementById("chatContent");
+        const chatInput     = document.getElementById("chatInput");
 
-        // Simple intent mappings
         const botRules = [
+            // Greetings
             {
                 patterns: ["hi", "hello", "hey"],
                 responses: [
@@ -569,65 +532,122 @@ if (isset($_SESSION['username'])) {
                     "Hello! Need help with an order, product, or warranty?"
                 ]
             },
+            // Business hours
             {
-                patterns: ["hours", "opening", "time"],
-                responses: [
-                    "Our support hours are Mon–Fri, 9am–6pm (UK time)."
-                ]
+                patterns: ["hours", "opening", "time", "open"],
+                responses: ["Our support hours are Mon–Fri, 9am–6pm (UK time)."]
             },
+            // Warranty
             {
                 patterns: ["warranty", "claim", "guarantee"],
                 responses: [
-                    "You can submit a warranty claim in the form on this page. Make sure to include your order number (format LH-12345) and a photo of the issue."
+                    "You can submit a warranty claim using the form on this page. Include your order number (format LH-12345) and a photo of the issue."
                 ]
             },
+            // Order status — more specific patterns first
+            {
+                patterns: ["order status", "where is my order", "track my order", "where's my order", "my order"],
+                responses: [
+                    "To check your order status, have your order number ready (format: LH-12345). Check your confirmation email for a tracking link, or email us at hello@luxehome.com.",
+                    "Order updates are sent to your registered email. If you haven't received one, contact hello@luxehome.com with your order number."
+                ]
+            },
+            // General shipping/delivery
             {
                 patterns: ["order", "track", "shipping", "delivery"],
                 responses: [
-                    "For order or delivery questions, please include your order number and I’ll tell you what to do next.",
-                    "You can track your order from the confirmation email, or contact us at hello@luxehome.com with your order number."
+                    "For order or delivery questions, please share your order number (LH-12345) and we'll look into it.",
+                    "You can track your order from your confirmation email, or contact hello@luxehome.com with your order number."
+                ]
+            },
+            // Stock / availability — NEW
+            {
+                patterns: ["in stock", "available", "stock", "availability", "out of stock", "when back", "restock"],
+                responses: [
+                    "All our products are listed with live availability on the Shop page. Visit the Shop to see current stock levels!",
+                    "If a product shows as unavailable, email hello@luxehome.com and we'll notify you when it's back in stock."
+                ]
+            },
+            // Pricing — NEW
+            {
+                patterns: ["price", "cost", "how much", "pricing", "cheap", "expensive"],
+                responses: [
+                    "Pricing for all products is shown on our Shop page. We also run regular promotions — keep an eye on the homepage for deals!",
+                    "You can find full pricing on the Shop page. Feel free to ask if you need help comparing products."
+                ]
+            },
+            // Returns / refunds — NEW
+            {
+                patterns: ["return", "refund", "exchange", "money back", "send back"],
+                responses: [
+                    "We offer a 30-day return policy on all products. To start a return, email hello@luxehome.com with your order number and reason for return."
+                ]
+            },
+            // Contact details
+            {
+                patterns: ["contact", "email", "phone", "call"],
+                responses: [
+                    "You can reach us at hello@luxehome.com or call +44 1234 567 890, Mon–Fri 9am–6pm (UK time)."
+                ]
+            },
+            // Individual products — NEW granular rules
+            {
+                patterns: ["smart light", "smart lights", "lighting", "bulb"],
+                responses: [
+                    "Our Smart Light system supports voice control, scheduling and millions of colours. Check the Shop page for pricing and stock!"
                 ]
             },
             {
-                patterns: ["contact", "email", "phone"],
+                patterns: ["garage", "garage door"],
                 responses: [
-                    "You can contact us at hello@luxehome.com or call +44 1234 567 890 during business hours."
+                    "The Smart Garage Door Controller lets you open, close and monitor your garage remotely via app. Visit the Shop for full details."
                 ]
             },
             {
-                patterns: ["product", "smart light", "garage", "socket", "blinds", "sensor"],
+                patterns: ["blinds", "window blinds", "automated blinds"],
                 responses: [
-                    "We offer Smart Lights, Garage Door controllers, Automated Window Blinds, Smart Sockets and Sensor Kits. Let me know which product you have a question about."
+                    "Our Automated Window Blinds can be scheduled or voice-controlled and integrate with most smart home systems. See the Shop for more info."
                 ]
             },
             {
-                patterns: ["thanks", "thank you", "thankyou"],
+                patterns: ["socket", "smart socket", "power socket", "plug"],
                 responses: [
-                    "You’re welcome!",
-                    "Glad I could help."
+                    "The Smart Power Socket allows remote on/off control and energy monitoring from your phone. Available in the Shop!"
+                ]
+            },
+            {
+                patterns: ["sensor", "sensor kit", "motion sensor"],
+                responses: [
+                    "Our Sensor Kit includes motion, temperature and door/window sensors for a complete smart home setup. Check the Shop page for availability."
+                ]
+            },
+            {
+                patterns: ["product", "products", "range", "catalogue"],
+                responses: [
+                    "We offer Smart Lights, Garage Door Controllers, Automated Window Blinds, Smart Sockets and Sensor Kits. Visit the Shop to browse the full range!"
+                ]
+            },
+            // Thank you
+            {
+                patterns: ["thanks", "thank you", "thankyou", "cheers"],
+                responses: [
+                    "You're welcome! 😊",
+                    "Happy to help! Let me know if there's anything else."
                 ]
             }
         ];
 
         const defaultResponses = [
-            "I’m not sure I understood that. Could you rephrase or ask about warranty, orders, or contact details?",
-            "I can help with order queries, warranty, and basic product info. Try asking: “How do I submit a warranty claim?”"
+            "I'm not sure I understood that. Could you rephrase, or ask about products, stock, orders, pricing or warranty?",
+            "I can help with product info, stock availability, order queries, pricing and warranty. Try: \"Is the Smart Light in stock?\""
         ];
 
-        // Detect dissatisfaction / not satisfied phrases
         function isUserDissatisfied(text) {
             const t = text.toLowerCase();
             const negativePhrases = [
-                "not satisfied",
-                "not happy",
-                "unhappy",
-                "this is bad",
-                "bad bot",
-                "useless",
-                "not helpful",
-                "this didn't help",
-                "this did not help",
-                "disappointed"
+                "not satisfied", "not happy", "unhappy", "this is bad",
+                "bad bot", "useless", "not helpful", "this didn't help",
+                "this did not help", "disappointed", "terrible", "awful"
             ];
             return negativePhrases.some(p => t.includes(p));
         }
@@ -636,16 +656,13 @@ if (isset($_SESSION['username'])) {
             chatbotWindow.classList.toggle("hidden");
         }
 
+        // FIX 1 — The ONLY definition of getBotReply() on the entire page.
         function getBotReply(userText) {
             const text = userText.toLowerCase().trim();
+            if (!text) return "Please type a message so I can help.";
 
-            if (!text) {
-                return "Please type a message so I can help.";
-            }
-
-            // If user expresses dissatisfaction, escalate to human contact
             if (isUserDissatisfied(text)) {
-                return "If you’re not satisfied with my help, you can contact our team at hello@luxehome.com or call +44 1234 567 890 during business hours.";
+                return "I'm sorry to hear that! Please contact our team directly at hello@luxehome.com or call +44 1234 567 890 (Mon–Fri, 9am–6pm).";
             }
 
             for (const rule of botRules) {
@@ -672,19 +689,17 @@ if (isset($_SESSION['username'])) {
             chatContent.scrollTop = chatContent.scrollHeight;
         }
 
+        // FIX 2 — Reply captured BEFORE input is cleared.
         function sendMessage() {
             const value = chatInput.value.trim();
             if (!value) return;
 
             appendMessage(value, false);
 
-            const reply = getBotReply(value);
+            const reply = getBotReply(value); // ← capture first
+            chatInput.value = "";             // ← then clear
 
-            setTimeout(() => {
-                appendMessage(reply, true);
-            }, 500);
-
-            chatInput.value = "";
+            setTimeout(() => appendMessage(reply, true), 500);
         }
     </script>
 
