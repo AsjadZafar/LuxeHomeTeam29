@@ -265,7 +265,7 @@ if (isset($_POST['remove_all'])) {
                         <span>Total</span>
                         <span>&pound;<?= number_format($subtotal * 1.13, 2) ?></span>
                     </div>
-                    <form action="check_out_page.php" method="POST">
+                    <form action="check out page.php" method="POST">
                         <button type="submit" class="checkout-btn">
                             <i class="fas fa-lock mr-2"></i> Proceed to Checkout
                         </button>
