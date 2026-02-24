@@ -165,6 +165,9 @@ if (isset($_SESSION['username'])) {
             <form method="POST" action="admin_dash.php">
               <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
             </form>
+        	<form method="POST" action="customer_dash.php">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Customer Dash</button>
+            </form>
           </div>
         <?php endif; ?>
       </div>
@@ -187,11 +190,11 @@ if (isset($_SESSION['username'])) {
           Discover the finest collection of intelligent home technology, meticulously curated for the discerning homeowner who demands excellence in design, performance, and innovation.
         </p>
         <div class="hero-buttons">
-          <a href="#" class="btn-primary">
+          <a href="products.php" class="btn-primary">
             Explore Collection
             <i class="fas fa-arrow-right ml-2"></i>
           </a>
-          <a href="#" class="btn-secondary">
+          <a href="contact.php" class="btn-secondary">
             Book Consultation
           </a>
         </div>
@@ -333,11 +336,11 @@ if (isset($_SESSION['username'])) {
       <h2 class="cta-title">Ready to Transform Your Home?</h2>
       <p class="cta-description">Join thousands of homeowners who have embraced intelligent living with LuxeHome's premium solutions.</p>
       <div class="cta-buttons">
-        <a href="cart.php" class="btn-primary">
+        <a href="products.php" class="btn-primary">
           Start Shopping
           <i class="fas fa-arrow-right ml-2"></i>
         </a>
-        <a href="#" class="btn-outline">
+        <a href="contact.php" class="btn-outline">
           Schedule Consultation
         </a>
       </div>
