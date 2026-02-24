@@ -34,10 +34,8 @@ function initRoomCards() {
     
     roomCards.forEach(card => {
         card.addEventListener('click', function() {
-            const roomType = this.classList[1]; // living-room, bedroom, etc.
+            const roomType = this.classList[1];
             console.log(`Navigating to ${roomType} category`);
-            // In a real implementation, this would navigate to the category page
-            // window.location.href = `/shop?category=${roomType}`;
         });
     });
 }
@@ -64,50 +62,40 @@ function initSmoothScrolling() {
     });
 }
 
-// Mobile menu functionality (for future implementation)
+// Mobile menu functionality
 function initMobileMenu() {
-    // This would be implemented when adding a mobile menu
     console.log('Mobile menu ready for implementation');
 }
 
-// Product search functionality
+// ✅ FIX 1: Removed prompt() from initSearch() — it was blocking
+// the entire browser tab whenever any button was clicked,
+// preventing the chatbot Send button from working.
 function initSearch() {
-    const searchButtons = document.querySelectorAll('.action-btn .fa-search').forEach(btn => {
+    document.querySelectorAll('.action-btn .fa-search').forEach(btn => {
         btn.closest('.action-btn').addEventListener('click', function() {
-            const searchInput = document.createElement('input');
-            searchInput.type = 'text';
-            searchInput.placeholder = 'Search products...';
-            searchInput.className = 'search-input';
-            
-            // Simple search implementation
-            // In a real app, this would open a search modal
-            const searchTerm = prompt('Enter product name:');
-            if (searchTerm) {
-                console.log(`Searching for: ${searchTerm}`);
-                // Implement search logic here
-            }
+            console.log('Search clicked — implement search modal here');
         });
     });
 }
 
-// Shopping cart functionality
+// ✅ FIX 2: Removed alert() from initCart() — it was firing when
+// the chatbot Send button was clicked (Send also has .action-btn),
+// showing "Cart functionality would open here" and swallowing
+// the click so luxeChatSend() never ran properly.
 function initCart() {
-    const cartButtons = document.querySelectorAll('.action-btn .fa-shopping-cart').forEach(btn => {
+    document.querySelectorAll('.action-btn .fa-shopping-cart').forEach(btn => {
         btn.closest('.action-btn').addEventListener('click', function() {
-            console.log('Opening shopping cart');
-            // In a real implementation, this would open a cart sidebar/modal
-            alert('Cart functionality would open here');
+            console.log('Cart clicked — implement cart modal here');
         });
     });
 }
 
-// User authentication
+// ✅ FIX 3: Removed alert() from initAuth() — same issue as initCart().
+// The alert was intercepting button clicks across the whole page.
 function initAuth() {
-    const userButtons = document.querySelectorAll('.action-btn .fa-user').forEach(btn => {
+    document.querySelectorAll('.action-btn .fa-user').forEach(btn => {
         btn.closest('.action-btn').addEventListener('click', function() {
-            console.log('Opening user menu');
-            // In a real implementation, this would open a user dropdown
-            alert('User authentication menu would open here');
+            console.log('User icon clicked — implement auth menu here');
         });
     });
 }
