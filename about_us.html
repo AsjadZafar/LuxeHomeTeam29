@@ -318,6 +318,7 @@
     <!-- New headquarters photo by Nils Huenerfuerst on Unsplash-->
     <!-- Smart furniture photo by Jakub Żerdzicki on Unsplash-->
 
+    <!-- Our Journey Through Time -->
     <section class="py-16 bg-white"> <!-- section with vertical padding py-16 for spacing between sections, bg-white for clean, neutral background -->
 
       <!-- Section Heading -->
@@ -329,6 +330,11 @@
       <!-- Timeline Container -->
       <div class="relative max-w-6xl mx-auto px-4">
         <!-- timeline container, relative positioning for layered elements, max-w-6xl limits content width for readability, mx-auto centers content horizontally for balanced layout, px-4 adds horizontal padding, clear structure helps accessibility and makes timeline easy for users to follow -->
+
+        <!-- Vertical line for timeline -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 border-l-[2px] border-emerald-500"
+          style="height: calc(100% - 4rem); top: 2rem;"></div>
+        <!-- vertical line for timeline, absolute positioning and left-1/2 with -translate-x-1/2 to center horizontally, stretches from top to bottom (height calc 100% - 4rem) for full timeline coverage, border-l-2 and border-emerald-500 for clear visual guide, helps users easily follow timeline events -->
 
         <!-- Timeline Events -->
         <div class="space-y-12"> <!-- timeline events container, space-y-12 adds vertical spacing between cards for clear separation, improves readability and makes it easier for users to follow the timeline -->
@@ -372,7 +378,7 @@
             </div>
           </div>
 
-           <!-- Timeline Event 2 -->
+          <!-- Timeline Event 2 -->
           <div
             class="timeline-card flex flex-col md:flex-row-reverse items-center gap-8 relative bg-white rounded-lg shadow-md p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg">
             <!-- timeline event card, flex layout stacked vertically on mobile and horizontally on desktop, items centered, gap-8 between elements, white background, rounded corners, shadow for depth, hover lifts card slightly and adds bigger shadow -->
@@ -452,6 +458,7 @@
         </div>
       </div>
     </section>
+
 
       <!--Vision & Scope Section-->
       <section class="py-2"> <!--vertical top and bottom padding-->
