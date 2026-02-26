@@ -19,11 +19,15 @@ if (isset($_SESSION['username'])) {
         <meta name="author" content="Aminah Burctoolla">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <title>About Us | LuxeHome</title>
-        <!-- SEO Meta -->
-        <meta name="description" content="Get in touch with LuxeHome – the premier destination for smart home technology and automation. Our experts are ready to assist with all your smart living inquiries." />
-        <meta name="keywords" content="smart home, home automation, LuxeHome, contact, customer service, technology" />
-        <meta name="author" content="LuxeHome" />
+        <title>
+About Us | LuxeHome
+</title>
+  <!-- SEO Meta -->
+  <meta name="description"
+    content="Learn about LuxeHome’s journey, vision, and values. Founded in Birmingham, we elevate modern living with luxury smart furniture, innovative IoT technology, and secure home solutions." />
+  <meta name="keywords"
+    content="LuxeHome, about LuxeHome, smart home furniture, luxury smart living, home automation UK, IoT home technology, smart furniture innovation" />
+  <meta name="author" content="LuxeHome" />
 
         <!-- Favicon -->
         <link rel="icon" href="images/image.png">
@@ -232,243 +236,659 @@ if (isset($_SESSION['username'])) {
     </header>
 
     <!-- Main Content -->
-    <main id="main-content" class="bg-gray-100">
+    <main id="main-content" class="overflow-x-hidden">
+  <!-- main content area; hides horizontal overflow to prevent layout break and keep the page clean -->
 
-        <!--About Us-->
-        <section class="py-20 bg-gray-100">
-            <div class="bg-gray-800 text-center mb-12 py-10">
-                <h2 class="text-3xl font-bold text-white mb-3">
-                    About Us
-                </h2>
-                <p class="text-gray-300 max-w-2xl mx-auto"> 
-                </p>
-            </div>
+    <!-- About Us Hero Section -->
+    <section class="relative bg-[#0a0f23] text-white overflow-hidden pt-20 pb-16 md:pt-28 md:pb-28">
+       <!-- dark blue background with white text for contrast, hides overflow, vertical padding ensures spacing and responsive layout for all screen sizes to improve readability and UX -->
 
-            <!--Our Inspiring History-->
-            <h3 class="text-center mb-3"> 
-                <b>Our Inspiring History</b> 
+      <!-- Premium Badge -->
+      <div class="absolute 
+      top-6 
+      sm:top-8 
+      md:top-10 
+      left-4 
+      sm:left-6 
+      md:left-10 
+      z-20">  <!-- container for badge, absolute positioning ensures it stands out above content, responsive spacing keeps layout consistent across devices and highlights premium features for users -->
+
+        <div class="inline-flex items-center gap-1.5
+        bg-emerald-600/20
+        border border-emerald-400/30
+        backdrop-blur-md
+        text-emerald-400
+        px-2 py-1
+        sm:px-3 sm:py-1.5
+        text-[0.65rem] sm:text-xs md:text-sm
+        rounded-full
+        font-semibold
+        shadow-lg"> <!-- flex container, children centered vertically, horizontal gap between elements, green semi-transparent background for modern look, lighter border for contrast, medium blur for depth, responsive text size for readability, responsive padding for balance, fully rounded corners for pill shape, semi-bold text for emphasis, shadow to make element stand out for users -->
+
+          <i class="fas fa-star text-emerald-400 text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem]"></i>
+          <span>Prestige You Can Trust</span>
+
+        </div> <!-- Font Awesome star icon, green for brand consistency, responsive size for readability across devices, emphasizes trust and premium feel for users -->
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
+        <!-- maximum width constraint for readable content, horizontal padding for spacing, stacks items vertically on mobile and horizontally on desktop for responsive layout, keeps content aligned and user-friendly -->
+
+        <!-- Left Side -->
+        <div class="relative md:w-1/2 space-y-6 z-10">
+         <!-- Left side container, relative positioning for layering control, half width on desktop for balanced layout, vertical spacing between children for readability and clean design -->
+          <h1 class="text-4xl sm:text-5xl font-bold leading-tight">
+             <!-- main heading, larger font on small screens and above for emphasis, bold text for visual hierarchy, tight line spacing for compact, clean appearance and readability -->
+            Book a Free Installation <br> <!-- line break for spacing, improves readability and separates call-to-action for users -->
+            <span class="text-emerald-500">With Every Purchase</span> <!-- green text for brand consistency, draws attention to key message for users -->
+          </h1>
+
+          <p class="text-lg text-gray-300 max-w-xl"> <!-- paragraph, larger text for readability, light grey text for subtle emphasis, maximum width for comfortable line length -->
+            Enjoy a free installation service with every LuxeHome purchase,
+            backed by our dedicated customer support to make your smart home
+            setup effortless and stress-free.
+            <!-- highlights free installation and customer support, builds trust, improves user confidence and reinforces brand reliability -->
+          </p>
+
+          <div class="flex gap-4 mt-6">  <!-- flex container for buttons, adds spacing and top margin, ensures buttons are evenly spaced and visually balanced for better user interaction -->
+            <a href="products.php"
+              class="px-6 py-3 bg-emerald-600 rounded-md font-semibold hover:bg-emerald-700 transition">
+              Explore Collection →
+            </a>
+            <!-- link to product page, padding inside button for clickable area, green background for brand consistency, rounded corners for modern look, bold text for emphasis, dark green on hover and smooth transition to provide interactive feedback for users -->
+
+            <a href="contact.php"
+              class="px-6 py-3 border border-white rounded-md font-semibold hover:bg-white hover:text-[#0a0f23] transition">
+              Contact Our Team →
+            </a>
+            <!-- link to contact page, padding inside button for clickable area, rounded corners for modern look, bold text for emphasis, white background and dark text on hover for clear feedback, smooth transition improves user interaction -->
+          </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="relative md:w-1/2 flex items-center justify-center overflow-visible pr-8 sm:pr-12 md:pr-0"> <!-- Right side container, relative positioning for layering, width adjusts for different screen sizes for balanced layout, flex container centers children vertically and horizontally, allows overflow to be visible for design elements, responsive right padding maintains alignment and visual balance for users -->
+
+          <div class="absolute 
+    right-[-20%] sm:right-[-15%] md:right-[-28%]  
+    top-[50%] md:top-1/2 
+    -translate-y-1/2 
+    w-[120%] sm:w-[110%] md:w-[120%] 
+    aspect-[3/3.1] 
+    rounded-full 
+    z-0
+    opacity-80
+    blur-md" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+          </div> <!-- absolute positioned, right offset adjusts for screen sizes, vertically centered and shifted for balance, width larger than parent for visual impact, aspect ratio for consistent shape, rounded for smooth edges, stacked behind elements for layering, semi-transparent and blurred for depth, diagonal gradient adds aesthetic and modern feel -->
+
+          <div class="relative text-center px-12 py-16 z-10 max-w-md overflow-visible
+      translate-x-12 sm:translate-x-8 md:translate-x-28 scale-110 sm:scale-105 md:scale-110">
+            <!-- container relative positioned, text centered for readability, horizontal and vertical padding for spacing, stacked in front of background curve for visual layering, max width medium for comfortable content width, overflow visible for overlapping elements, x translation and scale adjusted for responsive balance and emphasis on key content -->
+
+            <!-- Heroicons Earth Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+              class="w-32 h-32 md:w-60 md:h-60 text-[#0a0f23] mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-15">
+              <path fill-rule="evenodd"
+                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM8.547 4.505a8.25 8.25 0 1 0 11.672 8.214l-.46-.46a2.252 2.252 0 0 1-.422-.586l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.211.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.654-.261a2.25 2.25 0 0 1-1.384-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.279-2.132Z"
+                clip-rule="evenodd" />
+            </svg>
+            <!-- SVG element, width and height adjust for desktop and smaller screens, scalable via viewBox, horizontally and vertically centered in parent, stacked behind text for depth, subtle opacity adds modern visual accent -->
+
+            <!-- Heading -->
+            <h3 class="relative z-10 text-2xl sm:text-4xl font-bold text-emerald-950 mt-4" style="color: #0a0f23;">
+              Excellence in Service
             </h3>
+            <!-- subheading, relative positioning with z-10 to stay above other elements, font size 2xl on small screens and 4xl on desktop (responsive), bold text, dark blue #0a0f23 for readability, top margin mt-4 for spacing -->
 
-            <div class=" mx-auto max-w-3xl px-4 lg:px-6 text-center">
-                <p class="mb-4" title="About Us"> 
-                    In 2015, we started as a humble home furniture business in the small towns of Birmingham and have now diversified, with over 3,000 employees, into a powerhouse working 24/7 to meet the demand of our customers, creating the greatest home furniture innovations, embedded with our latest cutting-edge technology. 
-                </p>
-                <p class="mb-4" title="About Us">
-                    <em>LuxeHome</em>, our business name, is taken from the need to elevate homes by gifting a luxurious experience through smart home solutions. We offer premium services and innovations tailored towards every part of your home. Your living room, kitchen, bathroom, bedroom and outdoors are digitally and securely protected with us.
-                </p>
-            </div>
-
-            <hr class="my-6 border-gray-300">
-            
-            <!--Our Headquarters-->
-            <h3 class="text-center mb-3"> 
-                <b>Our Headquarters Over the Past 10 Years</b> 
-            </h3>
-
-            <p title="Our Headquarters" class="text-center mx-auto mb-4">
-                We have officially relocated our headquarters to the central area of Birmingham bringing numerous opportunities for growth and development.
+            <!-- Subtext -->
+            <p class="text-emerald-900 mt-2 max-w-sm mx-auto text-lg sm:text-xl">
+              Recognised by UK homeowners for exceptional care and support
             </p>
+            <!-- paragraph, dark green text (text-emerald-900) for brand consistency, top margin mt-2 for spacing, max width max-w-sm for comfortable line length, centered mx-auto, text size text-lg on small screens and text-xl on desktop for readability -->
+          </div>
 
-            <!--Headquarter images-->
-            <div class="flex flex-col md:flex-row justify-center gap-16 mt-6">
-                <!-- Old Headquarters -->
-                <div class="text-center">
-                    <img src="https://i2-prod.staffordshire-live.co.uk/incoming/article7455841.ece/ALTERNATES/s1200/0_Screenshot-160.png" 
-                         alt="Old Building"
-                         class="w-64 h-48 object-cover rounded-md mx-auto">
-                    <div style="font-size: 12px;" class="mt-2">
-                        Old Headquarters established in 2015
-                    </div>
-                </div>
+        </div>
+      </div>
+    </section>
 
-                <!-- New Headquarters -->
-                <div class="text-center">
-                    <img src="https://www.paradisebirmingham.co.uk/wp-content/uploads/2023/02/ocw-front-on-min-1024x640.jpg" 
-                         alt="New Building" 
-                         class="w-64 h-48 object-cover rounded-md mx-auto">
-                    <div style="font-size: 12px;" class="mt-2">
-                        New Headquarters finished construction in 2025, located in the heart of Birmingham
-                    </div>
-                </div>
+    <!-- Meet the Team -->
+    <!-- Team photos from Unsplash: https://unsplash.com -->
+    <!-- Photo by Fotos on Unsplash-->
+    <section class="py-16 bg-white"> <!-- section with vertical padding py-16 for spacing, white background for clean, neutral look -->
+
+      <!-- Section Heading -->
+      <h3 class="text-3xl font-bold text-center mb-8 text-gray-900">Meet the Team</h3>
+     <!-- subheading, text-3xl for large font size, bold and dark grey text for emphasis, centered horizontally for focus, mb-8 for bottom spacing -->
+
+      <!-- Section Subheading -->
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        Our dedicated team creates seamless and intelligent home experiences.
+      </p> <!-- paragraph, text-gray-600 for subtle grey text, centered horizontally with text-center and mx-auto, max-w-2xl for comfortable line length, mb-12 for bottom spacing -->
+
+      <!-- Team Grid -->
+      <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <!-- grid container, max-w-7xl for max width, centered with mx-auto, horizontal padding px-4 for spacing, grid columns adjust for different screens (1 on mobile, 2 on small, 3 on medium, 4 on large), gap-8 for spacing between cards so they don’t touch -->
+
+        <!-- Team Member 1 - Asjad -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+         <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+          <img src="images/team/asjad.jpg" alt="Asjad" class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Asjad</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">Lead Developer</p>
+          <!-- team member role, text-sm for smaller text size, font-medium for moderate emphasis, text-gray-600 for subtle grey color -->
+        </div>
+
+        <!-- Team Member 2 - Fahad Alajmi -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+          <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+          <img src="images/team/fahad.jpg" alt="Fahad Alajmi" class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+         <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Fahad Alajmi</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">Web Architect</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+        <!-- Team Member 3 - Aminah Burctoolla -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+         <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+          <img src="images/team/aminah.jpg" alt="Aminah Burctoolla"
+            class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Aminah Burctoolla</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">UI Designer</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+        <!-- Team Member 4 - Ubaid Ullah Faisal -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+          <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+           <img src="images/team/ubaid.jpg" alt="Ubaid Ullah Faisal"
+            class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Ubaid Ullah Faisal</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">Front-End Engineer</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+        <!-- Team Member 5 - Haleema Jamil -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+          <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+           <img src="images/team/haleema.jpg" alt="Haleema Jamil" class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Haleema Jamil</h4>
+         <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">Product Manager</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+        <!-- Team Member 6 - Ameera Mohamed -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+          <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+           <img src="images/team/ameera.jpg" alt="Ameera Mohamed" class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Ameera Mohamed</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">UI Specialist</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+        <!-- Team Member 7 - Mohammed Riazul -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+          <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+           <img src="images/team/riazul.jpg" alt="Mohammed Riazul"
+            class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Mohammed Riazul</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">Security Lead</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+        <!-- Team Member 8 - Jashandeep Singh -->
+        <div
+          class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transform hover:-translate-y-2 transition-transform duration-300">
+          <!-- card container, bg-white for clean background, rounded-xl for smooth corners, shadow-md for subtle depth, text-center for horizontal alignment, hover:shadow-xl and hover:-translate-y-2 to lift card on hover, transition-transform and duration-300 for smooth animation -->
+           <img src="images/team/jashandeep.jpg" alt="Jashandeep Singh"
+            class="w-28 h-28 mx-auto rounded-lg object-cover mb-4">
+          <!-- team member image, src points to file, alt text for accessibility, w-28 h-28 for square size, mx-auto to center, rounded-lg for smooth corners, object-cover ensures image fills square, mb-4 for spacing below -->
+           <h4 class="text-lg font-semibold text-emerald-600">Jashandeep Singh</h4>
+          <!-- team member name, text-lg for readable size, font-semibold for emphasis, text-emerald-600 for green brand color -->
+          <p class="text-sm text-gray-600 font-medium">Full-Stack Developer</p>
+          <!-- team member role, text-sm for smaller size to show hierarchy, font-medium for moderate emphasis, text-gray-600 for subtle, readable color -->
+        </div>
+
+      </div>
+    </section>
+
+    <!--Our Inspiring History-->
+    <!--Photos from Unsplash: https://unsplash.com -->
+    <!-- Old headquarters photo by Agung Vitrama on Unsplash-->
+    <!-- New headquarters photo by Nils Huenerfuerst on Unsplash-->
+    <!-- Smart furniture photo by Jakub Żerdzicki on Unsplash-->
+
+    <!-- Our Journey Through Time -->
+    <section class="py-16 bg-white"> <!-- section with vertical padding py-16 for spacing between sections, bg-white for clean, neutral background -->
+
+      <!-- Section Heading -->
+      <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">
+        <!-- section heading, text-3xl for readable size, font-bold for emphasis, text-center to focus attention, mb-12 for spacing below, text-gray-900 for good contrast, clear layout helps accessibility and makes content easy for users to scan -->
+          Our Journey Through Time
+      </h3>
+
+      <!-- Timeline Container -->
+      <div class="relative max-w-6xl mx-auto px-4">
+        <!-- timeline container, relative positioning for layered elements, max-w-6xl limits content width for readability, mx-auto centers content horizontally for balanced layout, px-4 adds horizontal padding, clear structure helps accessibility and makes timeline easy for users to follow -->
+
+        <!-- Vertical line for timeline -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 border-l-[2px] border-emerald-500"
+          style="height: calc(100% - 4rem); top: 2rem;"></div>
+        <!-- vertical line for timeline, absolute positioning and left-1/2 with -translate-x-1/2 to center horizontally, stretches from top to bottom (height calc 100% - 4rem) for full timeline coverage, border-l-2 and border-emerald-500 for clear visual guide, helps users easily follow timeline events -->
+
+        <!-- Timeline Events -->
+        <div class="space-y-12"> <!-- timeline events container, space-y-12 adds vertical spacing between cards for clear separation, improves readability and makes it easier for users to follow the timeline -->
+
+          <!-- Timeline Event 1 -->
+          <div
+            class="timeline-card flex flex-col md:flex-row items-center gap-8 relative bg-white rounded-lg shadow-md p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg">
+            <!-- timeline event card, flex layout stacked vertically on mobile and horizontally on desktop, items centered, gap-8 between elements, white background, rounded corners, shadow for depth, hover lifts card slightly and adds bigger shadow -->
+
+            <!-- Dot -->
+            <span
+              class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-emerald-400 rounded-full z-20 ring-2 ring-white"></span>
+            <!-- dot in timeline, absolute positioning centers it on parent line for clarity, w-5 h-5 for visible size, green background for contrast, rounded-full for clear circle shape, z-20 to stay on top, ring-2 and white outline for visibility, helps users easily see timeline points, clear placement improves UX and makes the timeline easy to follow on all screen sizes -->
+
+            <!-- Image -->
+            <div class="flex-shrink-0 md:w-1/2">
+              <!-- image container, flex-shrink-0 prevents image from shrinking, md:w-1/2 sets width to half on medium screens, keeps image clear and readable, responsive layout improves UX and convenience for users on different screen sizes -->
+               <img src="images/timeline/old.jpg" alt="Old Headquarters"
+                class="w-full h-48 object-cover rounded-md shadow-md mx-auto transition">
             </div>
-        </section>
-        
-        <hr class="my-6 border-gray-300">
+            <!-- image, src points to file, alt text for accessibility, w-full h-48 for size, object-cover to fill container without distortion, rounded-md for smooth corners, shadow-md for depth, centered with mx-auto, transition for smooth hover effect, clear and readable image improves UX and makes content easy for users to view -->
 
-        <!--Vision & Scope Section-->
-        <section class="py-2"> 
-            <div class="flex flex-col md:flex-row gap-12 px-4 md:px-20">
-                <!-- Our Vision & Scope -->
-                <div class="flex-1 space-y-4">
-                    <h3 class="mb-3"> 
-                        <b>Our Vision</b>
-                    </h3>
+            <!-- Text -->
+            <div class="text-center md:text-left md:flex-1">
+              <!-- text container, text-center on small screens and md:text-left on larger screens for better readability, md:flex-1 makes div take available space on larger screens, responsive layout improves UX and makes content easier for users to follow -->
 
-                    <p title="Our Vision" class="mt-2 mb-4">
-                        Our vision is to be recognised as a global leader of elevating home living with our groundbreaking IoT and smart device innovations.
-                    </p>
-                    <p title="Our Vision" class="mt-2 mb-4">
-                        Our hardworking team is innovating every day and keeping updated with new research. In the future, we aim to expand our services to customers across the globe with hundreds of more smart home innovations.
-                    </p>
+              <!-- Year Label -->
+              <div class="text-sm font-semibold text-emerald-600 mb-2">
+                <!-- year label, text-sm for small readable size, font-semibold for emphasis, green text for visibility, mb-2 for spacing below, clear and visible label helps users quickly understand timeline events -->
+                 2015
+              </div>
 
-                    <!-- Our Scope -->
-                    <h3 class="mb-3">
-                        <b>Our Scope</b>
-                    </h3>
-                    <p class="mt-2 mb-4" title="Our Scope">
-                        We produce smart home appliances and furniture and operate in the UK with plans to branch out to different locations. We serve tech savvy homeowners who are looking for a luxurious upgrade from their simple home living.
-                    </p>
-                    <p class="mt-2 mb-4" title="Our Scope">
-                        Our products extend anywhere from living room, kitchen, bathroom, bedroom and outdoors. We are one of the few furniture businesses in the world to incorporate cutting edge technology and smart devices into ordinary home appliances at a large scale, making it our unique selling point in the business.
-                    </p>
-                </div>
+              <h4 class="text-xl font-semibold text-gray-900">
+                Humble Beginnings
+              </h4> <!-- event title, text-xl for large readable size, font-semibold for emphasis, text-gray-900 for good contrast, clear and visible heading helps users quickly understand timeline events -->
 
-                <!-- Furniture Image -->
-                <div class="flex-shrink-0 flex items-center">
-                    <img src="https://thumbs.dreamstime.com/b/hologram-smart-furniture-interior-hologram-smart-furniture-interior-living-room-303491528.jpg" 
-                         alt="Smart Furniture" 
-                         class="w-72 h-[310px] object-cover mx-auto">
-                </div>
+              <p class="text-gray-600 mt-2">
+                Started small in Birmingham, growing with care and trust.
+              </p> <!-- event description, text-gray-600 for readable contrast, mt-2 for spacing above, short clear text helps users easily understand timeline story and improves readability -->
+
             </div>
-        </section>
+          </div>
 
-        <hr class="my-6 border-gray-300">
+          <!-- Timeline Event 2 -->
+          <div
+            class="timeline-card flex flex-col md:flex-row-reverse items-center gap-8 relative bg-white rounded-lg shadow-md p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg">
+            <!-- timeline event card, flex layout stacked vertically on mobile and horizontally on desktop, items centered, gap-8 between elements, white background, rounded corners, shadow for depth, hover lifts card slightly and adds bigger shadow -->
 
-        <!--What We Value-->
-        <section class="py-2 text-center space-y-4 px-6">
-            <h3 class="mb-3"> 
-                <b>What We Value </b> 
-            </h3>
-            
-            <div class="space-y-3">
-                <p title="What we value" class="mb-4">
-                    Our team is filled with 3,000 highly skilled employees that have been trained to be very reliable and capable in protecting customers and delivering you with the latest and innovative home technology.
-                </p>
+            <!-- Dot -->
+            <span
+              class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-emerald-400 rounded-full z-20 ring-2 ring-white"></span>
+                <!-- dot in timeline, absolute positioning centers it on parent line for clarity, w-5 h-5 for visible size, green background for contrast, rounded-full for clear circle shape, z-20 to stay on top, ring-2 and white outline for visibility, helps users easily see timeline points, clear placement improves UX and makes the timeline easy to follow on all screen sizes -->
 
-                <p title="What we value" class="mb-4">
-                    We value authenticity and transparency above all things, so we are always at the forefront of helping you with reliable products you can trust.
-                </p>
+            <!-- Image -->
+            <div class="flex-shrink-0 md:w-1/2">
+              <!-- image container, flex-shrink-0 prevents image from shrinking, md:w-1/2 sets width to half on medium screens, keeps image clear and readable, responsive layout improves UX and convenience for users on different screen sizes -->
+               <img src="images/timeline/new.jpg" alt="New Headquarters"
+                class="w-full h-48 object-cover rounded-md shadow-md mx-auto transition">
             </div>
-        </section>
+            <!-- image, src points to file, alt text for accessibility, w-full h-48 for size, object-cover to fill container without distortion, rounded-md for smooth corners, shadow-md for depth, centered with mx-auto, transition for smooth hover effect, clear and readable image improves UX and makes content easy for users to view -->
 
-        <hr class="my-6 border-gray-300">
+            <!-- Text -->
+            <div class="text-center md:text-right md:flex-1">
+              <!-- text container, text-center on small screens and md:text-right on larger screens for better readability, md:flex-1 makes div take available space on larger screens, responsive layout improves UX and makes content easier for users to follow -->
+               
+              <!-- Year Label -->
+              <div class="text-sm font-semibold text-emerald-600 mb-2">
+                <!-- year label, text-sm for small readable size, font-semibold for emphasis, green text for visibility, mb-2 for spacing below, clear and visible label helps users quickly understand timeline events -->
+                2025
+              </div>
 
-        <!--Customer Promises Section-->
-        <section class="py-2">
-            <div class="flex flex-col md:flex-row gap-10 px-4 max-w-6xl mx-auto">
-                <!-- Images -->
-                <div class="flex flex-col space-y-4">
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/016/314/360/small_2x/transparent-24-hour-service-free-png.png" 
-                         alt="24 hour" 
-                         class="w-28 h-28 object-contain mx-auto">
-                    <img src="https://png.pngtree.com/png-vector/20220724/ourmid/pngtree-user-privacy-icon-secure-vector-illustrations-vector-png-image_38119460.png" 
-                         alt="customer privacy"
-                         class="w-28 h-28 object-contain mx-auto">
-                    <img src="https://cdn-icons-png.flaticon.com/512/9745/9745876.png" 
-                         alt="customer security" 
-                         class="w-28 h-28 object-contain mx-auto">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5569/5569615.png" 
-                         alt="customer satisfaction"
-                         class="w-28 h-28 object-contain mx-auto">
-                </div>
+              <h4 class="text-xl font-semibold text-gray-900">
+                New Horizons
+              </h4> <!-- event title, text-xl for large readable size, font-semibold for emphasis, text-gray-900 for good contrast, clear and visible heading helps users quickly understand timeline events -->
 
-                <!-- Customer Promises -->
-                <div class="max-w-3xl space-y-4 text-center md:text-left mx-auto">
-                    <h3 class="mb-3"> 
-                        <b> Our Customer Promise</b>
-                    </h3>
+              <p class="text-gray-600 mt-2">
+                Moved to a central hub, expanding reach and innovation.
+              </p> <!-- event description, text-gray-600 for readable contrast, mt-2 for spacing above, short clear text helps users easily understand timeline story and improves readability -->
 
-                    <ol class="space-y-4 list-decimal list-inside">
-                        <li>LuxeHome prides itself on keeping our customer's data protected 24/7 by building secure networks, diligently monitoring our servers, and handling customer data securely.</li>
-                        <li>Customer privacy is very important to us, so we give customers the opportunity to modify, remove, and update their own personal information, allowing them to choose what information is in our systems.</li>
-                        <li>We also allow our customers to change their password at any point to keep our systems more secure and improve their safety.</li>
-                        <li>We take immense pride in our robust databases created by our intelligent team of highly skilled and trustworthy employees, leaving you with uninterrupted services and communication through an intuitive and user-friendly e-commerce platform that is fully functioning and always accessible.</li>
-                        <li>We always dedicate ourselves to deliver reliable products you trust. Therefore, if you received a product and you are unhappy with the quality, we would love to help you. Our company return policy lets you return products you have previously purchased.</li>
-                        <li>We welcome you to review the products and service provided by the website so we can improve the next time you see us.</li>
-                    </ol>
-                </div>
             </div>
-        </section>
+          </div>
 
-        <hr class="my-6 border-gray-300">
+          <!-- Timeline Event 3 -->
+          <div
+            class="timeline-card flex flex-col md:flex-row items-center gap-8 relative bg-white rounded-lg shadow-md p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg">
+            <!-- timeline event card, flex layout stacked vertically on mobile and horizontally on desktop, items centered, gap-8 between elements, white background, rounded corners, shadow for depth, hover lifts card slightly and adds bigger shadow -->
 
-        <!-- Meet The Team-->
-        <section class="py-10">
-            <h3 class="text-center mb-3"> 
-                <b>Meet the Team </b> 
-            </h3>
+            <!-- Dot -->
+            <span
+              class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-emerald-400 rounded-full z-20 ring-2 ring-white"></span>
+                <!-- dot in timeline, absolute positioning centers it on parent line for clarity, w-5 h-5 for visible size, green background for contrast, rounded-full for clear circle shape, z-20 to stay on top, ring-2 and white outline for visibility, helps users easily see timeline points, clear placement improves UX and makes the timeline easy to follow on all screen sizes -->
 
-            <p class="text-center mb-4"> 
-                Our team includes:
-            </p>
-            
-            <div class="bg-white shadow-md rounded-2xl p-8 max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10">
-                <!-- Profile 1 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 1" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Asjad</p>
-                </div>
-
-                <!-- Profile 2 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 2" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Fahad Alajmi</p>
-                </div>
-
-                <!-- Profile 3 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 3" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Aminah Burctoolla</p>
-                </div>
-
-                <!-- Profile 4 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 4" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Ubaid Ullah Faisal</p>
-                </div>
-
-                <!-- Profile 5 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 5" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Haleema Jamil</p>
-                </div>
-
-                <!-- Profile 6 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 6" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Ameera Mohamed</p>
-                </div>
-
-                <!-- Profile 7 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 7" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Mohammed Riazul</p>
-                </div>
-
-                <!-- Profile 8 -->
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1473473676/vector/default-avatar-profile-user-profile-icon-profile-picture-portrait-symbol-user-member-people.jpg?s=612x612&w=0&k=20&c=P40rLUrjwNod5EcUcsHhBNpNziitznnA3BimIa5CjKQ=" 
-                         alt="profile pic 8" 
-                         class="w-24 h-28 mx-auto bg-white rounded-md object-contain">
-                    <p class="mt-3 font-semibold" style="color: black;">Jashandeep Singh</p>
-                </div>
+            <!-- Image -->
+            <div class="flex-shrink-0 md:w-1/2">
+              <!-- image container, flex-shrink-0 prevents image from shrinking, md:w-1/2 sets width to half on medium screens, keeps image clear and readable, responsive layout improves UX and convenience for users on different screen sizes -->
+               <img src="images/timeline/SmartFurniture.jpg" alt="Smart Furniture"
+                class="w-full h-48 object-cover rounded-md shadow-md mx-auto transition">
             </div>
-        </section>
-    </main>
+            <!-- image, src points to file, alt text for accessibility, w-full h-48 for size, object-cover to fill container without distortion, rounded-md for smooth corners, shadow-md for depth, centered with mx-auto, transition for smooth hover effect, clear and readable image improves UX and makes content easy for users to view -->
+
+            <!-- Text -->
+            <div class="text-center md:text-left md:flex-1">
+              <!-- text container, text-center on small screens and md:text-left on larger screens for better readability, md:flex-1 makes div take available space on larger screens, responsive layout improves UX and makes content easier for users to follow -->
+
+              <!-- Year Label -->
+              <div class="text-sm font-semibold text-emerald-600 mb-2">
+                2025+
+              </div> <!-- year label, text-sm for small readable size, font-semibold for emphasis, green text for visibility, mb-2 for spacing below, clear and visible label helps users quickly understand timeline events -->
+
+              <h4 class="text-xl font-semibold text-gray-900">
+                Smart Living
+              </h4> <!-- event title, text-xl for large readable size, font-semibold for emphasis, text-gray-900 for good contrast, clear and visible heading helps users quickly understand timeline events -->
+
+              <p class="text-gray-600 mt-2">
+                Innovating homes with smart, elegant furniture solutions.
+              </p> <!-- event description, text-gray-600 for readable contrast, mt-2 for spacing above, short clear text helps users easily understand timeline story and improves readability -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- What Drives LuxeHome Section -->
+    <section class="pt-20 pb-10 bg-white relative overflow-hidden">
+      <!-- section container, pt-20 pb-10 for top and bottom spacing, bg-white for clean background, relative positioning for layered elements, overflow-hidden to prevent content spilling, spacing and clear layout improve readability and make content easy for users to follow -->
+       <div class="max-w-7xl mx-auto px-4 md:px-20 relative z-10">
+        <!-- content container, max-w-7xl limits width for readability, mx-auto centers horizontally, px-4 and md:px-20 add horizontal padding on different screens, relative z-10 positions above background, clear layout and spacing improve UX and make content easy for users to view -->
+
+        <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">What Drives LuxeHome</h3>
+        <!-- section heading, text-3xl for readable large size, font-bold for emphasis, text-center to focus user attention, mb-12 for spacing below, text-gray-900 for good contrast, clear heading improves UX and makes content easy for users to scan -->
+
+        <!-- Cards Container -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
+          <!-- cards container, grid layout with 1 column on small screens and 3 on medium+ screens, gap-10 adds spacing between cards, relative z-10 positions above background, responsive layout and clear spacing improve UX and make content easy for users to read -->
+
+          <!-- Vision Card -->
+          <div
+            class="relative bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition duration-300 ease-out overflow-hidden">
+            <!-- card container, relative positioning for layered elements, white background for clean look, p-8 adds spacing inside, rounded-2xl for smooth corners, shadow-xl for depth, hover lifts card and adds bigger shadow for interactivity, transition makes hover smooth, overflow-hidden prevents content spilling, clear and interactive design improves UX and makes content easy to view -->
+             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-200 to-emerald-400"></div>
+            <!-- horizontal bar, absolute positioned at top-left of parent, w-full for full width, h-2 for thin height, green gradient from left to right for visual interest, helps users quickly see section progress and improves UX -->
+
+            <div class="bg-emerald-100 w-16 h-16 flex items-center justify-center rounded-lg mb-6 relative z-10">
+              <!-- icon container, light green background for visibility, w-16 h-16 for square size, flex to center content vertically and horizontally, rounded-lg for smooth corners, mb-6 for spacing below, relative z-10 positions above background, clear and balanced layout improves UX and makes content easy to view -->
+               <svg class="w-8 h-8 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+              </svg> <!-- icon, w-8 h-8 sets size, green color for visibility, no fill for clean look, stroke-width 1.5 for clear lines, rounded caps and joins for smooth edges, visible and readable icon improves UX and makes content easy to understand -->
+             </div>
+
+            <h4 class="text-2xl font-semibold text-gray-900 mb-4 relative z-10">Vision</h4>
+            <!-- section title, text-2xl for readable large size, font-semibold for emphasis, text-gray-900 for good contrast, mb-4 for spacing below, relative z-10 to layer above background, clear heading improves UX and helps users quickly understand content -->
+             <p class="text-gray-700 mb-2 relative z-10">
+              We aspire to be a global leader in smart home living, delivering intelligent and luxurious solutions for
+              every home.
+            </p> <!-- paragraph text, text-gray-700 for readable contrast, mb-2 for spacing below, relative z-10 to layer above background, clear and concise text improves readability, helps users easily understand the vision statement -->
+            <p class="text-gray-700 relative z-10">
+              Our team innovates daily, blending creativity and research to offer safe, elegant, and high-tech smart
+              home experiences.
+            </p> <!-- paragraph text, text-gray-700 for readable contrast, relative z-10 to layer above background, clear and concise text improves readability and helps users easily understand the team’s approach and smart home solutions -->
+          </div>
+
+          <!-- Scope Card -->
+          <div
+            class="relative bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition duration-300 ease-out overflow-hidden">
+            <!-- card container, relative positioning for layered elements, white background for clean look, p-8 adds spacing inside, rounded-2xl for smooth corners, shadow-xl for depth, hover lifts card and adds bigger shadow for interactivity, transition makes hover smooth, overflow-hidden prevents content spilling, clear and interactive design improves UX and makes content easy to view -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+            <!-- horizontal bar, absolute positioned at top-left of parent, w-full for full width, h-2 for thin height, green gradient from left to right for visual interest, helps users quickly see section progress and improves UX -->
+
+            <div class="bg-emerald-100 w-16 h-16 flex items-center justify-center rounded-lg mb-6 relative z-10">
+              <!-- icon container, light green background for visibility, w-16 h-16 for square size, flex to center content vertically and horizontally, rounded-lg for smooth corners, mb-6 for spacing below, relative z-10 positions above background, clear and balanced layout improves UX and makes content easy to view -->
+              <svg class="w-8 h-8 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+              </svg> <!-- icon, w-8 h-8 sets size, green color for visibility, no fill for clean look, stroke-width 1.5 for clear lines, rounded caps and joins for smooth edges, visible and readable icon improves UX and makes content easy to understand -->
+             </div>
+
+            <h4 class="text-2xl font-semibold text-gray-900 mb-4 relative z-10">Scope</h4>
+            <!-- section title, text-2xl for readable large size, font-semibold for emphasis, text-gray-900 for good contrast, mb-4 for spacing below, relative z-10 to layer above background, clear heading improves UX and helps users quickly understand content -->
+             <p class="text-gray-700 mb-2 relative z-10">
+              LuxeHome designs and produces smart furniture and appliances across the UK, with plans for international
+              expansion.
+            </p> <!-- paragraph text, text-gray-700 for readable contrast, mb-2 for spacing below, relative z-10 to layer above background, clear and concise text improves readability, helps users easily understand the scope statement -->
+            <p class="text-gray-700 relative z-10">
+              From living rooms to outdoor spaces, we embed advanced technology into furniture, creating intelligent,
+              secure, and elegant environments.
+            </p> <!-- paragraph text, text-gray-700 for readable contrast, relative z-10 to layer above background, clear and concise text improves readability and helps users easily understand the team’s approach and smart home solutions -->
+          </div>
+
+          <!-- Values Card -->
+          <div
+            class="relative bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition duration-300 ease-out overflow-hidden">
+            <!-- card container, relative positioning for layered elements, white background for clean look, p-8 adds spacing inside, rounded-2xl for smooth corners, shadow-xl for depth, hover lifts card and adds bigger shadow for interactivity, transition makes hover smooth, overflow-hidden prevents content spilling, clear and interactive design improves UX and makes content easy to view -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-600 to-emerald-800"></div>
+            <!-- horizontal bar, absolute positioned at top-left of parent, w-full for full width, h-2 for thin height, green gradient from left to right for visual interest, helps users quickly see section progress and improves UX -->
+
+            <div class="bg-emerald-100 w-16 h-16 flex items-center justify-center rounded-lg mb-6 relative z-10">
+              <!-- icon container, light green background for visibility, w-16 h-16 for square size, flex to center content vertically and horizontally, rounded-lg for smooth corners, mb-6 for spacing below, relative z-10 positions above background, clear and balanced layout improves UX and makes content easy to view -->
+              <svg class="w-8 h-8 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+              </svg> <!-- icon, w-8 h-8 sets size, green color for visibility, no fill for clean look, stroke-width 1.5 for clear lines, rounded caps and joins for smooth edges, visible and readable icon improves UX and makes content easy to understand -->
+             </div>
+
+            <h4 class="text-2xl font-semibold text-gray-900 mb-4 relative z-10">Values</h4>
+            <!-- section title, text-2xl for readable large size, font-semibold for emphasis, text-gray-900 for good contrast, mb-4 for spacing below, relative z-10 to layer above background, clear heading improves UX and helps users quickly understand content -->
+             <p class="text-gray-700 mb-2 relative z-10">
+              Innovation, reliability, and customer satisfaction guide every decision we make.
+            </p> <!-- paragraph text, text-gray-700 for readable contrast, mb-2 for spacing below, relative z-10 to layer above background, clear and concise text improves readability, helps users easily understand the values statement -->
+            <p class="text-gray-700 relative z-10">
+              Our dedicated team ensures LuxeHome delivers intelligent, elegant, and trustworthy smart home solutions to
+              all our clients.
+            </p> <!-- paragraph text, text-gray-700 for readable contrast, relative z-10 to layer above background, clear and concise text improves readability and helps users easily understand the team’s approach and smart home solutions -->
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Customer Promises Section -->
+    <section class="pt-24 pb-12 bg-white"> <!-- Customer Promises section, pt-24 pb-12 for top and bottom spacing, bg-white for clean background, clear spacing and layout improve readability and make content easy for users to follow -->
+      <div class="max-w-7xl mx-auto px-4 md:px-20">
+        <!-- content container, max-w-7xl limits width for readability, mx-auto centers horizontally, px-4 and md:px-20 add horizontal padding on small and larger screens, responsive spacing improves UX and makes content easy for users to read -->
+
+        <!-- Section Heading -->
+        <h3 class="text-3xl font-bold text-center mb-12 text-gray-900">
+          Our Customer Promise
+        </h3> <!-- section heading, text-3xl for large readable size, font-bold for emphasis, text-center to focus user attention, mb-12 for spacing below, text-gray-900 for good contrast, clear heading improves UX and makes content easy for users to scan -->
+
+        <!-- Promises Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- cards container, grid layout with 1 column on small screens, 2 on medium, 3 on large screens, gap-8 adds spacing between cards, responsive layout and spacing improve UX and make content easy for users to view -->
+
+          <!-- Promise 1: 24/7 Data Protection -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
+             <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-emerald-500 mb-4" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <!-- icon, w-16 h-16 sets size, mx-auto centers horizontally, green color for visibility, mb-4 adds spacing below, no fill for clean look, stroke-width 1.5 for clear lines, visible and readable icon improves UX and helps users understand content quickly -->
+             <h4 class="text-lg font-semibold text-gray-900 mb-2">24/7 Data Protection</h4>
+            <!-- feature title, text-lg for readable size, font-semibold for emphasis, text-gray-900 for good contrast, mb-2 for spacing below, clear heading improves UX and helps users quickly understand key feature -->
+             <p class="text-gray-600 text-sm">
+              LuxeHome ensures your data is protected 24/7 through secure networks, monitored servers, and strict
+              privacy practices.
+            </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains feature clearly, helps users quickly understand 24/7 data protection, improves readability and UX -->
+          </div>
+
+          <!-- Promise 2: Customer Privacy -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-emerald-500 mb-4" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+            </svg>
+            <!-- icon, w-16 h-16 sets size, mx-auto centers horizontally, green color for visibility, mb-4 adds spacing below, no fill for clean look, stroke-width 1.5 for clear lines, visible and readable icon improves UX and helps users understand content quickly -->
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">Customer Privacy</h4>
+            <!-- feature title, text-lg for readable size, font-semibold for emphasis, text-gray-900 for good contrast, mb-2 for spacing below, clear heading improves UX and helps users quickly understand key feature -->
+            <p class="text-gray-600 text-sm">
+              You control your personal information—update, modify, or remove details at any time for full privacy.
+            </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains user control over personal info, clear wording improves readability and helps users understand privacy options, enhancing UX -->
+          </div>
+
+          <!-- Promise 3: Account Security -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-emerald-500 mb-4" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+            </svg>
+            <!-- icon, w-16 h-16 sets size, mx-auto centers horizontally, green color for visibility, mb-4 adds spacing below, no fill for clean look, stroke-width 1.5 for clear lines, visible and readable icon improves UX and helps users understand content quickly -->
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">Account Security</h4>
+            <!-- feature title, text-lg for readable size, font-semibold for emphasis, text-gray-900 for good contrast, mb-2 for spacing below, clear heading improves UX and helps users quickly understand key feature -->
+            <p class="text-gray-600 text-sm">
+              Change your passwords whenever you like to maintain maximum account security.
+            </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains password control for security, clear wording improves readability and helps users understand how to keep their account safe, enhancing UX -->
+          </div>
+
+          <!-- Promise 4: Reliable Service -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-emerald-500 mb-4" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M5.106 18.894c-3.808-3.807-3.808-9.98 0-13.788m13.788 0c3.808 3.807 3.808 9.98 0 13.788M12 12h.008v.008H12V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+            <!-- icon, w-16 h-16 sets size, mx-auto centers horizontally, green color for visibility, mb-4 adds spacing below, no fill for clean look, stroke-width 1.5 for clear lines, visible and readable icon improves UX and helps users understand content quickly -->
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">Reliable Service</h4>
+            <!-- feature title, text-lg for readable size, font-semibold for emphasis, text-gray-900 for good contrast, mb-2 for spacing below, clear heading improves UX and helps users quickly understand key feature -->
+            <p class="text-gray-600 text-sm">
+              Our reliable databases, built by our skilled team, guarantee uninterrupted access and smooth e-commerce
+              operations.
+            </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains database reliability for smooth e-commerce, clear wording improves readability and helps users understand service reliability, enhancing UX -->
+          </div>
+
+          <!-- Promise 5: Product Guarantee -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-emerald-500 mb-4" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+            </svg>
+            <!-- icon, w-16 h-16 sets size, mx-auto centers horizontally, green color for visibility, mb-4 adds spacing below, no fill for clean look, stroke-width 1.5 for clear lines, visible and readable icon improves UX and helps users understand content quickly -->
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">Product Guarantee</h4>
+            <!-- feature title, text-lg for readable size, font-semibold for emphasis, text-gray-900 for good contrast, mb-2 for spacing below, clear heading improves UX and helps users quickly understand key feature -->
+            <p class="text-gray-600 text-sm">
+              If a product doesn’t meet your expectations, our easy return policy ensures a smooth resolution.
+            </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains easy return policy, clear wording improves readability and helps users understand hassle-free returns, enhancing UX and user confidence -->
+          </div>
+
+          <!-- Promise 6: Feedback & Improvement -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-emerald-500 mb-4" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+            </svg>
+            <!-- icon, w-16 h-16 sets size, mx-auto centers horizontally, green color for visibility, mb-4 adds spacing below, no fill for clean look, stroke-width 1.5 for clear lines, visible and readable icon improves UX and helps users understand content quickly -->
+            <h4 class="text-lg font-semibold text-gray-900 mb-2">Feedback & Improvement</h4>
+            <!-- feature title, text-lg for readable size, font-semibold for emphasis, text-gray-900 for good contrast, mb-2 for spacing below, clear heading improves UX and helps users quickly understand key feature -->
+            <p class="text-gray-600 text-sm">
+              We value your feedback. Reviews help us improve and provide even better service for your next purchase.
+            </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains importance of user feedback, clear wording improves readability and helps users understand how reviews enhance future service, improving UX -->
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing/About Us Summary Section -->
+    <section class="relative pt-20 pb-20" style="
+  background:
+    linear-gradient(
+      90deg,
+      rgba(110, 231, 183, 0.14) 0%,
+      rgba(110, 231, 183, 0.08) 38%,
+      rgba(110, 231, 183, 0.04) 62%,
+      rgba(110, 231, 183, 0.0) 85%
+    ),
+    rgb(255, 255, 255); /* pure white */
+"> <!-- section container, relative positioning, pt-20 pb-20 for vertical spacing, background uses subtle left-to-right green gradient over white for visual appeal, soft gradient improves readability and draws attention without distracting users, enhancing UX -->
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <!-- content container, max-w-4xl limits width for easy reading, mx-auto centers horizontally, px-4 adds horizontal padding, text-center centers text, responsive layout improves readability and user experience -->
+
+        <!-- Heading -->
+        <h3 class="text-3xl font-bold text-gray-900 mb-10">
+          LuxeHome — Smart Living, Thoughtfully Designed
+        </h3> <!-- section heading, text-3xl for large readable size, font-bold for emphasis, text-gray-900 for good contrast, mb-10 for spacing below, clear heading improves UX and makes it easy for users to understand the section purpose -->
+
+        <!-- Short Summary -->
+        <p class="text-gray-700 text-lg mb-10">
+          Founded in Birmingham, LuxeHome crafts smart, sophisticated homes that blend technology with style. Discover our collection and experience effortless luxury in every corner of your home.
+        </p> <!-- paragraph text, text-gray-700 for readable contrast, text-lg for larger, easy-to-read size, mb-10 for spacing below, explains LuxeHome’s design and technology, clear wording improves readability and helps users quickly understand the brand, enhancing UX -->
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-center gap-5">
+          <!-- action buttons container, flex layout stacks vertically on small screens and horizontally on larger screens, justify-center centers buttons, gap-5 adds space between buttons, responsive layout improves usability and makes buttons easy to interact with, enhancing UX -->
+
+          <!-- Primary CTA -->
+          <a href="products.php"
+            class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-md shadow-sm hover:bg-emerald-700 transition">
+            Start Shopping →
+          </a><!-- primary CTA button, links to products page, px-8 py-4 for comfortable clickable size, green background with white text for good contrast, font-semibold for emphasis, rounded corners and shadow for visual clarity, hover changes color to dark green with smooth transition, clear and visible button improves UX and makes action easy for users -->
+
+          <!-- Secondary CTA -->
+          <a href="contact.php"
+            class="px-8 py-4 bg-white text-gray-700 font-semibold rounded-md border border-gray-300 hover:bg-gray-100 transition">
+            Contact Our Team
+          </a>
+          <!-- secondary CTA button, links to contact page, px-8 py-4 for comfortable clickable size, white background with grey text for good contrast, font-semibold for emphasis, rounded corners with border for clear shape, hover changes background to light grey with smooth transition, visible and easy-to-use button improves UX and accessibility -->
+
+        </div>
+      </div>
+    </section>
+
+  </main>
 
     <!-- Footer -->
     <footer class="footer">
