@@ -1,4 +1,5 @@
 <?php
+include('php_functions/dashboard_functions.php');
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -10,23 +11,7 @@ if (isset($_SESSION['username'])) {
   $logged_in = true;
   $username = $_SESSION['username'];
 }
-
-require_once 'php_functions/dbh.php';
-
-$search = "";
-
-$sql = "SELECT * FROM products";
-
-// If user typed something in the search bar
-if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
-    $search = mysqli_real_escape_string($conn, trim($_GET['search']));
-    $sql .= " WHERE name LIKE '%$search%' OR description LIKE '%$search%'";
-}
-
-$result = mysqli_query($conn, $sql);
-
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -223,8 +208,6 @@ $result = mysqli_query($conn, $sql);
           </form>
           
           <?php 
-          // Check if user is admin (you'll need to adjust this based on your user roles)
-          // For now, showing admin dash for all logged-in users
           ?>
           <form method="POST" action="admin_dash.php">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
@@ -234,135 +217,27 @@ $result = mysqli_query($conn, $sql);
       </div>
     </div>
   </header>
-
-  <!-- Main Content -->
-  <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Search Bar -->
-    <section class="py-8 bg-gray-100">
-      <div class="max-w-6xl mx-auto px-4">
-        <form action="" method="GET">
-          <div class="bg-white rounded-xl shadow-sm p-6 flex gap-4 items-center">
-            
-            <!-- Search -->
-            <input 
-              id="searchInput" 
-              type="text" 
-              name="search"
-              placeholder="Search products, e.g. Smart Lamp, Thermostat"
-              class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
-            />
-
-            <!-- NEED TO ADD CATEGORY!!!!! -->
-            <select id="categoryFilter" name="catSearch" class="p-3 border rounded-md">
-              <option value="">All categories</option>
-              <option value="Living Room">Living Room</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="Bedroom">Bedroom</option>
-              <option value="Bathroom">Bathroom</option>
-              <option value="Outdoor">Outdoor</option>
-            </select>
-
-            <button 
-              type="submit" 
-              class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
-            >
-              Search
-            </button>
-
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- Products Grid with php -->
-    <div class="py-8">
-      <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
-      <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-
-        <?php while($row = mysqli_fetch_assoc($result)) { ?>
-        <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
-            <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="block">
-                <img src="product_image/<?php echo $row['img']; ?>" 
-                     alt="<?php echo htmlspecialchars($row['name']); ?>" 
-                     class="w-full h-48 object-cover rounded-md mb-3">
-
-                <h3 class="font-semibold text-lg"><?php echo htmlspecialchars($row['name']); ?></h3>
-
-                <p class="text-sm text-gray-500 mb-2">
-                    <?php echo substr($row['description'], 0, 60) . "..."; ?>
-                </p>
-
-                <div class="flex items-center justify-between">
-                    <span class="text-emerald-600 font-semibold">&pound;<?php echo number_format($row['price'], 2); ?></span>
-                </div>
-            </a>
-        </article>
-        <?php } ?>
-
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="brand-logo">
-            <img src="images/image.png" alt="LuxeHome Logo" class="logo-img">
-            <div>
-              <h3 class="brand-name">LuxeHome</h3>
-              <p class="brand-tagline">Smart Living Elevated</p>
-            </div>
-          </div>
-          <p class="brand-description">
-            Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
-          </p>
-          <div class="social-links">
-            <a href="#" class="social-link">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="social-link">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-link">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link">
-              <i class="fab fa-pinterest"></i>
-            </a>
-          </div>
-        </div>
         
-        <div class="footer-links">
-          <h4 class="footer-heading">Quick Links</h4>
-          <ul class="footer-list">
-            <li><a href="index.php" class="footer-link">Home</a></li>
-            <li><a href="products.php" class="footer-link">Shop</a></li>
-            <li><a href="about_us.php" class="footer-link">About us</a></li>
-            <li><a href="contact.php" class="footer-link">Contact</a></li>
-          </ul>
+
+
+ <main>
+    <link rel="stylesheet" href="/css/adminstyle.css">
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <h2>Your Profile</h2>
+            <ul>
+                <li><a href="customer_dash.php" class="tab"><i class="fa fa-home fa-fw"></i> <span>Home</span></a></li>
+                <li><a href="customer_dash.php?edit_account" class="tab" ><i class="fa fa-cog fa-fw"></i> <span>Settings</span></a></li>
+                <li><a href="customer_dash.php?your_orders" class="tab" ><i class="fas fa-shopping-cart"></i> <span>Your Orders</span></a></li>
+                <li><a href="customer_dash.php?wishlist" class="tab" ><i class="fa fa-tasks"></i> <span>Wishlist</span></a></li>
+            </ul>
         </div>
-        
-        <div class="footer-contact">
-          <h4 class="footer-heading">Contact</h4>
-          <ul class="footer-list">
-            <li>hello@luxehome.com</li>
-            <li>1-800-LUXE-HOME</li>
-            <li>Mon-Fri: 9am-6pm EST</li>
-          </ul>
+        <div>
+        	<?php get_order_details();?>
         </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p class="footer-copyright">
-          © 2023 LuxeHome. All rights reserved. | 
-          <a href="#" class="footer-legal-link">Privacy Policy</a> | 
-          <a href="#" class="footer-legal-link">Terms of Service</a>
-        </p>
-      </div>
-    </div>
-  </footer>
+</main>
+
   
   <script src="js/script.js"></script>
   <script src="js/accessibility.js"></script>

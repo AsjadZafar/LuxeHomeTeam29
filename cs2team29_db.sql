@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 27, 2025 at 03:55 PM
+-- Generation Time: Dec 04, 2025 at 03:24 PM
 -- Server version: 8.0.44-0ubuntu0.22.04.1
 -- PHP Version: 8.3.21
 
@@ -90,7 +90,8 @@ CREATE TABLE `products` (
   `description` text COLLATE utf8mb4_unicode_520_ci,
   `price` decimal(10,2) NOT NULL,
   `quantity` int NOT NULL DEFAULT '0',
-  `installation_available` tinyint(1) NOT NULL DEFAULT '0'
+  `installation_available` tinyint(1) NOT NULL DEFAULT '0',
+  `img` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
@@ -105,6 +106,13 @@ CREATE TABLE `users` (
   `email` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `password_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`) VALUES
+(1, 'Asjad Zafar', 'asjad@gmail.com', '$2y$10$Yo0ZpWQz1SCDdGUe5b9H8OqKPy9E3rRMLqecTAMhiejdMfPExzVgm');
 
 --
 -- Indexes for dumped tables
@@ -191,7 +199,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

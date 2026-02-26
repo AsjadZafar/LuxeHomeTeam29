@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: /index.php");
             exit();
         } else {
-            echo "Incorrect password!";
+            header("Location: /login.php");
         }
     } else {
         echo "No user found with that email!";
