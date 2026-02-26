@@ -16,21 +16,23 @@
     content="LuxeHome, about LuxeHome, smart home furniture, luxury smart living, home automation UK, IoT home technology, smart furniture innovation" />
   <meta name="author" content="LuxeHome" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="images/image.png">
+   <!-- Favicon -->
+        <link rel="icon" href="images/image.png">
 
-  <!-- TailwindCSS & Font Awesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- TailwindCSS & Font Awesome -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- External CSS -->
-  <link rel="stylesheet" href="css/style.css">
+        <!-- External CSS -->
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/accessibility.css">
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/about_us-style.css">
+        <!-- Custom Styles -->
+        <link rel="stylesheet" href="css/about_us-style.css">
+
 </head>
 
-<body class="bg-gray-50">
+<body class="overflow-x-hidden">
 
   <!-- Header -->
   <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -68,12 +70,13 @@
     </div>
   </header>
 
-  <main class="overflow-x-hidden">
-    <!-- main content area; hides horizontal overflow to prevent layout break and keep the page clean -->
+  <!-- Main Content -->
+    <main id="main-content" class="overflow-x-hidden">
+  <!-- main content area; hides horizontal overflow to prevent layout break and keep the page clean -->
 
     <!-- About Us Hero Section -->
     <section class="relative bg-[#0a0f23] text-white overflow-hidden pt-20 pb-16 md:pt-28 md:pb-28">
-      <!-- dark blue background with white text for contrast, hides overflow, vertical padding ensures spacing and responsive layout for all screen sizes to improve readability and UX -->
+       <!-- dark blue background with white text for contrast, hides overflow, vertical padding ensures spacing and responsive layout for all screen sizes to improve readability and UX -->
 
       <!-- Premium Badge -->
       <div class="absolute 
@@ -83,8 +86,7 @@
       left-4 
       sm:left-6 
       md:left-10 
-      z-20">
-        <!-- container for badge, absolute positioning ensures it stands out above content, responsive spacing keeps layout consistent across devices and highlights premium features for users -->
+      z-20">  <!-- container for badge, absolute positioning ensures it stands out above content, responsive spacing keeps layout consistent across devices and highlights premium features for users -->
 
         <div class="inline-flex items-center gap-1.5
         bg-emerald-600/20
@@ -96,14 +98,12 @@
         text-[0.65rem] sm:text-xs md:text-sm
         rounded-full
         font-semibold
-        shadow-lg">
-          <!-- flex container, children centered vertically, horizontal gap between elements, green semi-transparent background for modern look, lighter border for contrast, medium blur for depth, responsive text size for readability, responsive padding for balance, fully rounded corners for pill shape, semi-bold text for emphasis, shadow to make element stand out for users -->
+        shadow-lg"> <!-- flex container, children centered vertically, horizontal gap between elements, green semi-transparent background for modern look, lighter border for contrast, medium blur for depth, responsive text size for readability, responsive padding for balance, fully rounded corners for pill shape, semi-bold text for emphasis, shadow to make element stand out for users -->
 
           <i class="fas fa-star text-emerald-400 text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem]"></i>
           <span>Prestige You Can Trust</span>
 
-        </div>
-        <!-- Font Awesome star icon, green for brand consistency, responsive size for readability across devices, emphasizes trust and premium feel for users -->
+        </div> <!-- Font Awesome star icon, green for brand consistency, responsive size for readability across devices, emphasizes trust and premium feel for users -->
       </div>
 
       <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
@@ -111,32 +111,28 @@
 
         <!-- Left Side -->
         <div class="relative md:w-1/2 space-y-6 z-10">
-          <!-- Left side container, relative positioning for layering control, half width on desktop for balanced layout, vertical spacing between children for readability and clean design -->
+         <!-- Left side container, relative positioning for layering control, half width on desktop for balanced layout, vertical spacing between children for readability and clean design -->
           <h1 class="text-4xl sm:text-5xl font-bold leading-tight">
-            <!-- main heading, larger font on small screens and above for emphasis, bold text for visual hierarchy, tight line spacing for compact, clean appearance and readability -->
-            Book a Free Installation <br>
-            <!-- line break for spacing, improves readability and separates call-to-action for users -->
-            <span class="text-emerald-500">With Every Purchase</span>
-            <!-- green text for brand consistency, draws attention to key message for users -->
+             <!-- main heading, larger font on small screens and above for emphasis, bold text for visual hierarchy, tight line spacing for compact, clean appearance and readability -->
+            Book a Free Installation <br> <!-- line break for spacing, improves readability and separates call-to-action for users -->
+            <span class="text-emerald-500">With Every Purchase</span> <!-- green text for brand consistency, draws attention to key message for users -->
           </h1>
 
-          <p class="text-lg text-gray-300 max-w-xl">
-            <!-- paragraph, larger text for readability, light grey text for subtle emphasis, maximum width for comfortable line length -->
+          <p class="text-lg text-gray-300 max-w-xl"> <!-- paragraph, larger text for readability, light grey text for subtle emphasis, maximum width for comfortable line length -->
             Enjoy a free installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.
             <!-- highlights free installation and customer support, builds trust, improves user confidence and reinforces brand reliability -->
           </p>
 
-          <div class="flex gap-4 mt-6">
-            <!-- flex container for buttons, adds spacing and top margin, ensures buttons are evenly spaced and visually balanced for better user interaction -->
-            <a href="products.html"
+          <div class="flex gap-4 mt-6">  <!-- flex container for buttons, adds spacing and top margin, ensures buttons are evenly spaced and visually balanced for better user interaction -->
+            <a href="products.php"
               class="px-6 py-3 bg-emerald-600 rounded-md font-semibold hover:bg-emerald-700 transition">
               Explore Collection →
             </a>
             <!-- link to product page, padding inside button for clickable area, green background for brand consistency, rounded corners for modern look, bold text for emphasis, dark green on hover and smooth transition to provide interactive feedback for users -->
 
-            <a href="contact.html"
+            <a href="contact.php"
               class="px-6 py-3 border border-white rounded-md font-semibold hover:bg-white hover:text-[#0a0f23] transition">
               Contact Our Team →
             </a>
@@ -145,8 +141,7 @@
         </div>
 
         <!-- Right Side -->
-        <div class="relative md:w-1/2 flex items-center justify-center overflow-visible pr-8 sm:pr-12 md:pr-0">
-          <!-- Right side container, relative positioning for layering, width adjusts for different screen sizes for balanced layout, flex container centers children vertically and horizontally, allows overflow to be visible for design elements, responsive right padding maintains alignment and visual balance for users -->
+        <div class="relative md:w-1/2 flex items-center justify-center overflow-visible pr-8 sm:pr-12 md:pr-0"> <!-- Right side container, relative positioning for layering, width adjusts for different screen sizes for balanced layout, flex container centers children vertically and horizontally, allows overflow to be visible for design elements, responsive right padding maintains alignment and visual balance for users -->
 
           <div class="absolute 
     right-[-20%] sm:right-[-15%] md:right-[-28%]  
@@ -158,8 +153,7 @@
     z-0
     opacity-80
     blur-md" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
-          </div>
-          <!-- absolute positioned, right offset adjusts for screen sizes, vertically centered and shifted for balance, width larger than parent for visual impact, aspect ratio for consistent shape, rounded for smooth edges, stacked behind elements for layering, semi-transparent and blurred for depth, diagonal gradient adds aesthetic and modern feel -->
+          </div> <!-- absolute positioned, right offset adjusts for screen sizes, vertically centered and shifted for balance, width larger than parent for visual impact, aspect ratio for consistent shape, rounded for smooth edges, stacked behind elements for layering, semi-transparent and blurred for depth, diagonal gradient adds aesthetic and modern feel -->
 
           <div class="relative text-center px-12 py-16 z-10 max-w-md overflow-visible
       translate-x-12 sm:translate-x-8 md:translate-x-28 scale-110 sm:scale-105 md:scale-110">
@@ -190,7 +184,8 @@
         </div>
       </div>
     </section>
-   <!-- Meet the Team -->
+
+    <!-- Meet the Team -->
     <!-- Team photos from Unsplash: https://unsplash.com -->
     <!-- Photo by Fotos on Unsplash-->
     <section class="py-16 bg-white"> <!-- section with vertical padding py-16 for spacing, white background for clean, neutral look -->
@@ -311,7 +306,6 @@
       </div>
     </section>
 
-
     <!--Our Inspiring History-->
     <!--Photos from Unsplash: https://unsplash.com -->
     <!-- Old headquarters photo by Agung Vitrama on Unsplash-->
@@ -334,7 +328,7 @@
         <!-- Vertical line for timeline -->
         <div class="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 border-l-[2px] border-emerald-500"
           style="height: calc(100% - 4rem); top: 2rem;"></div>
-        <!-- vertical line for timeline, absolute positioning and left-1/2 with -translate-x-1/2 to center horizontally, stretches from top to bottom (height calc 100% - 4rem) for full timeline coverage, border-l-2 and border-emerald-500 for clear visual guide, helps users easily follow timeline events -->
+        <<!-- vertical line for timeline, absolute positioning and left-1/2 with -translate-x-1/2 to center horizontally, stretches from top to bottom (height calc 100% - 4rem) for full timeline coverage, border-l-2 and border-emerald-500 for clear visual guide, helps users easily follow timeline events -->
 
         <!-- Timeline Events -->
         <div class="space-y-12"> <!-- timeline events container, space-y-12 adds vertical spacing between cards for clear separation, improves readability and makes it easier for users to follow the timeline -->
@@ -460,7 +454,7 @@
     </section>
 
 
-      <!-- What Drives LuxeHome Section -->
+    <!-- What Drives LuxeHome Section -->
     <section class="pt-20 pb-10 bg-white relative overflow-hidden">
       <!-- section container, pt-20 pb-10 for top and bottom spacing, bg-white for clean background, relative positioning for layered elements, overflow-hidden to prevent content spilling, spacing and clear layout improve readability and make content easy for users to follow -->
        <div class="max-w-7xl mx-auto px-4 md:px-20 relative z-10">
@@ -560,7 +554,8 @@
       </div>
     </section>
 
-      <!-- Customer Promises Section -->
+
+    <!-- Customer Promises Section -->
     <section class="pt-24 pb-12 bg-white"> <!-- Customer Promises section, pt-24 pb-12 for top and bottom spacing, bg-white for clean background, clear spacing and layout improve readability and make content easy for users to follow -->
       <div class="max-w-7xl mx-auto px-4 md:px-20">
         <!-- content container, max-w-7xl limits width for readability, mx-auto centers horizontally, px-4 and md:px-20 add horizontal padding on small and larger screens, responsive spacing improves UX and makes content easy for users to read -->
@@ -592,7 +587,7 @@
             </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains feature clearly, helps users quickly understand 24/7 data protection, improves readability and UX -->
           </div>
 
-           <!-- Promise 2: Customer Privacy -->
+          <!-- Promise 2: Customer Privacy -->
           <div
             class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
             <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
@@ -644,7 +639,7 @@
             </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains database reliability for smooth e-commerce, clear wording improves readability and helps users understand service reliability, enhancing UX -->
           </div>
 
-            <!-- Promise 5: Product Guarantee -->
+          <!-- Promise 5: Product Guarantee -->
           <div
             class="bg-white rounded-xl shadow-md p-6 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
             <!-- card container, white background for clean look, rounded-xl for smooth corners, p-6 for padding inside, text-center to align content, hover lifts card and adds bigger shadow for interactive feel, transition makes hover smooth, clear and interactive design improves UX and makes content easy to view -->
@@ -677,12 +672,12 @@
               We value your feedback. Reviews help us improve and provide even better service for your next purchase.
             </p> <!-- paragraph text, text-gray-600 for readable contrast, text-sm for smaller descriptive text, explains importance of user feedback, clear wording improves readability and helps users understand how reviews enhance future service, improving UX -->
           </div>
-  
+
         </div>
       </div>
     </section>
 
-     <!-- Closing/About Us Summary Section -->
+    <!-- Closing/About Us Summary Section -->
     <section class="relative pt-20 pb-20" style="
   background:
     linear-gradient(
@@ -712,13 +707,13 @@
           <!-- action buttons container, flex layout stacks vertically on small screens and horizontally on larger screens, justify-center centers buttons, gap-5 adds space between buttons, responsive layout improves usability and makes buttons easy to interact with, enhancing UX -->
 
           <!-- Primary CTA -->
-          <a href="products.html"
+          <a href="products.php"
             class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-md shadow-sm hover:bg-emerald-700 transition">
             Start Shopping →
           </a><!-- primary CTA button, links to products page, px-8 py-4 for comfortable clickable size, green background with white text for good contrast, font-semibold for emphasis, rounded corners and shadow for visual clarity, hover changes color to dark green with smooth transition, clear and visible button improves UX and makes action easy for users -->
 
           <!-- Secondary CTA -->
-          <a href="contact.html"
+          <a href="contact.php"
             class="px-8 py-4 bg-white text-gray-700 font-semibold rounded-md border border-gray-300 hover:bg-gray-100 transition">
             Contact Our Team
           </a>
@@ -727,7 +722,6 @@
         </div>
       </div>
     </section>
-
 
   </main>
 
