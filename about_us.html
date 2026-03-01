@@ -76,123 +76,85 @@
 
     <!-- About Us Hero Section -->
     <section class="relative bg-[#0a0f23] text-white overflow-hidden pt-20 pb-16 md:pt-28 md:pb-28">
-      <!-- dark blue background with white text for contrast, hides overflow, vertical padding ensures spacing and responsive layout for all screen sizes to improve readability and UX -->
-
-      <!-- Premium Badge -->
-      <div class="absolute 
-      top-6 
-      sm:top-8 
-      md:top-10 
-      left-4 
-      sm:left-6 
-      md:left-10 
-      z-20">
-        <!-- container for badge, absolute positioning ensures it stands out above content, responsive spacing keeps layout consistent across devices and highlights premium features for users -->
-
-        <div class="inline-flex items-center gap-1.5
-        bg-emerald-600/20
-        border border-emerald-400/30
-        backdrop-blur-md
-        text-emerald-400
-        px-2 py-1
-        sm:px-3 sm:py-1.5
-        text-[0.65rem] sm:text-xs md:text-sm
-        rounded-full
-        font-semibold
-        shadow-lg">
-          <!-- flex container, children centered vertically, horizontal gap between elements, green semi-transparent background for modern look, lighter border for contrast, medium blur for depth, responsive text size for readability, responsive padding for balance, fully rounded corners for pill shape, semi-bold text for emphasis, shadow to make element stand out for users -->
-
-          <i class="fas fa-star text-emerald-400 text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem]"></i>
-          <span>Prestige You Can Trust</span>
-
-        </div>
-        <!-- Font Awesome star icon, green for brand consistency, responsive size for readability across devices, emphasizes trust and premium feel for users -->
-      </div>
+      <!-- Relative positioning, dark blue background, white text for contrast, overflow hidden to prevent child elements from overflowing, top and bottom padding responsive for different screen sizes -->
 
       <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
-        <!-- maximum width constraint for readable content, horizontal padding for spacing, stacks items vertically on mobile and horizontally on desktop for responsive layout, keeps content aligned and user-friendly -->
+        <!--Centered container with max width, padding, and flexible layout for mobile and desktop -->
 
         <!-- Left Side -->
-        <div class="relative md:w-1/2 space-y-6 z-10">
-          <!-- Left side container, relative positioning for layering control, half width on desktop for balanced layout, vertical spacing between children for readability and clean design -->
-          <h1 class="text-4xl sm:text-5xl font-bold leading-tight">
-            <!-- main heading, larger font on small screens and above for emphasis, bold text for visual hierarchy, tight line spacing for compact, clean appearance and readability -->
-            Book a Free Installation <br>
-            <!-- line break for spacing, improves readability and separates call-to-action for users -->
-            <span class="text-emerald-500">With Every Purchase</span>
-            <!-- green text for brand consistency, draws attention to key message for users -->
-          </h1>
+        <div class="relative md:w-1/2 space-y-6 z-10 pb-20 sm:pb-24 md:pb-0">
+          <!-- half width on desktop, vertical spacing between items, layered above background, responsive bottom padding -->
 
+          <!-- Premium Badge -->
+          <div class="inline-flex items-center gap-2
+                  bg-emerald-600/20
+                  border border-emerald-400/30
+                  backdrop-blur-md
+                  text-emerald-400
+                  px-3 py-1.5
+                  text-sm
+                  rounded-full
+                  font-semibold
+                  shadow-lg">
+            <!-- rounded badge with icon and text, green colors, small padding, shadow, and blur effect, items aligned in a row -->
+            <i class="fas fa-star text-emerald-400 text-sm"></i>
+            <span>Prestige You Can Trust</span>
+          </div>
+
+          <!-- Heading -->
+          <h1 class="text-4xl sm:text-5xl font-bold leading-tight mt-4">
+            Book a Free Installation <br>
+            <span class="text-emerald-500">With Every Purchase</span>
+          </h1> <!-- main heading with bold text, large size, and green text on the second line -->
+
+          <!-- Paragraph -->
           <p class="text-lg text-gray-300 max-w-xl">
-            <!-- paragraph, larger text for readability, light grey text for subtle emphasis, maximum width for comfortable line length -->
             Enjoy a free installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.
-            <!-- highlights free installation and customer support, builds trust, improves user confidence and reinforces brand reliability -->
-          </p>
+          </p> <!-- paragraph under heading with light grey text, larger font, and limited width for readability -->
 
+          <!-- Buttons -->
           <div class="flex gap-4 mt-6">
-            <!-- flex container for buttons, adds spacing and top margin, ensures buttons are evenly spaced and visually balanced for better user interaction -->
             <a href="products.html"
               class="px-6 py-3 bg-emerald-600 rounded-md font-semibold hover:bg-emerald-700 transition">
               Explore Collection →
             </a>
-            <!-- link to product page, padding inside button for clickable area, green background for brand consistency, rounded corners for modern look, bold text for emphasis, dark green on hover and smooth transition to provide interactive feedback for users -->
-
+            <!-- flex container for buttons with space between and top margin, button has green background, rounded corners, semi-bold text, padding, and smooth hover effect -->
             <a href="contact.html"
               class="px-6 py-3 border border-white rounded-md font-semibold hover:bg-white hover:text-[#0a0f23] transition">
-              Contact Our Team →
+              Contact Our Team
             </a>
-            <!-- link to contact page, padding inside button for clickable area, rounded corners for modern look, bold text for emphasis, white background and dark text on hover for clear feedback, smooth transition improves user interaction -->
+            <!-- button with white border, rounded corners, semi-bold text, padding, changes to white background and dark text on hover with smooth transition -->
           </div>
+
         </div>
 
         <!-- Right Side -->
         <div class="relative md:w-1/2 flex items-center justify-center overflow-visible pr-8 sm:pr-12 md:pr-0">
-          <!-- Right side container, relative positioning for layering, width adjusts for different screen sizes for balanced layout, flex container centers children vertically and horizontally, allows overflow to be visible for design elements, responsive right padding maintains alignment and visual balance for users -->
+          <!-- right side of container, half width on desktop, centers content, allows overflow, responsive right padding -->
+          <div class="hidden md:block absolute 
+                  right-[-28%]
+                  top-1/2
+                  -translate-y-1/2
+                  w-[120%] lg:w-[130%]
+                  aspect-[3/3.1]
+                  rounded-full
+                  overflow-hidden
+                  z-0
+                  transition-all duration-500 ease-in-out">
+            <!-- ellipse background, hidden on small screens, absolute positioned, vertically centered, hides overflow, stacked behind other content, smooth transition -->
 
-          <div class="absolute 
-    right-[-20%] sm:right-[-15%] md:right-[-28%]  
-    top-[50%] md:top-1/2 
-    -translate-y-1/2 
-    w-[120%] sm:w-[110%] md:w-[120%] 
-    aspect-[3/3.1] 
-    rounded-full 
-    z-0
-    opacity-80
-    blur-md" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+            <!--Photo by Anita Chong on Unsplash-->
+            <img src="images/herosection/livingroom.jpg" alt="Luxury smart home interior"
+              class="w-full h-full max-w-full object-cover" />
+            <!-- image fills its container fully, keeps aspect ratio, covers entire area without stretching using object-cover -->
           </div>
-          <!-- absolute positioned, right offset adjusts for screen sizes, vertically centered and shifted for balance, width larger than parent for visual impact, aspect ratio for consistent shape, rounded for smooth edges, stacked behind elements for layering, semi-transparent and blurred for depth, diagonal gradient adds aesthetic and modern feel -->
-
-          <div class="relative text-center px-12 py-16 z-10 max-w-md overflow-visible
-      translate-x-12 sm:translate-x-8 md:translate-x-28 scale-110 sm:scale-105 md:scale-110">
-            <!-- container relative positioned, text centered for readability, horizontal and vertical padding for spacing, stacked in front of background curve for visual layering, max width medium for comfortable content width, overflow visible for overlapping elements, x translation and scale adjusted for responsive balance and emphasis on key content -->
-
-            <!-- Heroicons Earth Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-              class="w-32 h-32 md:w-60 md:h-60 text-[#0a0f23] mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-15">
-              <path fill-rule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM8.547 4.505a8.25 8.25 0 1 0 11.672 8.214l-.46-.46a2.252 2.252 0 0 1-.422-.586l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.211.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.654-.261a2.25 2.25 0 0 1-1.384-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.279-2.132Z"
-                clip-rule="evenodd" />
-            </svg>
-            <!-- SVG element, width and height adjust for desktop and smaller screens, scalable via viewBox, horizontally and vertically centered in parent, stacked behind text for depth, subtle opacity adds modern visual accent -->
-
-            <!-- Heading -->
-            <h3 class="relative z-10 text-2xl sm:text-4xl font-bold text-emerald-950 mt-4" style="color: #0a0f23;">
-              Excellence in Service
-            </h3>
-            <!-- subheading, relative positioning with z-10 to stay above other elements, font size 2xl on small screens and 4xl on desktop (responsive), bold text, dark blue #0a0f23 for readability, top margin mt-4 for spacing -->
-
-            <!-- Subtext -->
-            <p class="text-emerald-900 mt-2 max-w-sm mx-auto text-lg sm:text-xl">
-              Recognised by UK homeowners for exceptional care and support
-            </p>
-            <!-- paragraph, dark green text (text-emerald-900) for brand consistency, top margin mt-2 for spacing, max width max-w-sm for comfortable line length, centered mx-auto, text size text-lg on small screens and text-xl on desktop for readability -->
-          </div>
-
         </div>
+
       </div>
     </section>
+
 
     <!-- Meet the Team -->
     <!-- Team photos from Unsplash: https://unsplash.com -->
