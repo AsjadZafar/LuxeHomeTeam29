@@ -7,9 +7,24 @@ error_reporting(E_ALL);
 $logged_in = false;
 $username = "";
 
-if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+// Check if user is logged in
+if (isset($_SESSION['username']) && isset($_SESSION['user_id'])) {
+    $logged_in = true;
+    $username = $_SESSION['username'];
+} else {
+    // Redirect to login if not logged in
+    header("Location: login.php");
+    exit();
+}
+
+// Determine active tab
+$active_tab = 'home';
+if (isset($_GET['edit_account'])) {
+    $active_tab = 'edit_account';
+} elseif (isset($_GET['your_orders'])) {
+    $active_tab = 'your_orders';
+} elseif (isset($_GET['wishlist'])) {
+    $active_tab = 'wishlist';
 }
 ?>
 <!doctype html>
