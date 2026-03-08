@@ -100,5 +100,26 @@ function getOrderItems($order_id) {
     return $stmt->get_result();
 }
 
+function addProductReview($user_id, $product_id, $rating, $review) {
+    global $conn;
+    $review_date = date('Y-m-d H:i:s');
+    $stmt = $conn->prepare("INSERT INTO reviews (user_id, product_id, review, rating, review_date) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("iisss", $user_id, $product_id, $review, $rating, $review_date);
+    return $stmt->execute();
+}
+
+function getProductReviews($product_id) {
+    global $conn;
+    $stmt = $conn->prepare("
+        SELECT r.*, u.username 
+        FROM reviews r 
+        JOIN users u ON r.user_id = u.user_id 
+        WHERE r.product_id = ? 
+        ORDER BY r.review_date DESC
+    ");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    return $stmt->get_result();
+}
 
 ?>
