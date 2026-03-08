@@ -71,4 +71,34 @@ function deleteAddress($address_id, $user_id) {
     return $stmt->execute();
 }
 
+function getUserOrders($user_id) {
+    global $conn;
+    
+    $stmt = $conn->prepare("
+        SELECT o.*, a.address_line1, a.city, a.postcode
+        FROM orders o 
+        LEFT JOIN addresses a ON o.address_id = a.address_id 
+        WHERE o.user_id = ? 
+        ORDER BY o.order_date DESC
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+function getOrderItems($order_id) {
+    global $conn;
+   
+    $stmt = $conn->prepare("
+        SELECT o.*, p.name, p.description, p.img, p.price as product_price
+        FROM orders o 
+        JOIN products p ON o.product_id = p.product_id 
+        WHERE o.orders_id = ?
+    ");
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+
 ?>
