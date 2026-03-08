@@ -142,5 +142,39 @@ function getUserProductReview($user_id, $product_id) {
     return $result->fetch_assoc();
 }
 
+function addToWishlist($user_id, $product_id) {
+    global $conn;
+    // Check if already in wishlist
+    $check = $conn->prepare("SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?");
+    $check->bind_param("ii", $user_id, $product_id);
+    $check->execute();
+    $result = $check->get_result();
+    
+    if ($result->num_rows == 0) {
+        
+        $stmt = $conn->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $user_id, $product_id);
+        return $stmt->execute();
+    }
+    return false; // Already in wishlist
+}
+
+function removeFromWishlist($user_id, $product_id) {
+    global $conn;
+    $stmt = $conn->prepare("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?");
+    $stmt->bind_param("ii", $user_id, $product_id);
+    return $stmt->execute();
+}
+
+function getWishlistCount($user_id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM wishlist WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['count'];
+}
+
 
 ?>
