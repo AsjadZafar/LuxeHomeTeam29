@@ -122,4 +122,25 @@ function getProductReviews($product_id) {
     return $stmt->get_result();
 }
 
+// Check if user has reviewed a specific product
+function hasUserReviewedProduct($user_id, $product_id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM reviews WHERE user_id = ? AND product_id = ?");
+    $stmt->bind_param("ii", $user_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->num_rows > 0;
+}
+
+// Get user's review for a specific product
+function getUserProductReview($user_id, $product_id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM reviews WHERE user_id = ? AND product_id = ?");
+    $stmt->bind_param("ii", $user_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+
 ?>
