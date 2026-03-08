@@ -176,5 +176,24 @@ function getWishlistCount($user_id) {
     return $row['count'];
 }
 
+function getCartCount() {
+    return isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+}
+
+function get_order_details() {
+    if (!isset($_SESSION['user_id'])) {
+        return;
+    }
+    
+    if (isset($_GET['edit_account'])) {
+        include 'php_functions/edit_account.php';
+    } elseif (isset($_GET['your_orders'])) {
+        include 'php_functions/your_orders.php';
+    } elseif (isset($_GET['wishlist'])) {
+        include 'php_functions/wishlist.php';
+    } else {
+        include 'php_functions/dashboard_home.php';
+    }
+}
 
 ?>
