@@ -74,16 +74,20 @@
   <main id="main-content" class="overflow-x-hidden">
     <!-- main content area; hides horizontal overflow to prevent layout break and keep the page clean -->
 
-    <!-- About Us Hero Section -->
-    <section class="relative bg-[#0a0f23] text-white overflow-hidden pt-20 pb-16 md:pt-28 md:pb-28">
-      <!-- Relative positioning, dark blue background, white text for contrast, overflow hidden to prevent child elements from overflowing, top and bottom padding responsive for different screen sizes -->
+        <!-- About Us Hero Section -->
+    <section class="relative bg-[#0a0f23] text-white overflow-hidden">
+      <!-- positioned relative for overlays, dark blue background, white text for readability, and hides any overflowing content -->
 
-      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
-        <!--Centered container with max width, padding, and flexible layout for mobile and desktop -->
+      <!-- Faint white overlay -->
+      <div class="absolute inset-0 bg-white/5 pointer-events-none z-0"></div>
+      <!-- faint white overlay covering the entire hero section -->
+
+      <div class="max-w-7xl mx-auto px-0 flex flex-col md:flex-row md:items-stretch items-center w-full">
+        <!-- centered container with max width, flex layout column on mobile and row on desktop, and vertical alignment -->
 
         <!-- Left Side -->
-        <div class="relative md:w-1/2 space-y-6 z-10 pb-20 sm:pb-24 md:pb-0">
-          <!-- half width on desktop, vertical spacing between items, layered above background, responsive bottom padding -->
+        <div class="relative w-full md:w-1/2 space-y-6 z-10 py-8 md:py-32 pl-6 md:pl-0 → pl-6 md:pl-6">
+          <!-- left side container with full width on mobile and half width on desktop, vertical spacing between items, positioned above background, and responsive padding top and bottom with slight left padding -->
 
           <!-- Premium Badge -->
           <div class="inline-flex items-center gap-2
@@ -96,9 +100,10 @@
                   rounded-full
                   font-semibold
                   shadow-lg">
-            <!-- rounded badge with icon and text, green colors, small padding, shadow, and blur effect, items aligned in a row -->
+            <!-- rounded badge with icon and text, uses green tones, small padding, shadow and blur effect, items arranged in a row -->
             <i class="fas fa-star text-emerald-400 text-sm"></i>
-            <span>Prestige You Can Trust</span>
+            <span> Prestige You Can Trust</span>
+            <!-- star icon with green color and small size, including descriptive text inside the badge -->
           </div>
 
           <!-- Heading -->
@@ -131,25 +136,24 @@
         </div>
 
         <!-- Right Side -->
-        <div class="relative md:w-1/2 flex items-center justify-center overflow-visible pr-8 sm:pr-12 md:pr-0">
-          <!-- right side of container, half width on desktop, centers content, allows overflow, responsive right padding -->
-          <div class="hidden md:block absolute 
-                  right-[-28%]
-                  top-1/2
-                  -translate-y-1/2
-                  w-[120%] lg:w-[130%]
-                  aspect-[3/3.1]
-                  rounded-full
-                  overflow-hidden
-                  z-0
-                  transition-all duration-500 ease-in-out">
-            <!-- ellipse background, hidden on small screens, absolute positioned, vertically centered, hides overflow, stacked behind other content, smooth transition -->
+        <div class="relative w-full md:w-1/2 flex justify-center md:justify-end mt-4 md:mt-0">
+          <!-- right side container with full width on mobile and half width on desktop, centers content horizontally, adjusts alignment on desktop, and adds responsive top margin -->
+          <div class="w-full 
+          md:w-full 
+          md:max-w-none 
+          md:h-full 
+          md:aspect-square
+          overflow-hidden 
+          shadow-2xl
+          -mx-6 
+          md:mx-0">
+            <!-- right side image container with full width, full height on desktop, square aspect ratio, hides overflow, adds shadow, and responsive horizontal margin -->
 
             <!--Photo by Anita Chong on Unsplash-->
             <img src="images/herosection/livingroom.jpg" alt="Luxury smart home interior"
-              class="w-full h-full max-w-full object-cover" />
-            <!-- image fills its container fully, keeps aspect ratio, covers entire area without stretching using object-cover -->
-          </div>
+              class="w-full h-full object-cover hover:scale-105 transition duration-700">
+            <!-- image fills the container, maintains aspect ratio, covers entire area, and slightly scales up on hover with smooth transition -->
+            </div>
         </div>
 
       </div>
