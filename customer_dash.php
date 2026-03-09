@@ -7,239 +7,158 @@ error_reporting(E_ALL);
 $logged_in = false;
 $username = "";
 
-if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+// Check if user is logged in
+if (isset($_SESSION['username']) && isset($_SESSION['user_id'])) {
+    $logged_in = true;
+    $username = $_SESSION['username'];
+} else {
+    // Redirect to login if not logged in
+    header("Location: login.php");
+    exit();
+}
+
+// Determine active tab
+$active_tab = 'home';
+if (isset($_GET['edit_account'])) {
+    $active_tab = 'edit_account';
+} elseif (isset($_GET['your_orders'])) {
+    $active_tab = 'your_orders';
+} elseif (isset($_GET['wishlist'])) {
+    $active_tab = 'wishlist';
 }
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Products | LuxeHome</title>
-  <meta name="description" content="Browse LuxeHome premium smart home products for living room, kitchen, bedroom and outdoors." />
-  <link rel="icon" href="images/image.png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/accessibility.css">
-  <style>
-    .logo-img{ 
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    
-    .nav-link {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #4b5563;
-        transition: color 0.3s ease;
-    }
-    
-    .nav-link.active {
-        color: #047857;
-        border-bottom: 2px solid #047857;
-        padding-bottom: 0.25rem;
-    }
-    
-    .nav-link:hover {
-        color: #047857;
-    }
-    
-    .action-btn {
-        color: #4b5563;
-        transition: color 0.3s ease;
-    }
-    
-    .action-btn:hover {
-        color: #047857;
-    }
-    
-    .cart-badge {
-        position: absolute;
-        top: -0.5rem;
-        right: -0.5rem;
-        background: #059669;
-        color: white;
-        font-size: 0.75rem;
-        border-radius: 50%;
-        width: 1.25rem;
-        height: 1.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>My Dashboard | LuxeHome</title>
+    <meta name="description" content="Manage your account, orders, and wishlist" />
+    <link rel="icon" href="images/image.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <link rel="stylesheet" href="css/userdashboard.css">
+    <style>
+        .logo-img{ 
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-  <!-- Skip Link for Accessibility -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Accessibility Panel -->
-  <div id="accessibilityPanel" class="accessibility-panel">
-    <div class="accessibility-header">
-      <h2 class="accessibility-title">Accessibility Settings</h2>
-      <p class="accessibility-subtitle">Customize your browsing experience</p>
-      <button id="closePanel" class="accessibility-close">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="accessibility-content">
-      <div class="accessibility-section">
-        <h3 class="accessibility-section-title">
-          <i class="fas fa-eye"></i>
-          Visual Preferences
-        </h3>
-        <div class="accessibility-options">
-          <div class="accessibility-option">
-            <input type="checkbox" id="darkMode">
-            <label for="darkMode">Dark Mode</label>
-          </div>
-          <div class="accessibility-option">
-            <input type="checkbox" id="highContrast">
-            <label for="highContrast">High Contrast</label>
-          </div>
-          <div class="accessibility-option">
-            <label for="fontSize">Font Size</label>
-            <input type="range" id="fontSize" min="0" max="3" value="1">
-            <div class="font-size-display" id="fontSizeDisplay">Normal</div>
-          </div>
+    <!-- Header (kept from original) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.php" class="flex items-center space-x-3">
+                    <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+                        <p class="text-xs text-gray-500">Smart Living Elevated</p>
+                    </div>
+                </a>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.php" class="nav-link">Home</a>
+                    <a href="products.php" class="nav-link">Shop</a>
+                    <a href="about_us.php" class="nav-link">About us</a>
+                    <a href="contact.php" class="nav-link">Contact</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <a href="cart.php" class="action-btn relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge"><?php echo getCartCount(); ?></span>
+                    </a>
+                    <span class="text-gray-900 font-semibold">Hi, <?php echo htmlspecialchars($username) ?>!</span>
+                </div>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <div class="accessibility-section">
-        <h3 class="accessibility-section-title">
-          <i class="fas fa-text-height"></i>
-          Text & Reading
-        </h3>
-        <div class="accessibility-options">
-          <div class="accessibility-option">
-            <input type="checkbox" id="dyslexiaFont">
-            <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
-          </div>
-          <div class="accessibility-option">
-            <input type="checkbox" id="lineSpacing">
-            <label for="lineSpacing">Increased Line Spacing</label>
-          </div>
+    <!-- Main Dashboard Area -->
+    <main id="main-content">
+        <div class="admin-wrapper">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <h2>
+                    <i class="fas fa-user-circle"></i>
+                    My Account
+                </h2>
+                <ul>
+                    <li>
+                        <a href="customer_dash.php" class="tab <?php echo $active_tab == 'home' ? 'active' : ''; ?>">
+                            <i class="fa fa-home fa-fw"></i> 
+                            <span>Dashboard Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customer_dash.php?edit_account" class="tab <?php echo $active_tab == 'edit_account' ? 'active' : ''; ?>">
+                            <i class="fa fa-cog fa-fw"></i> 
+                            <span>Account Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customer_dash.php?your_orders" class="tab <?php echo $active_tab == 'your_orders' ? 'active' : ''; ?>">
+                            <i class="fas fa-shopping-cart"></i> 
+                            <span>My Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customer_dash.php?wishlist" class="tab <?php echo $active_tab == 'wishlist' ? 'active' : ''; ?>">
+                            <i class="fa fa-heart"></i> 
+                            <span>My Wishlist</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="admin-main">
+                <!-- Header with Welcome and Logout -->
+                <div class="admin-header">
+                    <h1>
+                        <i class="fas fa-tachometer-alt"></i>
+                        <?php
+                        switch($active_tab) {
+                            case 'edit_account':
+                                echo 'Account Settings';
+                                break;
+                            case 'your_orders':
+                                echo 'My Orders';
+                                break;
+                            case 'wishlist':
+                                echo 'My Wishlist';
+                                break;
+                            default:
+                                echo 'Dashboard';
+                        }
+                        ?>
+                    </h1>
+                    <form method="POST" action="php_functions/logout.php" style="display: inline;">
+                        <button type="submit" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Dynamic Content -->
+                <?php get_order_details(); ?>
+            </div>
         </div>
-      </div>
+    </main>
 
-      <div class="accessibility-section">
-        <h3 class="accessibility-section-title">
-          <i class="fas fa-mouse-pointer"></i>
-          Navigation
-        </h3>
-        <div class="accessibility-options">
-          <div class="accessibility-option">
-            <input type="checkbox" id="focusIndicator">
-            <label for="focusIndicator">Enhanced Focus Indicators</label>
-          </div>
-          <div class="accessibility-option">
-            <input type="checkbox" id="skipLinks">
-            <label for="skipLinks">Enable Skip Links</label>
-          </div>
-        </div>
-      </div>
-
-      <button id="resetSettings" class="accessibility-reset">
-        <i class="fas fa-undo"></i> Reset All Settings
-      </button>
-    </div>
-  </div>
-
-  <!-- Accessibility Panel Overlay -->
-  <div id="panelOverlay" class="panel-overlay"></div>
-
-  <!-- Accessibility Toggle Button -->
-  <button id="togglePanel" class="accessibility-toggle">
-    <i class="fas fa-universal-access"></i>
-  </button>
-
-  <!-- Header -->
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center py-4">
-        <a href="index.php" class="flex items-center space-x-3">
-          <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
-          <div>
-            <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
-            <p class="text-xs text-gray-500">Smart Living Elevated</p>
-          </div>
-        </a>
-
-        <!-- Navigation -->
-        <nav class="hidden md:flex space-x-8">
-          <a href="index.php" class="nav-link">Home</a>
-          <a href="products.php" class="nav-link active">Shop</a>
-          <a href="about_us.php" class="nav-link">About us</a>
-          <a href="contact.php" class="nav-link">Contact</a>
-        </nav>
-
-        <!-- Actions -->
-        <div class="flex items-center space-x-4">
-          <button class="action-btn">
-            <i class="fas fa-search"></i>
-          </button>
-          
-          <?php if ($logged_in): ?>
-            <a href="cart.php" class="action-btn relative">
-              <i class="fas fa-shopping-cart"></i>
-              <span class="cart-badge">3</span>
-            </a>
-            <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
-          <?php else: ?>
-            <a href="cart.php" class="action-btn relative">
-              <i class="fas fa-shopping-cart"></i>
-              <span class="cart-badge">0</span>
-            </a>
-            <a href="login.php" class="action-btn">
-              <i class="fas fa-user"></i>
-            </a>
-          <?php endif; ?>
-        </div>
-        
-        <?php if ($logged_in): ?>
-        <div class="flex items-center space-x-2">
-          <form method="POST" action="php_functions/logout.php">
-            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
-          </form>
-          
-          <?php 
-          ?>
-          <form method="POST" action="admin_dash.php">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
-          </form>
-        </div>
-        <?php endif; ?>
-      </div>
-    </div>
-  </header>
-        
-
-
- <main>
-    <link rel="stylesheet" href="/css/adminstyle.css">
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <div class="admin-sidebar">
-            <h2>Your Profile</h2>
-            <ul>
-                <li><a href="customer_dash.php" class="tab"><i class="fa fa-home fa-fw"></i> <span>Home</span></a></li>
-                <li><a href="customer_dash.php?edit_account" class="tab" ><i class="fa fa-cog fa-fw"></i> <span>Settings</span></a></li>
-                <li><a href="customer_dash.php?your_orders" class="tab" ><i class="fas fa-shopping-cart"></i> <span>Your Orders</span></a></li>
-                <li><a href="customer_dash.php?wishlist" class="tab" ><i class="fa fa-tasks"></i> <span>Wishlist</span></a></li>
-            </ul>
-        </div>
-        <div>
-        	<?php get_order_details();?>
-        </div>
-</main>
-
-  
-  <script src="js/script.js"></script>
-  <script src="js/accessibility.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/accessibility.js"></script>
 </body>
 </html>
