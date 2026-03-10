@@ -48,8 +48,8 @@ mysqli_begin_transaction($conn);
 try {
     // Insert order
     $order_date = date('Y-m-d H:i:s');
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, order_date, total) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("iisd", $user_id, $address_id, $order_date, $total);
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, order_date, price) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("iisd", $user_id, $address_id, $order_date, $price);
     $stmt->execute();
     $order_id = $stmt->insert_id;
     $stmt->close();
