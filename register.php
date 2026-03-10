@@ -5,12 +5,54 @@ error_reporting(E_ALL);
 
 $logged_in = false;
 $username = "";
+$success_message = "";
+
+// Database connection
+$servername = "localhost";
+$db_username = "cs2team29";
+$db_password = "eCDVXBXdLlV2mSauOg6fUiBZ9";
+$db_name = "cs2team29_db";
+
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Handle registration
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username_input = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password_hash'];
+    $confirm_password = $_POST['confirm_password'];
+
+    // Check passwords match
+    if ($password !== $confirm_password) {
+        $success_message = "Passwords do not match!";
+    } else {
+        // Hash the password
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // Prepare and execute insert
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $username_input, $email, $password_hash);
+
+        if ($stmt->execute()) {
+            $success_message = "Your account has been created successfully!";
+        } else {
+            $success_message = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+}
 
 if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -222,8 +264,14 @@ if (isset($_SESSION['username'])) {
         <div class="login-container">
             <!--Registration Box-->
             <div class="login-box">
+                <?php if (!empty($success_message)) : ?>
+    				<div class="success-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
+       					<?php echo htmlspecialchars($success_message); ?>
+    				</div>
+				<?php endif; ?>
+
                 <h3>Register</h3>
-                <form action="php_functions/user_register.php" method="POST">
+                <form action="" method="POST">
                     <label>Full Name</label>
                     <input type="text" name="username" required>
 
@@ -300,7 +348,7 @@ if (isset($_SESSION['username'])) {
             
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    Â© 2023 LuxeHome. All rights reserved. | 
+                    © 2023 LuxeHome. All rights reserved. | 
                     <a href="#" class="footer-legal-link">Privacy Policy</a> | 
                     <a href="#" class="footer-legal-link">Terms of Service</a>
                 </p>

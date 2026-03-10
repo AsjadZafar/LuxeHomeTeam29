@@ -256,6 +256,7 @@ if (isset($_GET['id'])) {
         <h1 class="text-2xl font-bold mb-2"><?= $row['name'] ?></h1>
         <p class="text-emerald-600 font-semibold text-xl mb-4">&pound;<?= number_format($row['price'], 2) ?></p>
         <p class="text-gray-600 mb-4"><?= $row['description'] ?></p>
+        <p class="text-gray-600 mb-4">Category: <?= $row['category'] ?></p>
 
         <div class="mb-4">
           <label class="block text-sm text-gray-600 mb-2">Quantity in stock: <?= $row['quantity']?></label>

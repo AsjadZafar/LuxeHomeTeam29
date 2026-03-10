@@ -253,7 +253,7 @@ $result = mysqli_query($conn, $sql);
             />
 
             <!-- NEED TO ADD CATEGORY!!!!! -->
-            <select id="categoryFilter" name="category" class="p-3 border rounded-md">
+            <select id="categoryFilter" name="catSearch" class="p-3 border rounded-md">
               <option value="">All categories</option>
               <option value="Living Room">Living Room</option>
               <option value="Kitchen">Kitchen</option>
@@ -356,7 +356,7 @@ $result = mysqli_query($conn, $sql);
       
       <div class="footer-bottom">
         <p class="footer-copyright">
-          Â© 2023 LuxeHome. All rights reserved. | 
+          © 2023 LuxeHome. All rights reserved. | 
           <a href="#" class="footer-legal-link">Privacy Policy</a> | 
           <a href="#" class="footer-legal-link">Terms of Service</a>
         </p>

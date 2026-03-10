@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
+require_once 'dbh.php';
 
 if(isset($_POST["add_product"])) {
     $product_name = $_POST['name'];
@@ -11,16 +12,17 @@ if(isset($_POST["add_product"])) {
     $product_quantity = $_POST['quantity'];
     $product_install = $_POST['installation_available'];
     $product_img = $_FILES['img']['name'];
+	$product_category = $_POST['product_category'];
 
     $tmp = explode(".",$product_img);
 
     $newfilename = round(microtime(true)). '.' .end($tmp);
 
-    $uploadpath = "/product_image/". $newfilename;
+    $uploadpath = "../product_image/". $newfilename;
 
     move_uploaded_file($_FILES['img']['tmp_name'], $uploadpath);
 
-    require_once 'dbh.php';
+    //require_once 'dbh.php';
 
     $product_name = mysqli_real_escape_string($conn, $product_name);
     $product_description = mysqli_real_escape_string($conn, $product_description);
@@ -28,9 +30,10 @@ if(isset($_POST["add_product"])) {
     $product_quantity = mysqli_real_escape_string($conn, $product_quantity);
     $product_install = mysqli_real_escape_string($conn, $product_install);
     $newfilename = mysqli_real_escape_string($conn, $newfilename);
+	$product_category = mysqli_real_escape_string($conn, $product_category);
 
-    $sql = "INSERT into products(name,description,price,quantity,installation_available,img) 
-    Values('$product_name','$product_description','$product_price','$product_quantity','$product_install','$newfilename')";
+    $sql = "INSERT into products(name,description,price,quantity,installation_available,img, category) 
+    Values('$product_name','$product_description','$product_price','$product_quantity','$product_install','$newfilename', '$product_category')";
 
     $data = mysqli_query($conn,$sql);
 
@@ -164,6 +167,17 @@ if(isset($_POST["add_product"])) {
                         <label for="quantity">Quantity *</label>
                         <input type="number" id="quantity" name="quantity" class="form-control" required>
                     </div>
+                    
+                     <div class="form-group">
+                        <label for="installation_available">Category *</label>
+                        <select id="product_category" name="product_category" class="form-control" required>
+                            <option value="Bedroom">Bedroom</option>
+                            <option value="Bathroom">Bathroom</option>
+                        	<option value="Kitchen">Kitchen</option>
+                        	<option value="Living Room">Living Room</option>
+                        	<option value="Outdoor">Outdoor</option>
+                        </select>
+                    </div>    
                     
                     <div class="form-group">
                         <label for="installation_available">Installation Available *</label>
