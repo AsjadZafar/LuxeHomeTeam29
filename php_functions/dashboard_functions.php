@@ -5,8 +5,6 @@ error_reporting(E_ALL);
 
 require_once 'dbh.php';
 
-// php_functions/dashboard_functions.php
-
 function getUserDetails($user_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT user_id, username, email FROM users WHERE user_id = ?");
@@ -26,7 +24,6 @@ function updateUserDetails($user_id, $username, $email) {
 function changePassword($user_id, $old_password, $new_password) {
     global $conn;
     
-    // Verify old password
     $stmt = $conn->prepare("SELECT password_hash FROM users WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -90,10 +87,10 @@ function getOrderItems($order_id) {
     global $conn;
    
     $stmt = $conn->prepare("
-        SELECT o.*, p.name, p.description, p.img, p.price as product_price
-        FROM orders o 
-        JOIN products p ON o.product_id = p.product_id 
-        WHERE o.orders_id = ?
+        SELECT oi.*, p.name, p.description, p.img, p.price as product_price
+        FROM order_items oi 
+        JOIN products p ON oi.product_id = p.product_id 
+        WHERE oi.order_id = ?
     ");
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
@@ -122,7 +119,6 @@ function getProductReviews($product_id) {
     return $stmt->get_result();
 }
 
-// Check if user has reviewed a specific product
 function hasUserReviewedProduct($user_id, $product_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM reviews WHERE user_id = ? AND product_id = ?");
@@ -132,7 +128,6 @@ function hasUserReviewedProduct($user_id, $product_id) {
     return $result->num_rows > 0;
 }
 
-// Get user's review for a specific product
 function getUserProductReview($user_id, $product_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM reviews WHERE user_id = ? AND product_id = ?");
@@ -144,19 +139,17 @@ function getUserProductReview($user_id, $product_id) {
 
 function addToWishlist($user_id, $product_id) {
     global $conn;
-    // Check if already in wishlist
     $check = $conn->prepare("SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?");
     $check->bind_param("ii", $user_id, $product_id);
     $check->execute();
     $result = $check->get_result();
     
     if ($result->num_rows == 0) {
-        
         $stmt = $conn->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $user_id, $product_id);
         return $stmt->execute();
     }
-    return false; // Already in wishlist
+    return false;
 }
 
 function removeFromWishlist($user_id, $product_id) {
@@ -181,6 +174,7 @@ function getCartCount() {
 }
 
 function get_order_details() {
+    global $conn;
     if (!isset($_SESSION['user_id'])) {
         return;
     }
@@ -191,9 +185,10 @@ function get_order_details() {
         include 'php_functions/your_orders.php';
     } elseif (isset($_GET['wishlist'])) {
         include 'php_functions/wishlist.php';
+    } elseif (isset($_GET['warranty_view'])) {
+        include 'php_functions/warranty_view.php';
     } else {
         include 'php_functions/dashboard_home.php';
     }
 }
-
 ?>

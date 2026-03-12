@@ -178,138 +178,120 @@ if (isset($_SESSION['username'])) {
                 </div>
             </div>
         </section>
-<!--SQL Query for the warranty form-->
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-require_once 'php_functions/dbh.php';
 
-if(isset($_POST["submit_warranty"])) {
-    $warranty_name = $_SESSION['user_id'];
-    $warranty_product =  $_POST['product_id'];
-    $warranty_reason = $_POST['warranty_reason'];
-    $warranty_date = date("Y-m-d");
-    $warranty_status = "Pending";
-    $warranty_img = $_FILES['img']['name'];
+        <!-- WARRANTY SECTION -->
+         <?php
+// WARRANTY FORM PROCESSING (must be at top of file, before any HTML output)
+if (isset($_POST['submit_warranty'])) {
+    // Ensure user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: login.php');
+        exit();
+    }
 
-    $tmp = explode(".",$warranty_img);
+    require_once 'php_functions/dbh.php';
 
-    $newfilename = round(microtime(true)). '.' .end($tmp);
+    $user_id          = $_SESSION['user_id'];
+    $product_id       = intval($_POST['product_id']);
+    $warranty_reason  = mysqli_real_escape_string($conn, $_POST['warranty_reason']);
+    $warranty_date    = date('Y-m-d H:i:s');
+    $status           = 'Pending';
 
-    $uploadpath = "../warranty_image/". $newfilename;
+    // File upload
+    if (isset($_FILES['img']) && $_FILES['img']['error'] === UPLOAD_ERR_OK) {
+        $tmp_name = $_FILES['img']['tmp_name'];
+        $original_name = $_FILES['img']['name'];
+        $ext = pathinfo($original_name, PATHINFO_EXTENSION);
+        $new_filename = round(microtime(true)) . '.' . $ext;
+        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/warranty_image/';
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        $upload_path = $upload_dir . $new_filename;
+        if (move_uploaded_file($tmp_name, $upload_path)) {
+            $img = mysqli_real_escape_string($conn, $new_filename);
+        } else {
+            $img = null;
+            echo '<script>alert("File upload failed.");</script>';
+        }
+    } else {
+        $img = null;
+    }
 
-    move_uploaded_file($_FILES['img']['tmp_name'], $uploadpath);
+    $sql = "INSERT INTO warranty (user_id, product_id, warranty_reason, warranty_date, status, img)
+            VALUES ('$user_id', '$product_id', '$warranty_reason', '$warranty_date', '$status', '$img')";
 
-    //require_once 'dbh.php';
-
-    $warranty_name = mysqli_real_escape_string($conn, $warranty_name);
-    $warranty_product = mysqli_real_escape_string($conn, $warranty_product);
-    $warranty_reason = mysqli_real_escape_string($conn, $warranty_reason);
-    $newfilename = mysqli_real_escape_string($conn, $newfilename);
-
-    $sql = "INSERT into warranty(user_id,product_id,warranty_reason,warranty_date,status,img) 
-    Values('$warranty_name','$warranty_product','$warranty_reason','$warranty_date','$warranty_status','$newfilename')";
-
-    $data = mysqli_query($conn,$sql);
-
-    if($data) {
-        header('location: https://cs2team29.cs2410-web01pvm.aston.ac.uk/php_functions/contact.php');
+    if (mysqli_query($conn, $sql)) {
+        echo '<script>alert("Warranty claim submitted successfully!"); window.location.href="contact.php";</script>';
+        exit();
+    } else {
+        echo '<script>alert("Error: ' . mysqli_error($conn) . '");</script>';
     }
 }
-                           
-$user_id = $_SESSION['user_id'];
-
-$sql_orders = "SELECT order_id, product_id 
-               FROM orders 
-               WHERE user_id = '$user_id'";
-
-$result_orders = mysqli_query($conn, $sql_orders);
-
-$sql_products = "SELECT order_id, product_id 
-                 FROM orders 
-                 WHERE user_id = '$user_id'";
-
-$result_products = mysqli_query($conn, $sql_products);
 ?>
+
+<!-- WARRANTY SECTION (HTML only) -->
 <section class="py-20 bg-white">
     <div class="max-w-5xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
         <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
-            Submit your warranty claim by providing order details and proof of damage.
+            Submit your warranty claim by selecting the order and product, then describe the issue and upload proof of damage.
         </p>
 
-        <form method="POST" enctype="multipart/form-data"
-        class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
-
-            <input id="wName" placeholder="Full Name"
-            class="w-full p-3 border rounded-md" required>
-
-            <input id="wEmail" type="email" placeholder="Email Address"
-            class="w-full p-3 border rounded-md" required>
-
-            <!-- ORDER NUMBER -->
-            <select name="order_id" id="orderNumber"
-            class="w-full p-3 border rounded-md" required>
-
-                <option value="" disabled selected>Select Order</option>
-
-                <?php while($row = mysqli_fetch_assoc($result_orders)) { ?>
-
-                <option value="<?php echo $row['order_id']; ?>">
-                    Order #<?php echo $row['order_id']; ?>
-                </option>
-
-                <?php } ?>
-
-            </select>
-
-            <!-- PRODUCT FROM ORDER -->
-            <select name="product_id" id="wProduct"
-            class="w-full p-3 border rounded-md" required>
-
-                <option value="">Product Purchased</option>
-
-                <?php 
-                while($row = mysqli_fetch_assoc($result_products)) { 
+        <?php if (!isset($_SESSION['user_id'])): ?>
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 max-w-3xl mx-auto">
+                <p>You must be <a href="login.php" class="underline">logged in</a> to submit a warranty claim.</p>
+            </div>
+        <?php else:
+            // Fetch orders for this user with their products
+            require_once 'php_functions/dbh.php';
+            $user_id = $_SESSION['user_id'];
+            $orders_query = "
+                SELECT o.order_id, o.order_date, oi.product_id, p.name as product_name
+                FROM orders o
+                JOIN order_items oi ON o.order_id = oi.order_id
+                JOIN products p ON oi.product_id = p.product_id
+                WHERE o.user_id = $user_id
+                ORDER BY o.order_date DESC
+            ";
+            $orders_result = mysqli_query($conn, $orders_query);
+        ?>
+        <form method="POST" enctype="multipart/form-data" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
+            <!-- Order dropdown – groups products under each order -->
+            <label class="block font-medium">Select Order & Product</label>
+            <select name="product_id" id="warrantyProduct" class="w-full p-3 border rounded-md" required>
+                <option value="" disabled selected>Choose an order and product</option>
+                <?php
+                $current_order = null;
+                while ($row = mysqli_fetch_assoc($orders_result)) {
+                    // If it's a new order, add an optgroup
+                    if ($current_order != $row['order_id']) {
+                        if ($current_order !== null) echo '</optgroup>';
+                        $current_order = $row['order_id'];
+                        echo '<optgroup label="Order #' . $row['order_id'] . ' – ' . date('M d, Y', strtotime($row['order_date'])) . '">';
+                    }
+                    echo '<option value="' . $row['product_id'] . '">' . htmlspecialchars($row['product_name']) . '</option>';
+                }
+                if ($current_order !== null) echo '</optgroup>';
                 ?>
-
-                <option value="<?php echo $row['product_id']; ?>">
-                    Product ID: <?php echo $row['product_id']; ?>
-                </option>
-
-                <?php } ?>
-
             </select>
 
-            <!-- ISSUE DESCRIPTION -->
-            <textarea name="warranty_reason" id="issueDetails"
-            rows="4"
-            placeholder="Describe the issue..."
-            class="w-full p-3 border rounded-md"
-            required></textarea>
+            <!-- Issue Description -->
+            <textarea name="warranty_reason" rows="4" placeholder="Describe the issue in detail..." class="w-full p-3 border rounded-md" required></textarea>
 
-            <label class="block font-medium">Upload Proof of Damage</label>
+            <!-- File Upload -->
+            <label class="block font-medium">Upload Proof of Damage (image)</label>
+            <input type="file" name="img" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
 
-            <input name="img" id="damageImage"
-            type="file"
-            accept="image/*"
-            class="w-full p-3 border rounded-md bg-white"
-            required>
-
-            <button type="submit" name="submit_warranty"
-            id="warrantyBtn"
-            class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
+            <button type="submit" name="submit_warranty" class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
                 Submit Warranty Claim
             </button>
-
-            <p id="warrantyMessage"
-            class="text-center mt-3 hidden opacity-0 font-medium"></p>
-
         </form>
+        <?php endif; ?>
     </div>
 </section>
-</main>
+                    </main>
+
     <!-- CHATBOT BUTTON — uses luxeChatToggle(), not toggleChatbot() -->
     <div onclick="luxeChatToggle()" class="floating-chatbot">
         <i class="fas fa-robot"></i>
