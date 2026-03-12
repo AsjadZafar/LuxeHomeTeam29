@@ -22,8 +22,6 @@ if(isset($_POST["add_product"])) {
 
     move_uploaded_file($_FILES['img']['tmp_name'], $uploadpath);
 
-    //require_once 'dbh.php';
-
     $product_name = mysqli_real_escape_string($conn, $product_name);
     $product_description = mysqli_real_escape_string($conn, $product_description);
     $product_price = mysqli_real_escape_string($conn, $product_price);
@@ -79,9 +77,15 @@ if(isset($_POST["add_product"])) {
                     </a>
                 </li>
                 <li> 
-                    <a href="#">
+                    <a href="/admin_users.php">
                         <i class="fas fa-users"></i>
                         <span>Users</span>
+                    </a>
+                </li>
+                <li> 
+                    <a href="/admin_warranty.php">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Warranty</span>
                     </a>
                 </li>
                 <li> 
@@ -211,7 +215,6 @@ if(isset($_POST["add_product"])) {
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Highlight the active link in sidebar
             const currentPage = window.location.pathname.split('/').pop();
             const navLinks = document.querySelectorAll('.admin-sidebar a');
             
@@ -222,7 +225,6 @@ if(isset($_POST["add_product"])) {
                 }
             });
             
-            // Add form validation styling
             const form = document.querySelector('.admin-form');
             if (form) {
                 const inputs = form.querySelectorAll('input, textarea, select');

@@ -1,7 +1,5 @@
 <?php
 session_start();
-header('Content-Type: text/html; charset=utf-8');
-
 require_once 'php_functions/dbh.php';
 
 // Optional: Restrict to logged-in users only
@@ -13,31 +11,15 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 
 // --- Fetch real data ---
-// Total products
 $product_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM products"))['total'] ?? 0;
-
-// Total users
 $user_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users"))['total'] ?? 0;
-
-// Total orders
 $order_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM orders"))['total'] ?? 0;
-
-// Total revenue (sum of all order totals, handling NULL)
 $revenue_result = mysqli_query($conn, "SELECT SUM(COALESCE(total, 0)) as total FROM orders");
 $total_revenue = mysqli_fetch_assoc($revenue_result)['total'] ?? 0;
+$pending_warranty = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM warranty WHERE status = 'Pending'"))['total'] ?? 0;
 
-// Recent products (last 5 added)
 $recent_products = mysqli_query($conn, "SELECT name FROM products ORDER BY product_id DESC LIMIT 5");
-
-// Recent orders with total (using COALESCE to show 0 if NULL)
-$recent_orders = mysqli_query($conn, "
-    SELECT order_id, COALESCE(total, 0) as total, order_date 
-    FROM orders 
-    ORDER BY order_id DESC 
-    LIMIT 5
-");
-
-// Recent users
+$recent_orders = mysqli_query($conn, "SELECT order_id, COALESCE(total, 0) as total, order_date FROM orders ORDER BY order_id DESC LIMIT 5");
 $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id DESC LIMIT 5");
 ?>
 <!DOCTYPE html>
@@ -70,14 +52,13 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
                 <li><a href="admin_dash.php" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
                 <li><a href="php_functions/add_product.php"><i class="fas fa-plus-circle"></i> <span>Add Products</span></a></li>
                 <li><a href="php_functions/view_product.php"><i class="fas fa-eye"></i> <span>View Products</span></a></li>
-                <li><a href="#"><i class="fas fa-users"></i> <span>Users</span></a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> <span>Analytics</span></a></li>
+                <li><a href="admin_users.php"><i class="fas fa-users"></i> <span>Users</span></a></li>
+                <li><a href="admin_warranty.php"><i class="fas fa-clipboard-list"></i> <span>Warranty</span></a></li>
             </ul>
         </div>
 
         <!-- Main Content -->
         <div class="admin-main">
-            <!-- Header -->
             <div class="admin-header">
                 <h1>Dashboard Overview</h1>
                 <div style="display: flex; gap: 1rem; align-items: center;">
@@ -90,7 +71,6 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
                 </div>
             </div>
 
-            <!-- Welcome Message -->
             <div class="welcome-message">
                 <h2 class="welcome-title">Welcome Back, Admin! 👋</h2>
                 <p class="welcome-text">
@@ -134,6 +114,17 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
                     </div>
                     <div class="card-stat">&pound;<?php echo number_format($total_revenue, 2); ?></div>
                     <div class="card-label">Total sales revenue</div>
+                </div>
+
+                <!-- Pending Warranty Card -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Pending Warranty</h3>
+                        <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
+                    </div>
+                    <div class="card-stat"><?php echo $pending_warranty; ?></div>
+                    <div class="card-label">Claims awaiting review</div>
+                    <a href="admin_warranty.php" class="text-sm text-emerald-600 hover:underline">View claims →</a>
                 </div>
             </div>
 
