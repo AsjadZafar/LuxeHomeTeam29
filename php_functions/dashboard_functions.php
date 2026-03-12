@@ -5,8 +5,6 @@ error_reporting(E_ALL);
 
 require_once 'dbh.php';
 
-// php_functions/dashboard_functions.php
-
 function getUserDetails($user_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT user_id, username, email FROM users WHERE user_id = ?");
@@ -26,7 +24,6 @@ function updateUserDetails($user_id, $username, $email) {
 function changePassword($user_id, $old_password, $new_password) {
     global $conn;
     
-    // Verify old password
     $stmt = $conn->prepare("SELECT password_hash FROM users WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -75,10 +72,19 @@ function getUserOrders($user_id) {
     global $conn;
     
     $stmt = $conn->prepare("
-        SELECT o.*, a.address_line1, a.city, a.postcode
+        SELECT 
+            o.order_id,
+            o.order_date,
+            COALESCE(o.total, 0) as total,
+            COUNT(oi.order_item_id) as item_count,
+            a.address_line1,
+            a.city,
+            a.postcode
         FROM orders o 
         LEFT JOIN addresses a ON o.address_id = a.address_id 
+        LEFT JOIN order_items oi ON o.order_id = oi.order_id
         WHERE o.user_id = ? 
+        GROUP BY o.order_id
         ORDER BY o.order_date DESC
     ");
     $stmt->bind_param("i", $user_id);
@@ -90,10 +96,15 @@ function getOrderItems($order_id) {
     global $conn;
    
     $stmt = $conn->prepare("
-        SELECT o.*, p.name, p.description, p.img, p.price as product_price
-        FROM orders o 
-        JOIN products p ON o.product_id = p.product_id 
-        WHERE o.orders_id = ?
+        SELECT 
+            oi.*, 
+            p.name, 
+            p.description, 
+            p.img, 
+            p.price as current_price
+        FROM order_items oi 
+        JOIN products p ON oi.product_id = p.product_id 
+        WHERE oi.order_id = ?
     ");
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
@@ -122,7 +133,6 @@ function getProductReviews($product_id) {
     return $stmt->get_result();
 }
 
-// Check if user has reviewed a specific product
 function hasUserReviewedProduct($user_id, $product_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM reviews WHERE user_id = ? AND product_id = ?");
@@ -132,7 +142,6 @@ function hasUserReviewedProduct($user_id, $product_id) {
     return $result->num_rows > 0;
 }
 
-// Get user's review for a specific product
 function getUserProductReview($user_id, $product_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM reviews WHERE user_id = ? AND product_id = ?");
@@ -144,19 +153,17 @@ function getUserProductReview($user_id, $product_id) {
 
 function addToWishlist($user_id, $product_id) {
     global $conn;
-    // Check if already in wishlist
     $check = $conn->prepare("SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?");
     $check->bind_param("ii", $user_id, $product_id);
     $check->execute();
     $result = $check->get_result();
     
     if ($result->num_rows == 0) {
-        
         $stmt = $conn->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $user_id, $product_id);
         return $stmt->execute();
     }
-    return false; // Already in wishlist
+    return false;
 }
 
 function removeFromWishlist($user_id, $product_id) {
@@ -195,5 +202,4 @@ function get_order_details() {
         include 'php_functions/dashboard_home.php';
     }
 }
-
 ?>

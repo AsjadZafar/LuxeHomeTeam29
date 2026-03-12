@@ -1,8 +1,18 @@
 <?php
 session_start();
-require_once 'php_functions/dbh.php'; // connect to database cs2team29_db
+header('Content-Type: text/html; charset=utf-8');
 
-// --- Fetch real-time statistics ---
+require_once 'php_functions/dbh.php';
+
+// Optional: Restrict to logged-in users only
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$username = $_SESSION['username'];
+
+// --- Fetch real data ---
 // Total products
 $product_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM products"))['total'] ?? 0;
 
@@ -12,30 +22,44 @@ $user_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total F
 // Total orders
 $order_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM orders"))['total'] ?? 0;
 
-// Total revenue (sum of all order totals)
-$revenue_result = mysqli_query($conn, "SELECT SUM(total) as total FROM orders");
+// Total revenue (sum of all order totals, handling NULL)
+$revenue_result = mysqli_query($conn, "SELECT SUM(COALESCE(total, 0)) as total FROM orders");
 $total_revenue = mysqli_fetch_assoc($revenue_result)['total'] ?? 0;
 
-// Recent products (last 5 added - using product_id as proxy for creation order)
+// Recent products (last 5 added)
 $recent_products = mysqli_query($conn, "SELECT name FROM products ORDER BY product_id DESC LIMIT 5");
 
-// Recent orders (last 5 orders with order_id, total, and order_date)
-$recent_orders = mysqli_query($conn, "SELECT order_id, total, order_date FROM orders ORDER BY order_id DESC LIMIT 5");
+// Recent orders with total (using COALESCE to show 0 if NULL)
+$recent_orders = mysqli_query($conn, "
+    SELECT order_id, COALESCE(total, 0) as total, order_date 
+    FROM orders 
+    ORDER BY order_id DESC 
+    LIMIT 5
+");
 
-// Recent user registrations
+// Recent users
 $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id DESC LIMIT 5");
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard - LuxeHome</title>
-    <link rel="icon" href="/images/image.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LuxeHome</title>
+    <link rel="icon" href="images/image.png">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/adminstyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/adminstyle.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <style>
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -43,7 +67,7 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
         <div class="admin-sidebar">
             <h2>Admin Dashboard</h2>
             <ul>
-                <li><a href="/admin_dash.php" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li><a href="admin_dash.php" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
                 <li><a href="php_functions/add_product.php"><i class="fas fa-plus-circle"></i> <span>Add Products</span></a></li>
                 <li><a href="php_functions/view_product.php"><i class="fas fa-eye"></i> <span>View Products</span></a></li>
                 <li><a href="#"><i class="fas fa-users"></i> <span>Users</span></a></li>
@@ -58,9 +82,9 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
                 <h1>Dashboard Overview</h1>
                 <div style="display: flex; gap: 1rem; align-items: center;">
                     <span style="color: #4b5563; font-weight: 500;">
-                        Welcome, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?>
+                        Welcome, <?php echo htmlspecialchars($username); ?>
                     </span>
-                    <a href="/index.php" class="logout-btn">
+                    <a href="index.php" class="logout-btn">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </div>
@@ -108,7 +132,7 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
                         <h3>Revenue</h3>
                         <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
                     </div>
-                    <div class="card-stat">£<?php echo number_format($total_revenue, 2); ?></div>
+                    <div class="card-stat">&pound;<?php echo number_format($total_revenue, 2); ?></div>
                     <div class="card-label">Total sales revenue</div>
                 </div>
             </div>
@@ -116,7 +140,7 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
             <!-- Recent Activity Section -->
             <div class="activity-section">
                 <h3 class="section-title">Recent Activity</h3>
-                
+
                 <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
                     <!-- Recent Products -->
                     <div style="flex: 1; min-width: 250px;">
@@ -154,7 +178,7 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
                                         <i class="fas fa-receipt"></i>
                                     </div>
                                     <div class="activity-content">
-                                        <div class="activity-title">Order #<?php echo $o['order_id']; ?> - £<?php echo number_format($o['total'], 2); ?></div>
+                                        <div class="activity-title">Order #<?php echo $o['order_id']; ?> - &pound;<?php echo number_format($o['total'], 2); ?></div>
                                         <div class="activity-time"><?php echo date('M j, Y', strtotime($o['order_date'])); ?></div>
                                     </div>
                                 </li>
@@ -193,7 +217,6 @@ $recent_users = mysqli_query($conn, "SELECT username FROM users ORDER BY user_id
     </div>
 
     <script>
-        // Highlight active link in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPage = window.location.pathname.split('/').pop();
             const navLinks = document.querySelectorAll('.admin-sidebar a');
