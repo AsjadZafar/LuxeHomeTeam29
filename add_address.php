@@ -3,7 +3,7 @@ session_start();
 require_once 'php_functions/dbh.php';
 
 if (!isset($_SESSION['username'])) {
-    header('Location: login.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -12,7 +12,6 @@ $user_query = mysqli_query($conn, "SELECT user_id FROM users WHERE username = '$
 $user_row = mysqli_fetch_assoc($user_query);
 $user_id = $user_row['user_id'];
 
-$success = false;
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -28,9 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insert = "INSERT INTO addresses (user_id, address_line1, address_line2, city, postcode, country)
                    VALUES ('$user_id', '$address_line1', '$address_line2', '$city', '$postcode', '$country')";
         if (mysqli_query($conn, $insert)) {
-            $success = true;
-            // Redirect back to checkout
-            header('Location: checkout.php');
+            header('Location: /checkout.php');
             exit();
         } else {
             $error = 'Failed to save address. Please try again.';
@@ -44,20 +41,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Address | LuxeHome</title>
-    <link rel="icon" href="images/image.png">
+    <link rel="icon" href="/images/image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/accessibility.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/accessibility.css">
+    <style>
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
     <header class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.php" class="text-xl font-bold text-gray-900">LuxeHome</a>
-            <nav class="space-x-4">
-                <a href="index.php" class="nav-link">Home</a>
-                <a href="products.php" class="nav-link">Shop</a>
+            <a href="/index.php" class="flex items-center space-x-3">
+                <img src="/images/image.png" alt="LuxeHome logo" class="logo-img">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-900">LuxeHome</h1>
+                    <p class="text-xs text-gray-500">Smart Living Elevated</p>
+                </div>
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="/index.php" class="nav-link">Home</a>
+                <a href="/products.php" class="nav-link">Shop</a>
+                <a href="/about_us.php" class="nav-link">About us</a>
+                <a href="/contact.php" class="nav-link">Contact</a>
             </nav>
         </div>
     </header>
@@ -98,13 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <p class="text-center mt-4">
-                <a href="checkout.php" class="text-emerald-600 hover:underline">Cancel and return to checkout</a>
+                <a href="/checkout.php" class="text-emerald-600 hover:underline">Cancel and return to checkout</a>
             </p>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer mt-12">
+    <!-- Footer (copy from index.php) -->
+    <footer class="footer">
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-brand">
@@ -128,10 +141,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="footer-links">
                     <h4 class="footer-heading">Quick Links</h4>
                     <ul class="footer-list">
-                        <li><a href="index.php" class="footer-link">Home</a></li>
-                        <li><a href="products.php" class="footer-link">Shop</a></li>
-                        <li><a href="about_us.php" class="footer-link">About us</a></li>
-                        <li><a href="contact.php" class="footer-link">Contact</a></li>
+                        <li><a href="/index.php" class="footer-link">Home</a></li>
+                        <li><a href="/products.php" class="footer-link">Shop</a></li>
+                        <li><a href="/about_us.php" class="footer-link">About us</a></li>
+                        <li><a href="/contact.php" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -153,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script src="js/accessibility.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/accessibility.js"></script>
 </body>
 </html>
