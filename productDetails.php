@@ -37,6 +37,28 @@ if (isset($_GET['id'])) {
 } else {
   die("No product ID Provided");
 }
+
+//SQL for Reviews
+
+$review_sql = "SELECT r.rating, r.review, r.review_date, u.username
+               FROM reviews r
+               JOIN users u ON r.user_id = u.user_id
+               WHERE r.product_id = $id
+               ORDER BY r.review_date DESC";
+
+$review_result = mysqli_query($conn, $review_sql);
+
+//SQL to VIEW the reviews
+
+$review_sql_view = "SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+               FROM reviews r
+               JOIN users u ON r.user_id = u.user_id
+               WHERE r.product_id = $id
+               ORDER BY r.review_date DESC";
+
+$review_result_view = mysqli_query($conn, $review_sql_view);
+
+
 ?> 
 
 <!doctype html>
@@ -277,6 +299,127 @@ if (isset($_GET['id'])) {
       </div>
     </div>
   </main>
+
+<!-- Review Form to submit the review -->
+<?php if ($logged_in): ?>
+<form action="php_functions/addReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border">
+
+<input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+
+<h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Review</h3>
+
+<!-- Rating -->
+<label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+
+<div class="flex gap-2 mb-4">
+<?php for($i=1;$i<=5;$i++): ?>
+<label class="cursor-pointer">
+<input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
+<i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
+</label>
+<?php endfor; ?>
+</div>
+
+<!-- Review Text -->
+<label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+
+<textarea
+name="review"
+rows="4"
+class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+placeholder="Share your experience with this product..."
+required></textarea>
+
+<!-- Submit Button -->
+<button
+type="submit"
+class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+
+<i class="fas fa-paper-plane"></i> Submit Review
+
+</button>
+
+</form>
+
+<?php else: ?>
+
+<p class="text-gray-600 mb-6">
+<a href="login.php" class="text-emerald-600 hover:underline">Login</a> to leave a review.
+</p>
+
+<?php endif; ?>
+<!--End of Review form-->
+
+<!--View the Reviews-->
+
+<div id="reviews" class="mt-10">
+
+<h2 class="text-xl font-bold text-gray-900 mb-6">Customer Reviews</h2>
+
+<?php if(mysqli_num_rows($review_result_view) > 0): ?>
+
+<div class="space-y-6">
+
+<?php while($review = mysqli_fetch_assoc($review_result_view)): ?>
+
+<div class="bg-white border rounded-lg p-5 shadow-sm">
+
+<!-- Username + Date -->
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-gray-800">
+<?= htmlspecialchars($review['username']) ?>
+</span>
+
+<span class="text-sm text-gray-500">
+<?= date("M d, Y", strtotime($review['review_date'])) ?>
+</span>
+</div>
+
+<!-- Star Rating -->
+<div class="text-yellow-400 mb-2">
+<?php
+for($i=1; $i<=5; $i++){
+    if($i <= $review['rating']){
+        echo '<i class="fa fa-star"></i>';
+    } else {
+        echo '<i class="fa fa-star text-gray-300"></i>';
+    }
+}
+?>
+</div>
+
+<!-- Review Text -->
+<p class="text-gray-700 mb-3">
+<?= htmlspecialchars($review['review']) ?>
+</p>
+
+<?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
+<form action="php_functions/deleteReview.php" method="POST">
+    <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+    <input type="hidden" name="product_id" value="<?= $id ?>">
+    
+    <button type="submit"
+    class="text-red-600 text-sm hover:underline">
+        <i class="fas fa-trash"></i> Delete Review
+    </button>
+</form>
+<?php endif; ?>
+
+</div>
+
+<?php endwhile; ?>
+
+</div>
+
+<?php else: ?>
+
+<p class="text-gray-500">No reviews yet. Be the first to review this product.</p>
+
+<?php endif; ?>
+
+</div>
+
+<!--End of View the Review-->
 
   <!-- Footer -->
   <footer class="footer">
