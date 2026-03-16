@@ -1,14 +1,95 @@
 <?php
+// ============================================================
+// ALL PHP LOGIC MUST BE AT THE TOP — before any HTML output
+// ============================================================
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// Always load DB connection at the top
+require_once 'php_functions/dbh.php';
+
 $logged_in = false;
-$username = "";
+$username  = "";
+$user_id   = null;
 
 if (isset($_SESSION['username'])) {
     $logged_in = true;
-    $username = $_SESSION['username'];
+    $username  = $_SESSION['username'];
+}
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+}
+
+// ── WARRANTY FORM PROCESSING ─────────────────────────────────
+// Must run here (top of file) so header() redirects still work
+$warranty_success = false;
+$warranty_error   = "";
+
+if (isset($_POST['submit_warranty'])) {
+    if (!$user_id) {
+        header('Location: login.php');
+        exit();
+    }
+
+    $product_id      = intval($_POST['product_id']);
+    $warranty_reason = mysqli_real_escape_string($conn, $_POST['warranty_reason']);
+    $warranty_date   = date('Y-m-d H:i:s');
+    $status          = 'Pending';
+    $img             = null;
+
+    // Handle file upload
+    if (isset($_FILES['img']) && $_FILES['img']['error'] === UPLOAD_ERR_OK) {
+        $tmp_name  = $_FILES['img']['tmp_name'];
+        $ext       = pathinfo($_FILES['img']['name'], PATHINFO_EXTENSION);
+        $new_filename = round(microtime(true)) . '.' . $ext;
+        $upload_dir   = $_SERVER['DOCUMENT_ROOT'] . '/warranty_image/';
+
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+
+        if (move_uploaded_file($tmp_name, $upload_dir . $new_filename)) {
+            $img = mysqli_real_escape_string($conn, $new_filename);
+        } else {
+            $warranty_error = "File upload failed. Please try again.";
+        }
+    }
+
+    if (!$warranty_error) {
+        $sql = "INSERT INTO warranty (user_id, product_id, warranty_reason, warranty_date, status, img)
+                VALUES ('$user_id', '$product_id', '$warranty_reason', '$warranty_date', '$status', '$img')";
+
+        if (mysqli_query($conn, $sql)) {
+            // Redirect to avoid form re-submission on refresh
+            header('Location: contact.php?warranty=success');
+            exit();
+        } else {
+            $warranty_error = "Database error: " . mysqli_error($conn);
+        }
+    }
+}
+
+// ── PRE-FETCH ORDERS for the warranty dropdown ───────────────
+// Done here at the top so results are ready when HTML renders
+$orders_rows = [];
+
+if ($user_id) {
+    $orders_query = "
+        SELECT o.order_id, o.order_date, oi.product_id, p.name AS product_name
+        FROM orders o
+        JOIN order_items oi ON o.order_id = oi.order_id
+        JOIN products   p  ON oi.product_id = p.product_id
+        WHERE o.user_id = " . intval($user_id) . "
+        ORDER BY o.order_date DESC
+    ";
+    $orders_result = mysqli_query($conn, $orders_query);
+
+    if ($orders_result) {
+        while ($row = mysqli_fetch_assoc($orders_result)) {
+            $orders_rows[] = $row;
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -114,7 +195,7 @@ if (isset($_SESSION['username'])) {
                     <a href="cart.php" class="action-btn relative">
                         <i class="fas fa-shopping-cart"></i><span class="cart-badge">3</span>
                     </a>
-                    <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
+                    <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username); ?>!</span>
                     <?php else: ?>
                     <a href="cart.php" class="action-btn relative">
                         <i class="fas fa-shopping-cart"></i><span class="cart-badge">0</span>
@@ -180,124 +261,93 @@ if (isset($_SESSION['username'])) {
         </section>
 
         <!-- WARRANTY SECTION -->
-         <?php
-// WARRANTY FORM PROCESSING (must be at top of file, before any HTML output)
-if (isset($_POST['submit_warranty'])) {
-    // Ensure user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: login.php');
-        exit();
-    }
+        <section class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
+                    Submit your warranty claim by selecting the order and product, then describe the issue and upload proof of damage.
+                </p>
 
-    require_once 'php_functions/dbh.php';
+                <?php if (!$user_id): ?>
+                    <!-- Not logged in -->
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 max-w-3xl mx-auto">
+                        <p>You must be <a href="login.php" class="underline font-semibold">logged in</a> to submit a warranty claim.</p>
+                    </div>
 
-    $user_id          = $_SESSION['user_id'];
-    $product_id       = intval($_POST['product_id']);
-    $warranty_reason  = mysqli_real_escape_string($conn, $_POST['warranty_reason']);
-    $warranty_date    = date('Y-m-d H:i:s');
-    $status           = 'Pending';
+                <?php else: ?>
 
-    // File upload
-    if (isset($_FILES['img']) && $_FILES['img']['error'] === UPLOAD_ERR_OK) {
-        $tmp_name = $_FILES['img']['tmp_name'];
-        $original_name = $_FILES['img']['name'];
-        $ext = pathinfo($original_name, PATHINFO_EXTENSION);
-        $new_filename = round(microtime(true)) . '.' . $ext;
-        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/warranty_image/';
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
-        $upload_path = $upload_dir . $new_filename;
-        if (move_uploaded_file($tmp_name, $upload_path)) {
-            $img = mysqli_real_escape_string($conn, $new_filename);
-        } else {
-            $img = null;
-            echo '<script>alert("File upload failed.");</script>';
-        }
-    } else {
-        $img = null;
-    }
+                    <?php if (isset($_GET['warranty']) && $_GET['warranty'] === 'success'): ?>
+                    <!-- Success banner after redirect -->
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 max-w-3xl mx-auto mb-6 rounded-md">
+                        <p>✅ Warranty claim submitted successfully! We'll be in touch soon.</p>
+                    </div>
+                    <?php endif; ?>
 
-    $sql = "INSERT INTO warranty (user_id, product_id, warranty_reason, warranty_date, status, img)
-            VALUES ('$user_id', '$product_id', '$warranty_reason', '$warranty_date', '$status', '$img')";
+                    <?php if ($warranty_error): ?>
+                    <!-- Error banner -->
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 max-w-3xl mx-auto mb-6 rounded-md">
+                        <p>❌ <?php echo htmlspecialchars($warranty_error); ?></p>
+                    </div>
+                    <?php endif; ?>
 
-    if (mysqli_query($conn, $sql)) {
-        echo '<script>alert("Warranty claim submitted successfully!"); window.location.href="contact.php";</script>';
-        exit();
-    } else {
-        echo '<script>alert("Error: ' . mysqli_error($conn) . '");</script>';
-    }
-}
-?>
+                    <form method="POST" enctype="multipart/form-data"
+                          class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
 
-<!-- WARRANTY SECTION (HTML only) -->
-<section class="py-20 bg-white">
-    <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-6">Warranty Claim Form</h2>
-        <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">
-            Submit your warranty claim by selecting the order and product, then describe the issue and upload proof of damage.
-        </p>
+                        <!-- Order & Product dropdown -->
+                        <label class="block font-medium">Select Order &amp; Product</label>
+                        <select name="product_id" id="warrantyProduct" class="w-full p-3 border rounded-md bg-white" required>
+                            <option value="" disabled selected>Choose an order and product</option>
 
-        <?php if (!isset($_SESSION['user_id'])): ?>
-            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 max-w-3xl mx-auto">
-                <p>You must be <a href="login.php" class="underline">logged in</a> to submit a warranty claim.</p>
+                            <?php if (empty($orders_rows)): ?>
+                                <option value="" disabled>No orders found for your account</option>
+                            <?php else: ?>
+                                <?php
+                                $current_order = null;
+                                foreach ($orders_rows as $row):
+                                    // Open a new optgroup when the order ID changes
+                                    if ($current_order !== $row['order_id']):
+                                        if ($current_order !== null) echo '</optgroup>';
+                                        $current_order = $row['order_id'];
+                                        $label = 'Order #' . $row['order_id'] . ' – ' . date('M d, Y', strtotime($row['order_date']));
+                                ?>
+                                        <optgroup label="<?php echo htmlspecialchars($label); ?>">
+                                <?php endif; ?>
+                                    <option value="<?php echo intval($row['product_id']); ?>">
+                                        <?php echo htmlspecialchars($row['product_name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                                <?php if ($current_order !== null) echo '</optgroup>'; ?>
+                            <?php endif; ?>
+                        </select>
+
+                        <!-- Issue description -->
+                        <textarea name="warranty_reason" rows="4"
+                                  placeholder="Describe the issue in detail..."
+                                  class="w-full p-3 border rounded-md" required></textarea>
+
+                        <!-- File upload -->
+                        <label class="block font-medium">Upload Proof of Damage (image)</label>
+                        <input type="file" name="img" accept="image/*"
+                               class="w-full p-3 border rounded-md bg-white" required>
+
+                        <button type="submit" name="submit_warranty"
+                                class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800 font-semibold">
+                            Submit Warranty Claim
+                        </button>
+                    </form>
+
+                <?php endif; ?>
             </div>
-        <?php else:
-            // Fetch orders for this user with their products
-            require_once 'php_functions/dbh.php';
-            $user_id = $_SESSION['user_id'];
-            $orders_query = "
-                SELECT o.order_id, o.order_date, oi.product_id, p.name as product_name
-                FROM orders o
-                JOIN order_items oi ON o.order_id = oi.order_id
-                JOIN products p ON oi.product_id = p.product_id
-                WHERE o.user_id = $user_id
-                ORDER BY o.order_date DESC
-            ";
-            $orders_result = mysqli_query($conn, $orders_query);
-        ?>
-        <form method="POST" enctype="multipart/form-data" class="bg-gray-100 p-8 rounded-2xl shadow-md space-y-4 max-w-3xl mx-auto">
-            <!-- Order dropdown – groups products under each order -->
-            <label class="block font-medium">Select Order & Product</label>
-            <select name="product_id" id="warrantyProduct" class="w-full p-3 border rounded-md" required>
-                <option value="" disabled selected>Choose an order and product</option>
-                <?php
-                $current_order = null;
-                while ($row = mysqli_fetch_assoc($orders_result)) {
-                    // If it's a new order, add an optgroup
-                    if ($current_order != $row['order_id']) {
-                        if ($current_order !== null) echo '</optgroup>';
-                        $current_order = $row['order_id'];
-                        echo '<optgroup label="Order #' . $row['order_id'] . ' – ' . date('M d, Y', strtotime($row['order_date'])) . '">';
-                    }
-                    echo '<option value="' . $row['product_id'] . '">' . htmlspecialchars($row['product_name']) . '</option>';
-                }
-                if ($current_order !== null) echo '</optgroup>';
-                ?>
-            </select>
+        </section>
 
-            <!-- Issue Description -->
-            <textarea name="warranty_reason" rows="4" placeholder="Describe the issue in detail..." class="w-full p-3 border rounded-md" required></textarea>
+    </main>
 
-            <!-- File Upload -->
-            <label class="block font-medium">Upload Proof of Damage (image)</label>
-            <input type="file" name="img" accept="image/*" class="w-full p-3 border rounded-md bg-white" required>
-
-            <button type="submit" name="submit_warranty" class="w-full bg-emerald-700 text-white p-3 rounded-md hover:bg-emerald-800">
-                Submit Warranty Claim
-            </button>
-        </form>
-        <?php endif; ?>
-    </div>
-</section>
-                    </main>
-
-    <!-- CHATBOT BUTTON — uses luxeChatToggle(), not toggleChatbot() -->
+    <!-- CHATBOT BUTTON -->
     <div onclick="luxeChatToggle()" class="floating-chatbot">
         <i class="fas fa-robot"></i>
     </div>
 
-    <!-- CHATBOT WINDOW — unique IDs prefixed with "luxeChat" -->
+    <!-- CHATBOT WINDOW -->
     <div id="luxeChatWindow"
         class="fixed bottom-28 right-6 w-80 bg-white rounded-xl shadow-xl border p-4 hidden transition-all duration-300 z-[9999]">
         <div class="flex justify-between items-center mb-3">
@@ -359,15 +409,11 @@ if (isset($_POST['submit_warranty'])) {
         </div>
     </footer>
 
-    <!-- External scripts load FIRST -->
     <script src="js/script.js"></script>
     <script src="js/accessibility.js"></script>
 
-    <!-- Our scripts load LAST — after external JS has already run -->
     <script>
-    // =============================================================
-    // CONTACT FORM — wrapped in IIFE to avoid global name clashes
-    // =============================================================
+    // ── CONTACT FORM ─────────────────────────────────────────
     (function () {
         var form    = document.getElementById("contactForm");
         var msg     = document.getElementById("successMessage");
@@ -402,39 +448,7 @@ if (isset($_POST['submit_warranty'])) {
         });
     })();
 
-    // =============================================================
-    // WARRANTY FORM — wrapped in IIFE
-    // =============================================================
-    (function () {
-        var form = document.getElementById("warrantyForm");
-        var msg  = document.getElementById("warrantyMessage");
-        if (!form) return;
-
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            var orderNum  = document.getElementById("orderNumber").value.trim();
-            var fileCount = document.getElementById("damageImage").files.length;
-
-            if (!/^LH-\d{5}$/.test(orderNum)) {
-                msg.textContent = "❌ Invalid Order Number. Format must be LH-12345";
-                msg.className = "text-center mt-3 text-red-600 font-medium";
-                msg.classList.remove("hidden"); luxeFade(msg); return;
-            }
-            if (fileCount === 0) {
-                msg.textContent = "❌ Please upload proof of damage.";
-                msg.className = "text-center mt-3 text-red-600 font-medium";
-                msg.classList.remove("hidden"); luxeFade(msg); return;
-            }
-            msg.textContent = "✅ Warranty claim submitted successfully!";
-            msg.className = "text-center mt-3 text-green-600 font-medium";
-            msg.classList.remove("hidden");
-            form.reset(); luxeFade(msg);
-        });
-    })();
-
-    // =============================================================
-    // SHARED FADE HELPER
-    // =============================================================
+    // ── SHARED FADE HELPER ───────────────────────────────────
     function luxeFade(el) {
         el.style.opacity = "0";
         setTimeout(function () { el.style.opacity = "1"; }, 100);
@@ -442,12 +456,7 @@ if (isset($_POST['submit_warranty'])) {
         setTimeout(function () { el.classList.add("hidden"); }, 4000);
     }
 
-    // =============================================================
-    // CHATBOT — fully isolated IIFE
-    // IDs:      luxeChatWindow, luxeChatContent, luxeChatInput
-    // Globals:  window.luxeChatToggle, window.luxeChatSend
-    // Nothing inside can be touched by script.js or accessibility.js
-    // =============================================================
+    // ── CHATBOT ──────────────────────────────────────────────
     (function () {
         var win     = document.getElementById("luxeChatWindow");
         var content = document.getElementById("luxeChatContent");
@@ -455,128 +464,41 @@ if (isset($_POST['submit_warranty'])) {
         if (!win || !content || !input) return;
 
         var rules = [
-            {
-                patterns: ["hi","hello","hey","good morning","good afternoon"],
-                responses: [
-                    "Hi there 👋 How can I help you with LuxeHome today?",
-                    "Hello! Ask me about products, stock, orders or warranty."
-                ]
-            },
-            {
-                patterns: ["hours","opening","open","business hours","when are you"],
-                responses: ["Our support hours are Mon–Fri, 9am–6pm (UK time)."]
-            },
-            {
-                patterns: ["warranty","claim","guarantee","broken","faulty"],
-                responses: [
-                    "You can submit a warranty claim using the form on this page. Include your order number (format LH-12345) and a photo of the issue.",
-                    "Fill in the Warranty Claim Form below — you'll need your order number (LH-12345) and a damage photo."
-                ]
-            },
-            {
-                patterns: ["order status","where is my order","track my order","where's my order","my order"],
-                responses: [
-                    "To check your order status, have your order number ready (format: LH-12345). Check your confirmation email for a tracking link, or email hello@luxehome.com.",
-                    "Order updates are sent to your registered email. If you haven't received one, contact hello@luxehome.com with your order number."
-                ]
-            },
-            {
-                patterns: ["order","track","shipping","delivery","dispatch","posted"],
-                responses: [
-                    "For shipping or delivery questions, share your order number (LH-12345) and we'll look into it.",
-                    "You can track your order via the link in your confirmation email, or email hello@luxehome.com."
-                ]
-            },
-            {
-                patterns: ["in stock","out of stock","stock","available","availability","restock","when back"],
-                responses: [
-                    "Live stock levels are shown on our Shop page — visit there to check current availability!",
-                    "If a product is showing unavailable, email hello@luxehome.com and we'll let you know when it's back."
-                ]
-            },
-            {
-                patterns: ["price","cost","how much","pricing","discount","offer","sale"],
-                responses: [
-                    "All pricing is shown on our Shop page. We run regular promotions too — check the homepage for current deals!",
-                    "Visit the Shop page for full pricing. Feel free to ask if you want help comparing products."
-                ]
-            },
-            {
-                patterns: ["return","refund","exchange","money back","send back","cancel"],
-                responses: ["We offer a 30-day return policy. Email hello@luxehome.com with your order number and reason to get started."]
-            },
-            {
-                patterns: ["contact","email","phone","call","speak to","human","agent"],
-                responses: [
-                    "Reach us at hello@luxehome.com or call +44 1234 567 890, Mon–Fri 9am–6pm (UK time).",
-                    "Our team is available at hello@luxehome.com or +44 1234 567 890 during business hours."
-                ]
-            },
-            {
-                patterns: ["smart light","smart lights","lighting","bulb"],
-                responses: ["Our Smart Light supports voice control, scheduling and millions of colours. Check the Shop for pricing and stock!"]
-            },
-            {
-                patterns: ["garage","garage door"],
-                responses: ["The Smart Garage Door Controller lets you open, close and monitor your garage remotely. Visit the Shop for details."]
-            },
-            {
-                patterns: ["blinds","window blinds","automated blinds","smart blinds"],
-                responses: ["Our Automated Window Blinds can be scheduled or voice-controlled. See the Shop for more info."]
-            },
-            {
-                patterns: ["socket","smart socket","power socket","plug","smart plug"],
-                responses: ["The Smart Power Socket lets you control devices remotely and monitor energy usage. Available in the Shop!"]
-            },
-            {
-                patterns: ["sensor","sensor kit","motion sensor","door sensor"],
-                responses: ["Our Sensor Kit includes motion, temperature and door/window sensors. Check the Shop for availability."]
-            },
-            {
-                patterns: ["product","products","range","catalogue","what do you sell"],
-                responses: [
-                    "We offer Smart Lights, Garage Door Controllers, Window Blinds, Smart Sockets and Sensor Kits. Visit the Shop to browse!",
-                    "Our range includes Smart Lights, Garage Controllers, Window Blinds, Smart Sockets and Sensor Kits — all on the Shop page."
-                ]
-            },
-            {
-                patterns: ["install","setup","set up","how to use","manual","instructions"],
-                responses: ["Each product comes with a setup guide in the box. You can also email hello@luxehome.com for installation support."]
-            },
-            {
-                patterns: ["thanks","thank you","thankyou","cheers","great","helpful"],
-                responses: [
-                    "You're welcome! 😊 Anything else I can help with?",
-                    "Happy to help! Let me know if you have any other questions."
-                ]
-            },
-            {
-                patterns: ["bye","goodbye","see you","that's all","thats all"],
-                responses: ["Goodbye! 👋 Have a great day.", "Take care! Come back anytime."]
-            }
+            { patterns: ["hi","hello","hey","good morning","good afternoon"], responses: ["Hi there 👋 How can I help you with LuxeHome today?","Hello! Ask me about products, stock, orders or warranty."] },
+            { patterns: ["hours","opening","open","business hours","when are you"], responses: ["Our support hours are Mon–Fri, 9am–6pm (UK time)."] },
+            { patterns: ["warranty","claim","guarantee","broken","faulty"], responses: ["You can submit a warranty claim using the form on this page. Include your order details and a photo of the issue."] },
+            { patterns: ["order status","where is my order","track my order","my order"], responses: ["To check your order status, email hello@luxehome.com with your order number."] },
+            { patterns: ["order","track","shipping","delivery","dispatch","posted"], responses: ["You can track your order via the link in your confirmation email, or email hello@luxehome.com."] },
+            { patterns: ["in stock","out of stock","stock","available","availability","restock"], responses: ["Live stock levels are shown on our Shop page — visit there to check current availability!"] },
+            { patterns: ["price","cost","how much","pricing","discount","offer","sale"], responses: ["All pricing is shown on our Shop page. We run regular promotions too — check the homepage for current deals!"] },
+            { patterns: ["return","refund","exchange","money back","send back","cancel"], responses: ["We offer a 30-day return policy. Email hello@luxehome.com with your order number and reason to get started."] },
+            { patterns: ["contact","email","phone","call","speak to","human","agent"], responses: ["Reach us at hello@luxehome.com or call +44 1234 567 890, Mon–Fri 9am–6pm (UK time)."] },
+            { patterns: ["smart light","smart lights","lighting","bulb"], responses: ["Our Smart Light supports voice control, scheduling and millions of colours. Check the Shop for pricing and stock!"] },
+            { patterns: ["garage","garage door"], responses: ["The Smart Garage Door Controller lets you open, close and monitor your garage remotely. Visit the Shop for details."] },
+            { patterns: ["blinds","window blinds","automated blinds","smart blinds"], responses: ["Our Automated Window Blinds can be scheduled or voice-controlled. See the Shop for more info."] },
+            { patterns: ["socket","smart socket","power socket","plug","smart plug"], responses: ["The Smart Power Socket lets you control devices remotely and monitor energy usage. Available in the Shop!"] },
+            { patterns: ["sensor","sensor kit","motion sensor","door sensor"], responses: ["Our Sensor Kit includes motion, temperature and door/window sensors. Check the Shop for availability."] },
+            { patterns: ["product","products","range","catalogue","what do you sell"], responses: ["We offer Smart Lights, Garage Door Controllers, Window Blinds, Smart Sockets and Sensor Kits. Visit the Shop to browse!"] },
+            { patterns: ["install","setup","set up","how to use","manual","instructions"], responses: ["Each product comes with a setup guide in the box. You can also email hello@luxehome.com for installation support."] },
+            { patterns: ["thanks","thank you","thankyou","cheers","great","helpful"], responses: ["You're welcome! 😊 Anything else I can help with?"] },
+            { patterns: ["bye","goodbye","see you","that's all","thats all"], responses: ["Goodbye! 👋 Have a great day."] }
         ];
 
         var fallbacks = [
             "I'm not sure about that. Try asking about products, stock, orders, pricing or warranty.",
-            "I can help with product info, stock, orders, pricing and warranty. For example: \"Is the Smart Light in stock?\"",
+            "I can help with product info, stock, orders, pricing and warranty.",
             "I didn't quite catch that. You can also reach our team at hello@luxehome.com."
         ];
 
-        var badPhrases = [
-            "not satisfied","not happy","unhappy","this is bad","bad bot",
-            "useless","not helpful","this didn't help","this did not help",
-            "disappointed","terrible","awful","rubbish","waste of time"
-        ];
+        var badPhrases = ["not satisfied","not happy","unhappy","this is bad","bad bot","useless","not helpful","disappointed","terrible","awful","rubbish","waste of time"];
 
         function getReply(raw) {
             var text = raw.toLowerCase().trim();
             if (!text) return "Please type a message and I'll do my best to help!";
-
             for (var i = 0; i < badPhrases.length; i++) {
                 if (text.indexOf(badPhrases[i]) !== -1)
                     return "I'm sorry to hear that! Our team can help — email hello@luxehome.com or call +44 1234 567 890 (Mon–Fri 9am–6pm).";
             }
-
             for (var r = 0; r < rules.length; r++) {
                 for (var p = 0; p < rules[r].patterns.length; p++) {
                     if (text.indexOf(rules[r].patterns[p]) !== -1) {
@@ -604,21 +526,17 @@ if (isset($_POST['submit_warranty'])) {
             var val = input.value.trim();
             if (!val) return;
             addMsg(val, false);
-            var reply = getReply(val);  // capture BEFORE clearing
+            var reply = getReply(val);
             input.value = "";
             setTimeout(function () { addMsg(reply, true); }, 450);
         }
 
-        // Enter key bound here — no inline onkeydown needed in HTML
         input.addEventListener("keydown", function (e) {
             if (e.key === "Enter") { e.preventDefault(); doSend(); }
         });
 
-        // Only these two names are exposed globally — unique enough to
-        // never clash with anything in script.js or accessibility.js
         window.luxeChatToggle = function () { win.classList.toggle("hidden"); };
         window.luxeChatSend   = doSend;
-
     })();
     </script>
 
