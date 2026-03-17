@@ -264,14 +264,46 @@ if (isset($_GET['id'])) {
         </div>
 
         <div class="flex gap-3">
-          <form action="php_functions/addToCart.php" method="POST" id="addToCartForm">
-            <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
-            <input type="hidden" name="quantity" id="quantityInput" value="1">
-            <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition-colors">
-              Add to Basket
-            </button>
-          </form>
-        </div>
+    <!-- Add to Cart Form -->
+    <form action="php_functions/addToCart.php" method="POST" id="addToCartForm" class="flex-1">
+        <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+        <input type="hidden" name="quantity" id="quantityInput" value="1">
+        <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+            <i class="fas fa-shopping-cart"></i> Add to Basket
+        </button>
+    </form>
+    
+    <!-- Add to Wishlist Form -->
+    <?php if ($logged_in): ?>
+    <form action="php_functions/addToWishlist.php" method="POST" id="addToWishlistForm">
+        <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+        <?php
+        // Check if already in wishlist
+        $already_in_wishlist = false;
+        if (isset($_SESSION['user_id'])) {
+            require_once 'php_functions/dashboard_functions.php';
+            global $conn;
+            $check = $conn->prepare("SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?");
+            $check->bind_param("ii", $_SESSION['user_id'], $row['product_id']);
+            $check->execute();
+            $result = $check->get_result();
+            $already_in_wishlist = $result->num_rows > 0;
+        }
+        ?>
+        <button type="submit" class="wishlist-btn <?php echo $already_in_wishlist ? 'bg-pink-600 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700'; ?> text-white px-4 py-2 rounded-md transition-colors" <?php echo $already_in_wishlist ? 'disabled' : ''; ?>>
+            <i class="fas fa-heart"></i> 
+            <?php echo $already_in_wishlist ? 'In Wishlist' : 'Add to Wishlist'; ?>
+        </button>
+    </form>
+    <?php else: ?>
+    <a href="login.php" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors inline-block">
+        <i class="fas fa-heart"></i> Login to Wishlist
+    </a>
+    <?php endif; ?>
+</div>
+
+<!-- Message display area for wishlist -->
+<p id="wishlistMsg" class="text-green-600 mt-4 hidden"></p>
 
         <p id="addedMsg" class="text-green-600 mt-4 hidden">Added to basket</p>
       </div>
