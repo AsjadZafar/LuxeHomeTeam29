@@ -1,21 +1,9 @@
 <?php
 session_start();
-
-// Clear cart
-if (isset($_SESSION['cart'])) {
-    unset($_SESSION['cart']);
-}
-
-// Redirect to a confirmation page
-header("Location: /index.php");
-exit;
-?>
-<?php
-session_start();
 require_once 'dbh.php';
 
 if (!isset($_SESSION['username'])) {
-    header('Location: ../login.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -30,7 +18,7 @@ $user_id = $user['user_id'];
 $stmt->close();
 
 if (empty($_SESSION['cart'])) {
-    header('Location: ../cart.php');
+    header('Location: /cart.php');
     exit();
 }
 
@@ -50,7 +38,7 @@ if ($address_id == 0) {
 
 if ($address_id == 0) {
     // No address – redirect to add address page
-    header('Location: ../add_address.php');
+    header('Location: /add_address.php');
     exit();
 }
 
@@ -60,8 +48,8 @@ mysqli_begin_transaction($conn);
 try {
     // Insert order
     $order_date = date('Y-m-d H:i:s');
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, order_date, price) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("iisd", $user_id, $address_id, $order_date, $price);
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, order_date, total) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("iisd", $user_id, $address_id, $order_date, $total);
     $stmt->execute();
     $order_id = $stmt->insert_id;
     $stmt->close();
@@ -69,13 +57,18 @@ try {
     // Insert each order item
     foreach ($_SESSION['cart'] as $product_id => $qty) {
         $product_id = intval($product_id);
-        // Get current price
+        // Get current price – if product missing, use 0 and log error
         $price_stmt = $conn->prepare("SELECT price FROM products WHERE product_id = ?");
         $price_stmt->bind_param("i", $product_id);
         $price_stmt->execute();
         $price_res = $price_stmt->get_result();
-        $price_row = $price_res->fetch_assoc();
-        $price = $price_row['price'];
+        if ($price_row = $price_res->fetch_assoc()) {
+            $price = $price_row['price'];
+        } else {
+            // Product not found – log error and use 0
+            error_log("Product ID $product_id not found during order placement.");
+            $price = 0;
+        }
         $price_stmt->close();
 
         $item_stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price_each) VALUES (?, ?, ?, ?)");
@@ -87,14 +80,13 @@ try {
     mysqli_commit($conn);
     unset($_SESSION['cart']); // clear cart
 
-    // Redirect to confirmation page
-    header("Location: ../order_confirmation.php?order_id=$order_id");
+    header("Location: /order_confirmation.php?order_id=$order_id");
     exit();
 
 } catch (Exception $e) {
     mysqli_rollback($conn);
-    error_log("Order placement failed: " . $e->getMessage());
-    header('Location: ../checkout.php?error=1');
+    error_log("Order error: " . $e->getMessage());
+    header('Location: /checkout.php?error=1');
     exit();
 }
 ?>

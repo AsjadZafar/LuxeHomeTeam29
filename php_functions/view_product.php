@@ -55,9 +55,15 @@ if (isset($_GET['id'])) {
                     </a>
                 </li>
                 <li> 
-                    <a href="#">
+                    <a href="/admin_users.php">
                         <i class="fas fa-users"></i>
                         <span>Users</span>
+                    </a>
+                </li>
+                <li> 
+                    <a href="/admin_warranty.php">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Warranty</span>
                     </a>
                 </li>
                 <li> 
@@ -194,7 +200,6 @@ if (isset($_GET['id'])) {
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Highlight the active link in sidebar
             const currentPage = window.location.pathname.split('/').pop();
             const navLinks = document.querySelectorAll('.admin-sidebar a');
             
@@ -205,7 +210,6 @@ if (isset($_GET['id'])) {
                 }
             });
             
-            // Add confirmation for delete with sweet alert style
             const deleteButtons = document.querySelectorAll('.btn-delete');
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
@@ -215,7 +219,6 @@ if (isset($_GET['id'])) {
                 });
             });
             
-            // Add hover effect to table rows
             const tableRows = document.querySelectorAll('.admin-table tbody tr');
             tableRows.forEach(row => {
                 row.addEventListener('mouseenter', function() {

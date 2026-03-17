@@ -25,6 +25,8 @@ if (isset($_GET['edit_account'])) {
     $active_tab = 'your_orders';
 } elseif (isset($_GET['wishlist'])) {
     $active_tab = 'wishlist';
+} elseif (isset($_GET['warranty_view'])) {
+    $active_tab = 'warranty_view';
 }
 ?>
 <!doctype html>
@@ -101,6 +103,12 @@ if (isset($_GET['edit_account'])) {
                             <span>Dashboard Home</span>
                         </a>
                     </li>
+                     <li>
+                        <a href="customer_dash.php?warranty_view" class="tab <?php echo $active_tab == 'warranty_view' ? 'active' : ''; ?>">
+                            <i class="fa fa-home fa-fw"></i> 
+                            <span>Warranty Claims</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="customer_dash.php?edit_account" class="tab <?php echo $active_tab == 'edit_account' ? 'active' : ''; ?>">
                             <i class="fa fa-cog fa-fw"></i> 
@@ -130,6 +138,9 @@ if (isset($_GET['edit_account'])) {
                         <i class="fas fa-tachometer-alt"></i>
                         <?php
                         switch($active_tab) {
+                            case 'warranty_view':
+                                echo 'Warrenty Claims';
+                                break;
                             case 'edit_account':
                                 echo 'Account Settings';
                                 break;

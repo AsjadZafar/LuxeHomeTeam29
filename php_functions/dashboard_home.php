@@ -65,8 +65,8 @@ $address_count = getUserAddresses($_SESSION['user_id'])->num_rows;
             <tr>
                 <td>#<?php echo $order['order_id']; ?></td>
                 <td><?php echo date('M d, Y', strtotime($order['order_date'])); ?></td>
-                <td><?php echo $order['item_count']; ?></td>
-                <td>$<?php echo number_format($order['total'], 2); ?></td>
+                <td><?php echo isset($order['item_count']) ? $order['item_count'] : 0; ?></td>
+                <td>&pound;<?php echo number_format((float)($order['total'] ?? $order['price'] ?? 0), 2); ?></td>
                 <td>
                     <div class="action-buttons">
                         <a href="customer_dash.php?your_orders&view=<?php echo $order['order_id']; ?>" class="btn-view btn-sm">
