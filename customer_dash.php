@@ -27,6 +27,8 @@ if (isset($_GET['edit_account'])) {
     $active_tab = 'wishlist';
 } elseif (isset($_GET['warranty_view'])) {
     $active_tab = 'warranty_view';
+} elseif (isset($_GET['review_view'])) {
+    $active_tab = 'review_view';
 }
 ?>
 <!doctype html>
@@ -127,6 +129,12 @@ if (isset($_GET['edit_account'])) {
                             <span>My Wishlist</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="customer_dash.php?review_view" class="tab <?php echo $active_tab == 'review' ? 'active' : ''; ?>">
+                            <i class="fa fa-heart"></i> 
+                            <span>My Reviews</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -149,6 +157,9 @@ if (isset($_GET['edit_account'])) {
                                 break;
                             case 'wishlist':
                                 echo 'My Wishlist';
+                                break;
+                            case 'review':
+                                echo 'My Reviews';
                                 break;
                             default:
                                 echo 'Dashboard';
