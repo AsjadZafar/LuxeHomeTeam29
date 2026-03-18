@@ -197,6 +197,8 @@ function get_order_details() {
         include 'php_functions/wishlist.php';
     } elseif (isset($_GET['warranty_view'])) {
         include 'php_functions/warranty_view.php';
+    } elseif (isset($_GET['return_order'])) {
+        include 'php_functions/return_order.php';
     } elseif (isset($_GET['review_view'])) {
         include 'php_functions/review_view.php';
     } else {
