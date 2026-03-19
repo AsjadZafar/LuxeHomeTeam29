@@ -6,59 +6,25 @@ error_reporting(E_ALL);
 // Check if user is logged in
 $logged_in = false;
 $username = "";
+$user_id = 0;
 
 if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
+    $user_id = $_SESSION['user_id']; // optional, if you need it for review deletion
 }
 
 require_once 'php_functions/dbh.php';
 
-// Ensure cart exists
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-// Calculate cart count for badge
-$cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
-
-if (isset($_GET['id'])) {
-  $id = intval($_GET['id']);
-
-  $sql = "SELECT * from products WHERE product_id = $id";
-
-  $result = mysqli_query($conn, $sql);
-
-  $row = mysqli_fetch_assoc($result);
-
-  if(!$row) {
-    die("Product not found");
-  }
-} else {
-  die("No product ID Provided");
-}
-
-//SQL for Reviews
-
-$review_sql = "SELECT r.rating, r.review, r.review_date, u.username
-               FROM reviews r
-               JOIN users u ON r.user_id = u.user_id
-               WHERE r.product_id = $id
-               ORDER BY r.review_date DESC";
-
-$review_result = mysqli_query($conn, $review_sql);
-
-//SQL to VIEW the reviews
-
-$review_sql_view = "SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
-               FROM reviews r
-               JOIN users u ON r.user_id = u.user_id
-               WHERE r.product_id = $id
-               ORDER BY r.review_date DESC";
-
-$review_result_view = mysqli_query($conn, $review_sql_view);
-
-?> 
+// Fetch service reviews
+$service_review_sql = "
+    SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+    FROM service_reviews r
+    JOIN users u ON r.user_id = u.user_id
+    ORDER BY r.review_date DESC
+";
+$service_review_result = mysqli_query($conn, $service_review_sql);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
