@@ -849,18 +849,24 @@ $total_reviews = $avg_data['total_reviews'];
 ?>
 
 <!-- Blue Section -->
-<!-- Blue Section -->
 <div class="w-full mb-6">
     <div class="bg-[#0a0f1f] border border-white flex flex-col sm:flex-row">
-        <!-- Left Half -->
+        <!-- Left third -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
             <i class="fas fa-tools text-green-500 mr-2"></i>
             <span class="text-gray-300">Complimentary installation included with every purchase</span>
         </div>
-        <!-- Right Half -->
-        <div class="flex-1 flex justify-center items-center px-4 py-4">
+
+        <!-- Middle third -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
             <i class="fas fa-truck text-green-500 mr-2"></i>
             <span class="text-gray-300">Free shipping on all orders</span>
+        </div>
+
+        <!-- Right third -->
+        <div class="flex-1 flex justify-center items-center px-4 py-4">
+            <i class="fas fa-undo text-green-500 mr-2"></i>
+            <span class="text-gray-300">Free returns on all orders</span>
         </div>
     </div>
 </div>
