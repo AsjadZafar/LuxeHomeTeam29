@@ -832,6 +832,98 @@ About Us | LuxeHome
       </div>
     </section>
 
+    <?php
+// Fetch all service reviews
+$service_review_sql = "
+    SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username
+    FROM service_reviews s
+    JOIN users u ON s.user_id = u.user_id
+    ORDER BY s.review_date DESC
+";
+$service_review_result = mysqli_query($conn, $service_review_sql);
+?>
+
+<section id="service-reviews" class="mt-10">
+
+<h2 class="text-xl font-bold text-gray-900 mb-6">Customer Service Reviews</h2>
+
+<!-- Review Form to submit the review -->
+<?php if(isset($_SESSION['user_id'])): ?>
+<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border">
+
+<h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Service Review</h3>
+
+<!-- Rating -->
+<label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+<div class="flex gap-2 mb-4">
+<?php for($i=1;$i<=5;$i++): ?>
+<label class="cursor-pointer">
+    <input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
+    <i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
+</label>
+<?php endfor; ?>
+</div>
+
+<!-- Review Text -->
+<label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+<textarea name="review" rows="4" class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience with our service..." required></textarea>
+
+<!-- Submit Button -->
+<button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+<i class="fas fa-paper-plane"></i> Submit Review
+</button>
+
+</form>
+<?php else: ?>
+<p class="text-gray-600 mb-6">
+<a href="login.php" class="text-emerald-600 hover:underline">Login</a> to leave a service review.
+</p>
+<?php endif; ?>
+<!--End of Review form-->
+
+<!-- Display the Reviews -->
+<?php if(mysqli_num_rows($service_review_result) > 0): ?>
+<div class="space-y-6">
+<?php while($review = mysqli_fetch_assoc($service_review_result)): ?>
+<div class="bg-white border rounded-lg p-5 shadow-sm">
+
+<!-- Username + Date -->
+<div class="flex justify-between items-center mb-2">
+    <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['username']) ?></span>
+    <span class="text-sm text-gray-500"><?= date("M d, Y", strtotime($review['review_date'])) ?></span>
+</div>
+
+<!-- Star Rating -->
+<div class="text-yellow-400 mb-2">
+<?php
+for($i=1; $i<=5; $i++){
+    echo $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>';
+}
+?>
+</div>
+
+<!-- Review Text -->
+<p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
+
+<!-- Delete button if owner or admin -->
+<?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $review['user_id'] || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'))): ?>
+<form action="php_functions/deleteServiceReview.php" method="POST">
+    <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+    <button type="submit" class="text-red-600 text-sm hover:underline">
+        <i class="fas fa-trash"></i> Delete Review
+    </button>
+</form>
+<?php endif; ?>
+
+</div>
+<?php endwhile; ?>
+</div>
+<?php else: ?>
+<p class="text-gray-500">No service reviews yet. Be the first to share your experience!</p>
+<?php endif; ?>
+
+</section>
+
     <!-- Closing/About Us Summary Section -->
     <section class="relative pt-20 pb-20" style="
   background:
@@ -877,50 +969,6 @@ About Us | LuxeHome
         </div>
       </div>
     </section>
-
-    <?php
-// Fetch all service reviews
-$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username
-                FROM service_reviews s
-                JOIN users u ON s.user_id = u.user_id
-                ORDER BY s.review_date DESC";
-$service_result = mysqli_query($conn, $service_sql);
-?>
-<section id="service-reviews" class="mt-10">
-<h2 class="text-xl font-bold mb-6">Customer Service Reviews</h2>
-
-<?php if(mysqli_num_rows($service_result) > 0): ?>
-<div class="space-y-6">
-<?php while($review = mysqli_fetch_assoc($service_result)): ?>
-<div class="bg-white border rounded-lg p-5 shadow-sm">
-    <div class="flex justify-between items-center mb-2">
-        <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['username']) ?></span>
-        <span class="text-sm text-gray-500"><?= date("M d, Y", strtotime($review['review_date'])) ?></span>
-    </div>
-    <div class="text-yellow-400 mb-2">
-        <?php
-        for($i=1;$i<=5;$i++){
-            echo $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>';
-        }
-        ?>
-    </div>
-    <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
-
-    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
-    <form action="php_functions/deleteServiceReview.php" method="POST">
-        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
-        <button type="submit" class="text-red-600 text-sm hover:underline">
-            <i class="fas fa-trash"></i> Delete Review
-        </button>
-    </form>
-    <?php endif; ?>
-</div>
-<?php endwhile; ?>
-</div>
-<?php else: ?>
-<p class="text-gray-500">No service reviews yet. Be the first to share your experience!</p>
-<?php endif; ?>
-</section>
 
   </main>
 
