@@ -27,6 +27,10 @@ if (isset($_GET['edit_account'])) {
     $active_tab = 'wishlist';
 } elseif (isset($_GET['warranty_view'])) {
     $active_tab = 'warranty_view';
+} elseif (isset($_GET['review_view'])) {
+    $active_tab = 'review_view';
+} elseif (isset($_GET['return_order'])) {
+    $active_tab = 'return_order';
 }
 ?>
 <!doctype html>
@@ -122,9 +126,21 @@ if (isset($_GET['edit_account'])) {
                         </a>
                     </li>
                     <li>
+                        <a href="customer_dash.php?return_order" class="tab <?php echo $active_tab == 'return_order' ? 'active' : ''; ?>">
+                            <i class="fas fa-shopping-cart"></i> 
+                            <span>My Returns</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="customer_dash.php?wishlist" class="tab <?php echo $active_tab == 'wishlist' ? 'active' : ''; ?>">
                             <i class="fa fa-heart"></i> 
                             <span>My Wishlist</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customer_dash.php?review_view" class="tab <?php echo $active_tab == 'review' ? 'active' : ''; ?>">
+                            <i class="fa fa-heart"></i> 
+                            <span>My Reviews</span>
                         </a>
                     </li>
                 </ul>
@@ -149,6 +165,12 @@ if (isset($_GET['edit_account'])) {
                                 break;
                             case 'wishlist':
                                 echo 'My Wishlist';
+                                break;
+                            case 'review':
+                                echo 'My Reviews';
+                                break;
+                            case 'return_order':
+                                echo 'My Returns';
                                 break;
                             default:
                                 echo 'Dashboard';
