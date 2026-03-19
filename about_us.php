@@ -849,17 +849,18 @@ $total_reviews = $avg_data['total_reviews'];
 ?>
 
 <!-- Blue Section -->
+<!-- Blue Section -->
 <div class="w-full mb-6">
-    <div class="bg-[#0a0f1f] border border-white text-gray-300 flex flex-col sm:flex-row">
+    <div class="bg-[#0a0f1f] border border-white flex flex-col sm:flex-row">
         <!-- Left Half -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
-            <i class="fas fa-tools mr-2"></i>
-            <span>Complimentary installation included with every purchase</span>
+            <i class="fas fa-tools text-green-500 mr-2"></i>
+            <span class="text-gray-300">Complimentary installation included with every purchase</span>
         </div>
         <!-- Right Half -->
         <div class="flex-1 flex justify-center items-center px-4 py-4">
-            <i class="fas fa-truck mr-2"></i>
-            <span>Free shipping on all orders</span>
+            <i class="fas fa-truck text-green-500 mr-2"></i>
+            <span class="text-gray-300">Free shipping on all orders</span>
         </div>
     </div>
 </div>
@@ -867,7 +868,7 @@ $total_reviews = $avg_data['total_reviews'];
 <!-- Heading + Subheading -->
 <div class="text-center mb-4 mt-10">
     <h2 class="text-3xl font-bold text-gray-900">Customer Service Reviews</h2>
-    <p class="text-gray-500 text-md mt-1 mb-6">See what real customers are saying about our service</p>
+    <p class="text-gray-500 text-md mt-3 mb-6">See what real customers are saying about our service</p>
 
     <!-- Verified + rating below heading -->
     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
