@@ -957,17 +957,23 @@ $total_reviews = $avg_data['total_reviews'];
     <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
 
     <!-- Helpful counter -->
-    <?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
-    <div class="mt-1 text-sm flex items-center gap-4">
-        <span>Was this review helpful?</span>
-        <button 
-            onclick="markHelpful(<?= $review['review_id'] ?>)" 
-            class="helpful-btn text-green-600 flex items-center gap-2 text-sm">
+<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+<div class="mt-1 text-sm flex items-center gap-4">
+    <span>Was this review helpful?</span>
+    
+    <!-- Simple form for marking helpful -->
+    <form action="php_functions/markHelpful.php" method="POST" class="inline">
+        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+        <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
             <i class="fas fa-thumbs-up"></i> Yes
         </button>
-        <span id="helpful-count-<?= $review['review_id'] ?>" class="text-gray-500"><?= $review['helpful_count'] ?? 0 ?> people found this helpful</span>
-    </div>
-    <?php endif; ?>
+    </form>
+
+    <span class="text-gray-500">
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful
+    </span>
+</div>
+<?php endif; ?>
 
     <!-- Delete button for customer or admin -->
     <?php if(
@@ -987,24 +993,6 @@ $total_reviews = $avg_data['total_reviews'];
 <?php else: ?>
 <p class="text-gray-500 text-center mb-16">No service reviews yet. Be the first to share your experience!</p>
 <?php endif; ?>
-
-<!-- Helpful counter JS -->
-<script>
-function markHelpful(reviewId) {
-    fetch('php_functions/markHelpful.php', {
-        method: 'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body: `review_id=${reviewId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success){
-            document.getElementById(`helpful-count-${reviewId}`).textContent = `${data.new_count} people found this helpful`;
-        }
-    })
-    .catch(err => console.error(err));
-}
-</script>
 
 </section>
 
