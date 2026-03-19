@@ -1,8 +1,9 @@
-<?php
+<?php 
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// Check if user is logged in
 $logged_in = false;
 $username = "";
 
@@ -10,7 +11,55 @@ if (isset($_SESSION['username'])) {
   $logged_in = true;
   $username = $_SESSION['username'];
 }
-?>
+
+require_once 'php_functions/dbh.php';
+
+// Ensure cart exists
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// Calculate cart count for badge
+$cart_count = !empty($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+
+if (isset($_GET['id'])) {
+  $id = intval($_GET['id']);
+
+  $sql = "SELECT * from products WHERE product_id = $id";
+
+  $result = mysqli_query($conn, $sql);
+
+  $row = mysqli_fetch_assoc($result);
+
+  if(!$row) {
+    die("Product not found");
+  }
+} else {
+  die("No product ID Provided");
+}
+
+//SQL for Reviews
+
+$review_sql = "SELECT r.rating, r.review, r.review_date, u.username
+               FROM reviews r
+               JOIN users u ON r.user_id = u.user_id
+               WHERE r.product_id = $id
+               ORDER BY r.review_date DESC";
+
+$review_result = mysqli_query($conn, $review_sql);
+
+//SQL to VIEW the reviews
+
+$review_sql_view = "SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+               FROM reviews r
+               JOIN users u ON r.user_id = u.user_id
+               WHERE r.product_id = $id
+               ORDER BY r.review_date DESC";
+
+$review_result_view = mysqli_query($conn, $review_sql_view);
+
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -862,6 +911,50 @@ About Us | LuxeHome
         </div>
       </div>
     </section>
+
+    <?php
+// Fetch all service reviews
+$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username
+                FROM service_reviews s
+                JOIN users u ON s.user_id = u.user_id
+                ORDER BY s.review_date DESC";
+$service_result = mysqli_query($conn, $service_sql);
+?>
+<section id="service-reviews" class="mt-10">
+<h2 class="text-xl font-bold mb-6">Customer Service Reviews</h2>
+
+<?php if(mysqli_num_rows($service_result) > 0): ?>
+<div class="space-y-6">
+<?php while($review = mysqli_fetch_assoc($service_result)): ?>
+<div class="bg-white border rounded-lg p-5 shadow-sm">
+    <div class="flex justify-between items-center mb-2">
+        <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['username']) ?></span>
+        <span class="text-sm text-gray-500"><?= date("M d, Y", strtotime($review['review_date'])) ?></span>
+    </div>
+    <div class="text-yellow-400 mb-2">
+        <?php
+        for($i=1;$i<=5;$i++){
+            echo $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>';
+        }
+        ?>
+    </div>
+    <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
+
+    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
+    <form action="php_functions/deleteServiceReview.php" method="POST">
+        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+        <button type="submit" class="text-red-600 text-sm hover:underline">
+            <i class="fas fa-trash"></i> Delete Review
+        </button>
+    </form>
+    <?php endif; ?>
+</div>
+<?php endwhile; ?>
+</div>
+<?php else: ?>
+<p class="text-gray-500">No service reviews yet. Be the first to share your experience!</p>
+<?php endif; ?>
+</section>
 
   </main>
 
