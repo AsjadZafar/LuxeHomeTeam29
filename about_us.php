@@ -937,7 +937,7 @@ $total_reviews = $avg_data['total_reviews'];
 
 <!-- Reviews List -->
 <?php if(mysqli_num_rows($service_result) > 0): ?>
-<div class="space-y-1 max-w-3xl mx-auto mb-16">
+<div class="space-y-1 w-full mb-16">
 <?php while($review = mysqli_fetch_assoc($service_result)): ?>
 <div class="bg-white border rounded-lg p-5 shadow-sm">
     <!-- Username and Date -->
