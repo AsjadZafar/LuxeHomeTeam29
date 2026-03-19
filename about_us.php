@@ -902,7 +902,7 @@ $total_reviews = $avg_data['total_reviews'];
 
 <!-- Review Form -->
 <?php if ($logged_in): ?>
-<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border w-full">
+<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-5xl mx-auto">
     <h3 class="text-lg font-semibold mb-4 text-gray-900">Liked our service? Leave a Review</h3>
 
     <!-- Rating -->
