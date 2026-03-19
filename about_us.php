@@ -832,76 +832,136 @@ About Us | LuxeHome
       </div>
     </section>
 
-    <!-- Review Form to submit the review -->
-<?php if(isset($_SESSION['user_id'])): ?>
-<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border">
+    <?php
+// Fetch all service reviews
+$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username, s.helpful_count
+                FROM service_reviews s
+                JOIN users u ON s.user_id = u.user_id
+                ORDER BY s.review_date DESC";
+$service_result = mysqli_query($conn, $service_sql);
 
-<h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Service Review</h3>
+// Fetch average rating & total reviews
+$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
+$avg_result = mysqli_query($conn, $avg_sql);
+$avg_data = mysqli_fetch_assoc($avg_result);
+$avg_rating = round($avg_data['avg_rating'], 1);
+$total_reviews = $avg_data['total_reviews'];
+?>
 
-<!-- Rating -->
-<label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
-<div class="flex gap-2 mb-4">
-<?php for($i=1;$i<=5;$i++): ?>
-<label class="cursor-pointer">
-    <input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
-    <i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
-</label>
-<?php endfor; ?>
+<!-- Blue Section -->
+<div class="w-full mb-6">
+    <div class="bg-[#0a0f1f] border-t border-b border-white text-green-700 px-6 py-4 flex justify-center items-center gap-3 text-center">
+        <i class="fas fa-tools"></i>
+        Complimentary installation included with every purchase
+    </div>
+    <div class="bg-[#0a0f1f] border-b border-white text-green-700 px-6 py-4 flex justify-center items-center gap-3 text-center">
+        <i class="fas fa-truck"></i>
+        Free shipping on all orders
+    </div>
 </div>
 
-<!-- Review Text -->
-<label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
-<textarea name="review" rows="4" class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience with our service..." required></textarea>
+<!-- Review Form -->
+<?php if ($logged_in): ?>
+<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-3xl mx-auto">
+    <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Review</h3>
 
-<!-- Submit Button -->
-<button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
-<i class="fas fa-paper-plane"></i> Submit Review
-</button>
+    <!-- Rating -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+    <div class="flex gap-2 mb-4">
+        <?php for($i=1; $i<=5; $i++): ?>
+        <label class="cursor-pointer">
+            <input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
+            <i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
+        </label>
+        <?php endfor; ?>
+    </div>
 
+    <!-- Review Text -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+    <textarea name="review" rows="4" class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience with our service..." required></textarea>
+
+    <!-- Submit Button -->
+    <button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+        <i class="fas fa-paper-plane"></i> Submit Review
+    </button>
 </form>
 <?php else: ?>
-<p class="text-gray-600 mb-6">
-<a href="login.php" class="text-emerald-600 hover:underline">Login</a> to leave a service review.
-</p>
+<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 max-w-3xl mx-auto text-center">
+    <p>
+        Have you used our service? You must be 
+        <a href="login.php" class="underline font-medium text-yellow-800 hover:text-yellow-900">logged in</a> 
+        to your customer dashboard to submit a review.
+    </p>
+</div>
 <?php endif; ?>
 
-<!-- Customer Service Reviews -->
-<h2 class="text-xl font-bold text-gray-900 mb-6">Customer Service Reviews</h2>
+<!-- Average Rating -->
+<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-2">
+        <i class="fas fa-check-circle"></i>
+        <span>All reviews are from verified purchases</span>
+    </div>
+    <div class="text-right">
+        <span class="font-semibold text-lg">⭐ <?= $avg_rating ? $avg_rating : "0.0" ?>/5</span>
+        <span class="text-sm text-gray-600">(based on <?= $total_reviews ?> reviews)</span>
+    </div>
+</div>
 
-<!-- Display the Reviews -->
-<?php if(mysqli_num_rows($service_review_result) > 0): ?>
-<div class="space-y-6">
-<?php while($review = mysqli_fetch_assoc($service_review_result)): ?>
+<!-- Customer Service Reviews Title -->
+<div class="text-center mb-4">
+    <h2 class="text-3xl font-bold text-gray-900">Customer Service Reviews</h2>
+    <p class="text-gray-500 text-md mt-2 mb-6">See what real customers are saying about our service</p>
+</div>
+
+<!-- Reviews List -->
+<?php if(mysqli_num_rows($service_result) > 0): ?>
+<div class="space-y-6 max-w-3xl mx-auto">
+<?php while($review = mysqli_fetch_assoc($service_result)): ?>
 <div class="bg-white border rounded-lg p-5 shadow-sm">
+    <!-- Username + Date -->
     <div class="flex justify-between items-center mb-2">
         <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['username']) ?></span>
         <span class="text-sm text-gray-500"><?= date("M d, Y", strtotime($review['review_date'])) ?></span>
     </div>
 
+    <!-- Star Rating -->
     <div class="text-yellow-400 mb-2">
-        <?php
-        for($i=1; $i<=5; $i++){
-            echo $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>';
-        }
-        ?>
+        <?php for($i=1;$i<=5;$i++): ?>
+            <?= $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>' ?>
+        <?php endfor; ?>
     </div>
 
+    <!-- Review Text -->
     <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
 
-    <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $review['user_id'] || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'))): ?>
-    <form action="php_functions/deleteServiceReview.php" method="POST">
+    <!-- Helpful counter for logged-in non-admins -->
+    <?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+    <div class="mt-3 text-sm flex items-center gap-4">
+        <span>Was this review helpful?</span>
+        <button onclick="markHelpful(this, <?= $review['review_id'] ?>)" class="helpful-btn text-green-600 flex items-center gap-2 text-sm">
+            <i class="fas fa-thumbs-up"></i> Yes
+        </button>
+        <span class="helpful-count text-gray-500"><?= $review['helpful_count'] ?? 0 ?> people found this helpful</span>
+    </div>
+    <?php endif; ?>
+
+    <!-- Delete button for review author or admin -->
+    <?php if(
+        (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']) || 
+        (isset($_SESSION['role']) && $_SESSION['role'] === 'admin')
+    ): ?>
+    <form action="php_functions/deleteServiceReview.php" method="POST" class="mt-3">
         <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
         <button type="submit" class="text-red-600 text-sm hover:underline">
             <i class="fas fa-trash"></i> Delete Review
         </button>
     </form>
     <?php endif; ?>
-
 </div>
 <?php endwhile; ?>
 </div>
 <?php else: ?>
-<p class="text-gray-500">No service reviews yet. Be the first to share your experience!</p>
+<p class="text-gray-500 text-center">No service reviews yet. Be the first to share your experience!</p>
 <?php endif; ?>
 
 </section>
