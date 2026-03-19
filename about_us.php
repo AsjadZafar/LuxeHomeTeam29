@@ -850,13 +850,12 @@ $total_reviews = $avg_data['total_reviews'];
 
 <!-- Blue Section -->
 <div class="w-full mb-6">
-    <div class="bg-[#0a0f1f] border border-white text-white flex flex-col sm:flex-row">
+    <div class="bg-[#0a0f1f] border border-white text-gray-300 flex flex-col sm:flex-row">
         <!-- Left Half -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
             <i class="fas fa-tools mr-2"></i>
             <span>Complimentary installation included with every purchase</span>
         </div>
-
         <!-- Right Half -->
         <div class="flex-1 flex justify-center items-center px-4 py-4">
             <i class="fas fa-truck mr-2"></i>
@@ -866,11 +865,12 @@ $total_reviews = $avg_data['total_reviews'];
 </div>
 
 <!-- Heading + Subheading -->
-<div class="text-center mb-4 mt- 6">
+<div class="text-center mb-4 mt-10">
     <h2 class="text-3xl font-bold text-gray-900">Customer Service Reviews</h2>
-    <p class="text-gray-500 text-md mt-6 mb-2">See what real customers are saying about our service</p>
+    <p class="text-gray-500 text-md mt-1 mb-6">See what real customers are saying about our service</p>
+
     <!-- Verified + rating below heading -->
-    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 mt-6 max-w-3xl mx-auto flex justify-between items-center">
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-2">
             <i class="fas fa-check-circle"></i>
             <span>All reviews are from verified purchases</span>
@@ -886,6 +886,7 @@ $total_reviews = $avg_data['total_reviews'];
 <?php if ($logged_in): ?>
 <form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-3xl mx-auto">
     <h3 class="text-lg font-semibold mb-4 text-gray-900">Liked our service? Leave a Review</h3>
+
     <!-- Rating -->
     <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
     <div class="flex gap-2 mb-4">
@@ -896,9 +897,11 @@ $total_reviews = $avg_data['total_reviews'];
         </label>
         <?php endfor; ?>
     </div>
+
     <!-- Review Text -->
     <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
     <textarea name="review" rows="4" class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience with our service..." required></textarea>
+
     <!-- Submit Button -->
     <button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
         <i class="fas fa-paper-plane"></i> Submit Review
@@ -919,7 +922,7 @@ $total_reviews = $avg_data['total_reviews'];
 <div class="space-y-1 max-w-3xl mx-auto mb-16">
 <?php while($review = mysqli_fetch_assoc($service_result)): ?>
 <div class="bg-white border rounded-lg p-5 shadow-sm">
-    <!-- Username + Date -->
+    <!-- Username and Date -->
     <div class="flex justify-between items-center mb-2">
         <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['username']) ?></span>
         <span class="text-sm text-gray-500"><?= date("M d, Y", strtotime($review['review_date'])) ?></span>
@@ -939,14 +942,16 @@ $total_reviews = $avg_data['total_reviews'];
     <?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
     <div class="mt-1 text-sm flex items-center gap-4">
         <span>Was this review helpful?</span>
-        <button onclick="markHelpful(this, <?= $review['review_id'] ?>)" class="helpful-btn text-green-600 flex items-center gap-2 text-sm">
+        <button 
+            onclick="markHelpful(<?= $review['review_id'] ?>)" 
+            class="helpful-btn text-green-600 flex items-center gap-2 text-sm">
             <i class="fas fa-thumbs-up"></i> Yes
         </button>
-        <span class="helpful-count text-gray-500"><?= $review['helpful_count'] ?? 0 ?> people found this helpful</span>
+        <span id="helpful-count-<?= $review['review_id'] ?>" class="text-gray-500"><?= $review['helpful_count'] ?? 0 ?> people found this helpful</span>
     </div>
     <?php endif; ?>
 
-    <!-- Delete button for review author or admin -->
+    <!-- Delete button for customer or admin -->
     <?php if(
         (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']) || 
         (isset($_SESSION['role']) && $_SESSION['role'] === 'admin')
@@ -964,6 +969,24 @@ $total_reviews = $avg_data['total_reviews'];
 <?php else: ?>
 <p class="text-gray-500 text-center mb-16">No service reviews yet. Be the first to share your experience!</p>
 <?php endif; ?>
+
+<!-- Helpful counter JS -->
+<script>
+function markHelpful(reviewId) {
+    fetch('php_functions/markHelpful.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `review_id=${reviewId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success){
+            document.getElementById(`helpful-count-${reviewId}`).textContent = `${data.new_count} people found this helpful`;
+        }
+    })
+    .catch(err => console.error(err));
+}
+</script>
 
 </section>
 
