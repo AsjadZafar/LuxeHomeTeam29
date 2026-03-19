@@ -848,31 +848,41 @@ $avg_rating = round($avg_data['avg_rating'], 1);
 $total_reviews = $avg_data['total_reviews'];
 ?>
 
-<!-- Blue Section -->
+<!-- Blue Section: Responsive Three Parts -->
 <div class="w-full mb-6">
     <div class="bg-[#0a0f1f] border border-white flex flex-col sm:flex-row">
-        <!-- Left third -->
+        <!-- Left third- Installation Services -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
-            <i class="fas fa-tools text-green-500 mr-2"></i>
-            <span class="text-gray-300">Complimentary installation included with every purchase</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-green-700 mr-2">
+                <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clip-rule="evenodd" />
+                <path d="m10.076 8.64-2.201-2.2V4.874a.75.75 0 0 0-.364-.643l-3.75-2.25a.75.75 0 0 0-.916.113l-.75.75a.75.75 0 0 0-.113.916l2.25 3.75a.75.75 0 0 0 .643.364h1.564l2.062 2.062 1.575-1.297Z" />
+                <path fill-rule="evenodd" d="m12.556 17.329 4.183 4.182a3.375 3.375 0 0 0 4.773-4.773l-3.306-3.305a6.803 6.803 0 0 1-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 0 0-.167.063l-3.086 3.748Zm3.414-1.36a.75.75 0 0 1 1.06 0l1.875 1.876a.75.75 0 1 1-1.06 1.06L15.97 17.03a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-gray-300 text-center">Complimentary installation services</span>
         </div>
 
-        <!-- Middle third -->
+        <!-- Middle third- Free Shipping -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
-            <i class="fas fa-truck text-green-500 mr-2"></i>
-            <span class="text-gray-300">Free shipping on all orders</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-green-700 mr-2">
+                <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 1 1 6 0h3a.75.75 0 0 0 .75-.75V15Z" />
+                <path d="M8.25 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0ZM15.75 6.75a.75.75 0 0 0-.75.75v11.25c0 .087.015.17.042.248a3 3 0 0 1 5.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 0 0-3.732-10.104 1.837 1.837 0 0 0-1.47-.725H15.75Z" />
+                <path d="M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
+            </svg>
+            <span class="text-gray-300 text-center">Free shipping on all orders</span>
         </div>
 
-        <!-- Right third -->
+        <!-- Right third- Free Returns -->
         <div class="flex-1 flex justify-center items-center px-4 py-4">
-            <i class="fas fa-undo text-green-500 mr-2"></i>
-            <span class="text-gray-300">Free returns on all orders</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-green-700 mr-2">
+                <path fill-rule="evenodd" d="M12 5.25c1.213 0 2.415.046 3.605.135a3.256 3.256 0 0 1 3.01 3.01c.044.583.077 1.17.1 1.759L17.03 8.47a.75.75 0 1 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 0 0-1.06-1.06l-1.752 1.751c-.023-.65-.06-1.296-.108-1.939a4.756 4.756 0 0 0-4.392-4.392 49.422 49.422 0 0 0-7.436 0A4.756 4.756 0 0 0 3.89 8.282c-.017.224-.033.447-.046.672a.75.75 0 1 0 1.497.092c.013-.217.028-.434.044-.651a3.256 3.256 0 0 1 3.01-3.01 47.953 47.953 0 0 1 7.21 0 3.256 3.256 0 0 1 3.01 3.01 47.759 47.759 0 0 1-.1 1.759L6.97 15.53a.75.75 0 0 0 1.06 1.06l-3-3Z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-300 text-center">Free returns on all orders</span>
         </div>
     </div>
 </div>
 
 <!-- Heading + Subheading -->
-<div class="text-center mb-4 mt-10">
+<div class="text-center mb-4 mt-12">
     <h2 class="text-3xl font-bold text-gray-900">Customer Service Reviews</h2>
     <p class="text-gray-500 text-md mt-3 mb-6">See what real customers are saying about our service</p>
 
