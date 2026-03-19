@@ -288,13 +288,13 @@ About Us | LuxeHome
 
           <!-- Heading -->
           <h1 class="text-4xl sm:text-5xl font-bold leading-tight mt-4">
-            Book a Free Installation <br>
+            Book a Complimentary Installation <br>
             <span class="text-emerald-500">With Every Purchase</span>
           </h1> <!-- main heading with bold text, large size, and green text on the second line -->
 
           <!-- Paragraph -->
           <p class="text-lg text-gray-300 max-w-xl">
-            Enjoy a free installation service with every LuxeHome purchase,
+            Enjoy a complimentary installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.
           </p> <!-- paragraph under heading with light grey text, larger font, and limited width for readability -->
