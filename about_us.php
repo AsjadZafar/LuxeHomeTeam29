@@ -850,22 +850,27 @@ $total_reviews = $avg_data['total_reviews'];
 
 <!-- Blue Section -->
 <div class="w-full mb-6">
-    <div class="bg-[#0a0f1f] border-t border-b border-white text-white px-6 py-4 flex justify-center items-center gap-3 text-center">
-        <i class="fas fa-tools"></i>
-        Complimentary installation included with every purchase
-    </div>
-    <div class="bg-[#0a0f1f] border-b border-white text-white px-6 py-4 flex justify-center items-center gap-3 text-center">
-        <i class="fas fa-truck"></i>
-        Free shipping on all orders
+    <div class="bg-[#0a0f1f] border border-white text-white flex flex-col sm:flex-row">
+        <!-- Left Half -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-white px-4 py-4">
+            <i class="fas fa-tools mr-2"></i>
+            <span>Complimentary installation included with every purchase</span>
+        </div>
+
+        <!-- Right Half -->
+        <div class="flex-1 flex justify-center items-center px-4 py-4">
+            <i class="fas fa-truck mr-2"></i>
+            <span>Free shipping on all orders</span>
+        </div>
     </div>
 </div>
 
 <!-- Heading + Subheading -->
-<div class="text-center mb-4">
+<div class="text-center mb-4 mt- 6">
     <h2 class="text-3xl font-bold text-gray-900">Customer Service Reviews</h2>
-    <p class="text-gray-500 text-md mt-2 mb-2">See what real customers are saying about our service</p>
+    <p class="text-gray-500 text-md mt-6 mb-2">See what real customers are saying about our service</p>
     <!-- Verified + rating below heading -->
-    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 mt-6 max-w-3xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-2">
             <i class="fas fa-check-circle"></i>
             <span>All reviews are from verified purchases</span>
@@ -880,7 +885,7 @@ $total_reviews = $avg_data['total_reviews'];
 <!-- Review Form -->
 <?php if ($logged_in): ?>
 <form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-3xl mx-auto">
-    <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Review</h3>
+    <h3 class="text-lg font-semibold mb-4 text-gray-900">Liked our service? Leave a Review</h3>
     <!-- Rating -->
     <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
     <div class="flex gap-2 mb-4">
