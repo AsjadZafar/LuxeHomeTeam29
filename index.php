@@ -242,7 +242,7 @@ if (isset($conn)) {
 
         <!-- Text -->
         <div class="flex flex-col">
-            <span class="text-gray-800 text-base sm:text-sm">
+            <span class="text-gray-800 text-lg sm:text-sm">
                 Did you know? Our services have been rated 
                 <span class="text-emerald-600 font-semibold">⭐ <?= $avg_rating ?>/5</span> 
                 by verified customers
