@@ -346,7 +346,7 @@ $avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews
 $avg_result = mysqli_query($conn, $avg_sql);
 $avg_data = mysqli_fetch_assoc($avg_result);
 
-$avg_rating = round($avg_data['avg_rating'], 1);
+$avg_rating = $avg_data['avg_rating'] !== null ? round($avg_data['avg_rating'], 1) : 0;
 $total_reviews = $avg_data['total_reviews'];
 ?>
 
