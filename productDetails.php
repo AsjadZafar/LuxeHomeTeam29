@@ -335,7 +335,7 @@ $review_result_view = mysqli_query($conn, $review_sql_view);
       </div>
     </div>
   </main>
-  
+
 
   <?php
 // Get average rating + total reviews for THIS product
@@ -355,7 +355,7 @@ $total_reviews = $avg_data['total_reviews'];
     <h2 class="text-3xl font-bold mb-4 text-gray-900">Customer Reviews</h2>
     <p class="text-gray-600 mb-10">See what customers are saying about this product</p>
 
-    <!-- Green Rectangle -->
+    <!-- Green Info Box -->
     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
         
         <div class="flex items-center gap-2">
@@ -371,13 +371,13 @@ $total_reviews = $avg_data['total_reviews'];
     </div>
 </div>
 
-<!-- Review Form to submit the review -->
+<!-- Review Form -->
 <?php if ($logged_in): ?>
-<form action="php_functions/addReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border">
+<form action="php_functions/addReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-5xl mx-auto">
 
 <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
 
-<h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Review</h3>
+<h3 class="text-lg font-semibold mb-4 text-gray-900">Liked this product? Leave a Review</h3>
 
 <!-- Rating -->
 <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
@@ -401,35 +401,34 @@ class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 foc
 placeholder="Share your experience with this product..."
 required></textarea>
 
-<!-- Submit Button -->
+<!-- Submit Button-->
 <button
 type="submit"
 class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
-
 <i class="fas fa-paper-plane"></i> Submit Review
-
 </button>
 
 </form>
 
 <?php else: ?>
 
-<p class="text-gray-600 mb-6">
-<a href="login.php" class="text-emerald-600 hover:underline">Login</a> to leave a review.
-</p>
+<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 max-w-3xl mx-auto text-center">
+    <p>
+        Want to share your experience? You must be 
+        <a href="login.php" class="underline font-medium text-yellow-800 hover:text-yellow-900">logged in</a> 
+        to leave a review.
+    </p>
+</div>
 
 <?php endif; ?>
-<!--End of Review form-->
 
-<!--View the Reviews-->
 
+<!-- Reviews List -->
 <div id="reviews" class="mt-10">
-
-<h2 class="text-xl font-bold text-gray-900 mb-6">Customer Reviews</h2>
 
 <?php if(mysqli_num_rows($review_result_view) > 0): ?>
 
-<div class="space-y-6">
+<div class="space-y-2 w-full mb-16">
 
 <?php while($review = mysqli_fetch_assoc($review_result_view)): ?>
 
@@ -437,24 +436,29 @@ class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 trans
 
 <!-- Username + Date -->
 <div class="flex justify-between items-center mb-2">
-<span class="font-semibold text-gray-800">
-<?= htmlspecialchars($review['username']) ?>
-</span>
 
-<span class="text-sm text-gray-500">
-<?= date("M d, Y", strtotime($review['review_date'])) ?>
-</span>
+    <div class="flex items-center gap-2">
+        <span class="font-semibold text-gray-800">
+            <?= htmlspecialchars($review['username']) ?>
+        </span>
+        <span class="text-green-600 text-xs flex items-center gap-1">
+            <i class="fas fa-check-circle"></i> Verified
+        </span>
+    </div>
+
+    <span class="text-sm text-gray-500">
+        <?= date("M d, Y", strtotime($review['review_date'])) ?>
+    </span>
+
 </div>
 
 <!-- Star Rating -->
 <div class="text-yellow-400 mb-2">
 <?php
 for($i=1; $i<=5; $i++){
-    if($i <= $review['rating']){
-        echo '<i class="fa fa-star"></i>';
-    } else {
-        echo '<i class="fa fa-star text-gray-300"></i>';
-    }
+    echo $i <= $review['rating'] 
+        ? '<i class="fa fa-star"></i>' 
+        : '<i class="fa fa-star text-gray-300"></i>';
 }
 ?>
 </div>
@@ -491,21 +495,20 @@ for($i=1; $i<=5; $i++){
 
 <?php elseif(!isset($_SESSION['user_id'])): ?>
 
-    <!-- Guest view -->
     <div class="mt-1 text-sm text-gray-500">
-        <?= $review['helpful_count'] ?? 0 ?> people found this helpful . 
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful | 
         <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
     </div>
 
 <?php endif; ?>
 
+<!-- Delete button -->
 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
-<form action="php_functions/deleteReview.php" method="POST">
+<form action="php_functions/deleteReview.php" method="POST" class="mt-1">
     <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
     <input type="hidden" name="product_id" value="<?= $id ?>">
     
-    <button type="submit"
-    class="text-red-600 text-sm hover:underline">
+    <button type="submit" class="text-red-600 text-sm hover:underline">
         <i class="fas fa-trash"></i> Delete Review
     </button>
 </form>
@@ -519,9 +522,13 @@ for($i=1; $i<=5; $i++){
 
 <?php else: ?>
 
-<p class="text-gray-500">No reviews yet. Be the first to review this product.</p>
+<p class="text-gray-500 text-center mb-16">
+No reviews yet. Be the first to review this product.
+</p>
 
 <?php endif; ?>
+
+</div>
 
 </div>
 
