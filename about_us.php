@@ -949,7 +949,7 @@ $total_reviews = $avg_data['total_reviews'];
             <?= htmlspecialchars($review['username']) ?>
         </span>
 
-        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+        <span class="text-xs text-green-700 flex items-center gap-1">
             <i class="fas fa-check-circle"></i> Verified
         </span>
     </div>
