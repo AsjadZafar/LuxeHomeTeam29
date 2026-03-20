@@ -335,6 +335,41 @@ $review_result_view = mysqli_query($conn, $review_sql_view);
       </div>
     </div>
   </main>
+  
+
+  <?php
+// Get average rating + total reviews for THIS product
+$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews 
+            FROM reviews 
+            WHERE product_id = $id";
+
+$avg_result = mysqli_query($conn, $avg_sql);
+$avg_data = mysqli_fetch_assoc($avg_result);
+
+$avg_rating = round($avg_data['avg_rating'], 1);
+$total_reviews = $avg_data['total_reviews'];
+?>
+
+<!-- Heading Section -->
+<div class="text-center mt-20">
+    <h2 class="text-3xl font-bold mb-4 text-gray-900">Customer Reviews</h2>
+    <p class="text-gray-600 mb-10">See what customers are saying about this product</p>
+
+    <!-- Green Rectangle -->
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
+        
+        <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span>All reviews are from verified purchases</span>
+        </div>
+
+        <div class="text-right">
+            <span class="font-semibold text-lg">⭐ <?= $avg_rating ? $avg_rating : "0.0" ?>/5</span>
+            <span class="text-sm text-gray-600">(based on <?= $total_reviews ?> reviews)</span>
+        </div>
+
+    </div>
+</div>
 
 <!-- Review Form to submit the review -->
 <?php if ($logged_in): ?>
