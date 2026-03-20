@@ -834,7 +834,9 @@ About Us | LuxeHome
 
     <?php
 // Fetch all service reviews
-$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username, s.helpful_count
+$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username, s.helpful_count,
+                (SELECT COUNT(*) FROM service_review_helpful h 
+                 WHERE h.review_id = s.review_id AND h.user_id = " . ($_SESSION['user_id'] ?? 0) . ") AS user_voted
                 FROM service_reviews s
                 JOIN users u ON s.user_id = u.user_id
                 ORDER BY s.review_date DESC";
@@ -849,7 +851,7 @@ $total_reviews = $avg_data['total_reviews'];
 ?>
 
 <!-- Blue Section: Responsive Three Parts -->
-<div class="w-full mb-6">
+<div class="w-full mb-6 mt-6">
     <div class="bg-[#0a0f1f] border flex flex-col sm:flex-row">
         <!-- Left third- Installation Services -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
@@ -885,9 +887,9 @@ $total_reviews = $avg_data['total_reviews'];
 <!-- Heading and Subheading -->
 <div class="text-center mt-20">
     <h2 class="text-3xl font-bold mb-8 text-gray-900">Customer Service Reviews</h2>
-    <p class="text-gray-600 text-md mt-3 mb-12">See what real customers are saying about our service</p>
+    <p class="text-gray-600 text-md mt-2 mb-12">See what real customers are saying about our service</p>
 
-    <!-- Verified + rating below heading -->
+    <!-- Text below heading in green rectangle-->
     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-2">
             <i class="fas fa-check-circle"></i>
@@ -900,7 +902,7 @@ $total_reviews = $avg_data['total_reviews'];
     </div>
 </div>
 
-<!-- Review Form -->
+<!-- Review form -->
 <?php if ($logged_in): ?>
 <form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-5xl mx-auto">
     <h3 class="text-lg font-semibold mb-4 text-gray-900">Liked our service? Leave a Review</h3>
@@ -957,22 +959,38 @@ $total_reviews = $avg_data['total_reviews'];
     <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
 
     <!-- Helpful counter -->
-<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
-<div class="mt-1 text-sm flex items-center gap-4">
-    <span>Was this review helpful?</span>
-    
-    <!-- Simple form for marking helpful -->
-    <form action="php_functions/markHelpful.php" method="POST" class="inline">
-        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
-        <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
-            <i class="fas fa-thumbs-up"></i> Yes
-        </button>
-    </form>
 
-    <span class="text-gray-500">
-        <?= $review['helpful_count'] ?? 0 ?> people found this helpful
-    </span>
-</div>
+<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+    <div class="mt-1 text-sm flex items-center gap-4">
+
+        <?php if($review['user_voted'] > 0): ?>
+            <!-- Already voted -->
+            <span class="text-green-600 flex items-center gap-2">
+                <i class="fas fa-check"></i> You marked this as helpful
+            </span>
+        <?php else: ?>
+            <!-- Can vote -->
+            <span>Was this review helpful?</span>
+
+            <form action="php_functions/markHelpful.php" method="POST" class="inline">
+                <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+                <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
+                    <i class="fas fa-thumbs-up"></i> Yes
+                </button>
+            </form>
+        <?php endif; ?>
+
+        <span class="text-gray-500">
+            <?= $review['helpful_count'] ?? 0 ?> people found this helpful
+        </span>
+    </div>
+
+<?php elseif(!isset($_SESSION['user_id'])): ?>
+    <!-- Guest view -->
+    <div class="mt-1 text-sm text-gray-500">
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful · 
+        <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
+    </div>
 <?php endif; ?>
 
     <!-- Delete button for customer or admin -->
