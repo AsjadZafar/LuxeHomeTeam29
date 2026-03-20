@@ -944,8 +944,19 @@ $total_reviews = $avg_data['total_reviews'];
 <div class="bg-white border rounded-lg p-5 shadow-sm">
     <!-- Username and Date -->
     <div class="flex justify-between items-center mb-2">
-        <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['username']) ?></span>
-        <span class="text-sm text-gray-500"><?= date("M d, Y", strtotime($review['review_date'])) ?></span>
+        <div class="flex items-center gap-2">
+        <span class="font-semibold text-gray-800">
+            <?= htmlspecialchars($review['username']) ?>
+        </span>
+
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <i class="fas fa-check-circle"></i> Verified
+        </span>
+    </div>
+
+    <span class="text-sm text-gray-500">
+        <?= date("M d, Y", strtotime($review['review_date'])) ?>
+    </span>
     </div>
 
     <!-- Star Rating -->
