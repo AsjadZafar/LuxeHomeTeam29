@@ -429,6 +429,41 @@ for($i=1; $i<=5; $i++){
 <?= htmlspecialchars($review['review']) ?>
 </p>
 
+<!-- Helpful Section -->
+<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+
+    <div class="mt-1 text-sm flex items-center gap-4">
+
+        <?php if($review['user_voted'] > 0): ?>
+            <span class="text-green-600 flex items-center gap-2">
+                <i class="fas fa-check"></i> You marked this as helpful
+            </span>
+        <?php else: ?>
+            <span>Was this review helpful?</span>
+
+            <form action="php_functions/markHelpfulProduct.php" method="POST" class="inline">
+                <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+                <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
+                    <i class="fas fa-thumbs-up"></i> Yes
+                </button>
+            </form>
+        <?php endif; ?>
+
+        <span class="text-gray-500">
+            <?= $review['helpful_count'] ?? 0 ?> people found this helpful
+        </span>
+    </div>
+
+<?php elseif(!isset($_SESSION['user_id'])): ?>
+
+    <!-- Guest view -->
+    <div class="mt-1 text-sm text-gray-500">
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful . 
+        <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
+    </div>
+
+<?php endif; ?>
+
 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
 <form action="php_functions/deleteReview.php" method="POST">
     <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
