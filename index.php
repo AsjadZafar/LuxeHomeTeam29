@@ -242,18 +242,18 @@ if (isset($conn)) {
 
         <!-- Text -->
         <div class="flex flex-col">
-            <span class="text-gray-800 text-lg sm:text-sm">
+            <span class="text-gray-800 text-base">
                 Did you know? Our services have been rated 
-                <span class="text-emerald-600 font-semibold">⭐ <?= $avg_rating ?>/5</span> 
+                <span class="text-emerald-600 font-semibold"> &#9733; <?= $avg_rating ?>/5</span> 
                 by verified customers
             </span>
-            <span class="text-gray-600 text-sm">(based on <?= $total_reviews ?> reviews)</span>
+            <span class="text-gray-600 text-base">(based on <?= $total_reviews ?> reviews)</span>
         </div>
     </div>
 
     <!-- Link -->
-    <a href="about_us.php" class="text-emerald-600 text-sm hover:underline font-medium mt-2 sm:mt-0">
-        See reviews →
+    <a href="about_us.php#service-reviews" class="text-emerald-600 text-base hover:underline font-medium mt-2 sm:mt-0">
+        See reviews ?
     </a>
 </div>
 
