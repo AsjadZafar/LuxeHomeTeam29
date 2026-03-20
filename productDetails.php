@@ -448,7 +448,7 @@ class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 trans
 
 <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 max-w-3xl mx-auto text-center">
     <p>
-        Want to share your experience? You must be 
+        Purchased this product? You must be 
         <a href="login.php" class="underline font-medium text-yellow-800 hover:text-yellow-900">logged in</a> 
         to leave a review.
     </p>
