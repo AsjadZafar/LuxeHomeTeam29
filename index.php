@@ -231,29 +231,29 @@ if (isset($conn)) {
 }
 ?>
 <!-- LuxeHome Service Rating Banner -->
-<div class="bg-gray-100 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto mt-8 shadow-md">
+<div class="bg-emerald-100 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto mt-8 shadow-md">
     
     <!-- Text + Badge -->
     <div class="flex items-center gap-3 text-center sm:text-left">
         <!-- Badge -->
-        <div class="bg-emerald-100 text-emerald-700 rounded-full w-6 h-6 flex items-center justify-center">
+        <div class="bg-emerald-200 text-emerald-800 rounded-full w-6 h-6 flex items-center justify-center">
             <i class="fas fa-check text-xs"></i>
         </div>
 
         <!-- Text -->
         <div class="flex flex-col">
-            <span class="text-gray-800 text-base">
+            <span class="text-emerald-800 text-base">
                 Did you know? Our services have been rated 
-                <span class="text-emerald-600 font-semibold"> &#9733; <?= $avg_rating ?>/5</span> 
+                <span class="text-emerald-900 font-semibold">&#9733; <?= $avg_rating ?>/5</span> 
                 by verified customers
             </span>
-            <span class="text-gray-600 text-base">(based on <?= $total_reviews ?> reviews)</span>
+            <span class="text-emerald-700 text-base">(based on <?= $total_reviews ?> reviews)</span>
         </div>
     </div>
 
     <!-- Link -->
-    <a href="about_us.php#service-reviews" class="text-emerald-600 text-base hover:underline font-medium mt-2 sm:mt-0">
-        See reviews ?
+    <a href="about_us.php#service-reviews" class="text-emerald-900 text-base hover:underline font-medium mt-2 sm:mt-0">
+        See reviews →
     </a>
 </div>
 
