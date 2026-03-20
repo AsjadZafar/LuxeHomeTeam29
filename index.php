@@ -212,6 +212,27 @@ if (isset($_SESSION['username'])) {
     </div>
   </section>
 
+  <?php
+// Fetch average rating & total reviews for service
+$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
+$avg_result = mysqli_query($conn, $avg_sql);
+$avg_data = mysqli_fetch_assoc($avg_result);
+
+$avg_rating = round($avg_data['avg_rating'] ?? 0, 1);
+$total_reviews = $avg_data['total_reviews'] ?? 0;
+?>
+<!-- Homepage Service Rating Banner -->
+<div class="bg-gray-100 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-4xl mx-auto mt-8 shadow-md text-center">
+    <span class="text-gray-900 text-lg font-semibold">
+        Did you know? Our services have been rated 
+        <span class="text-emerald-600">⭐ <?= $avg_rating ?>/5</span> by verified customers
+    </span>
+    <span class="text-gray-700">(based on <?= $total_reviews ?> reviews)</span>
+    <a href="about.php#service-reviews" class="text-emerald-600 hover:underline font-medium ml-2">
+        See reviews →
+    </a>
+</div>
+
   <!-- Features Section -->
   <section class="features-section">
     <div class="section-container">
@@ -396,7 +417,7 @@ if (isset($_SESSION['username'])) {
       </div>
       <div class="footer-bottom">
         <p class="footer-copyright">
-          � 2023 LuxeHome. All rights reserved. | 
+          � 2023 LuxeHome. All rights reserved. | 
           <a href="#" class="footer-legal-link">Privacy Policy</a> | 
           <a href="#" class="footer-legal-link">Terms of Service</a>
         </p>
