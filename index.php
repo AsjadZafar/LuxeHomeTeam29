@@ -10,7 +10,10 @@ if (isset($_SESSION['username'])) {
   $logged_in = true;
   $username = $_SESSION['username'];
 }
+
+require_once 'php_functions/dbh.php'; // make sure path is correct
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
