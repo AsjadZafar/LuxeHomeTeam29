@@ -50,7 +50,11 @@ $review_result = mysqli_query($conn, $review_sql);
 
 //SQL to VIEW the reviews
 
-$review_sql_view = "SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+$review_sql_view = "SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, 
+                   u.username, r.helpful_count,
+                   (SELECT COUNT(*) FROM review_helpful h 
+                    WHERE h.review_id = r.review_id 
+                    AND h.user_id = " . ($_SESSION['user_id'] ?? 0) . ") AS user_voted
                FROM reviews r
                JOIN users u ON r.user_id = u.user_id
                WHERE r.product_id = $id
