@@ -514,7 +514,7 @@ for($i=1; $i<=5; $i++){
         <?php else: ?>
             <span>Was this review helpful?</span>
 
-            <form action="php_functions/markHelpfulProduct.php" method="POST" class="inline">
+            <form action="/php_functions/markHelpfulProduct.php" method="POST" class="inline">
                 <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
                 <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
                     <i class="fas fa-thumbs-up"></i> Yes
