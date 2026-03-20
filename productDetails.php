@@ -385,7 +385,7 @@ $total_reviews = $avg_data['total_reviews'];
 </div>
 
 <!-- Heading Section -->
-<div class="text-center mt-20">
+<div class="text-center mt-12">
     <h2 class="text-3xl font-bold mb-4 text-gray-900">Customer Reviews</h2>
     <p class="text-gray-600 mb-10">See what customers are saying about this product</p>
 
