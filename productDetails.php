@@ -530,7 +530,7 @@ for($i=1; $i<=5; $i++){
 <?php elseif(!isset($_SESSION['user_id'])): ?>
 
     <div class="mt-1 text-sm text-gray-500">
-        <?= $review['helpful_count'] ?? 0 ?> people found this helpful | 
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful . 
         <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
     </div>
 
