@@ -11,7 +11,7 @@ if (isset($_SESSION['username'])) {
   $username = $_SESSION['username'];
 }
 
-require_once 'php_functions/dbh.php'; // make sure path is correct
+require_once 'php_functions/dbh.php';
 ?>
 
 <!DOCTYPE html>
@@ -216,22 +216,43 @@ require_once 'php_functions/dbh.php'; // make sure path is correct
   </section>
 
   <?php
-// Fetch average rating & total reviews for service
-$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
-$avg_result = mysqli_query($conn, $avg_sql);
-$avg_data = mysqli_fetch_assoc($avg_result);
+$avg_rating = 0;
+$total_reviews = 0;
 
-$avg_rating = round($avg_data['avg_rating'] ?? 0, 1);
-$total_reviews = $avg_data['total_reviews'] ?? 0;
+if (isset($conn)) {
+    $avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
+    $avg_result = mysqli_query($conn, $avg_sql);
+
+    if ($avg_result) {
+        $avg_data = mysqli_fetch_assoc($avg_result);
+        $avg_rating = round($avg_data['avg_rating'] ?? 0, 1);
+        $total_reviews = $avg_data['total_reviews'] ?? 0;
+    }
+}
 ?>
-<!-- Homepage Service Rating Banner -->
-<div class="bg-gray-100 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-4xl mx-auto mt-8 shadow-md text-center">
-    <span class="text-gray-900 text-lg font-semibold">
-        Did you know? Our services have been rated 
-        <span class="text-emerald-600">⭐ <?= $avg_rating ?>/5</span> by verified customers
-    </span>
-    <span class="text-gray-700">(based on <?= $total_reviews ?> reviews)</span>
-    <a href="about.php#service-reviews" class="text-emerald-600 hover:underline font-medium ml-2">
+<!-- LuxeHome Service Rating Banner -->
+<div class="bg-gray-100 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto mt-8 shadow-md">
+    
+    <!-- Text + Badge -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+        <!-- Badge -->
+        <div class="bg-emerald-100 text-emerald-700 rounded-full w-6 h-6 flex items-center justify-center">
+            <i class="fas fa-check text-xs"></i>
+        </div>
+
+        <!-- Text -->
+        <div class="flex flex-col">
+            <span class="text-gray-800 text-base sm:text-sm">
+                Did you know? Our services have been rated 
+                <span class="text-emerald-600 font-semibold">⭐ <?= $avg_rating ?>/5</span> 
+                by verified customers
+            </span>
+            <span class="text-gray-600 text-sm">(based on <?= $total_reviews ?> reviews)</span>
+        </div>
+    </div>
+
+    <!-- Link -->
+    <a href="about_us.php" class="text-emerald-600 text-sm hover:underline font-medium mt-2 sm:mt-0">
         See reviews →
     </a>
 </div>
