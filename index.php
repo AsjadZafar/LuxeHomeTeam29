@@ -10,6 +10,13 @@ if (isset($_SESSION['username'])) {
   $logged_in = true;
   $username = $_SESSION['username'];
 }
+
+require_once 'php_functions/dbh.php';
+
+// Helper for cart count
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +24,8 @@ if (isset($_SESSION['username'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LuxeHome | Premium Smart Living</title>
-  <link rel="icon" href="images/image.png">  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="images/image.png">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/accessibility.css">
@@ -34,7 +42,7 @@ if (isset($_SESSION['username'])) {
   <!-- Skip Link for Accessibility -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Accessibility Panel -->
+  <!-- Accessibility Panel (same as before) -->
   <div id="accessibilityPanel" class="accessibility-panel">
     <div class="accessibility-header">
       <h2 class="accessibility-title">Accessibility Settings</h2>
@@ -106,10 +114,7 @@ if (isset($_SESSION['username'])) {
     </div>
   </div>
 
-  <!-- Accessibility Panel Overlay -->
   <div id="panelOverlay" class="panel-overlay"></div>
-
-  <!-- Accessibility Toggle Button -->
   <button id="togglePanel" class="accessibility-toggle">
     <i class="fas fa-universal-access"></i>
   </button>
@@ -143,13 +148,13 @@ if (isset($_SESSION['username'])) {
           <?php if ($logged_in): ?>
             <a href="cart.php" class="action-btn relative">
               <i class="fas fa-shopping-cart"></i>
-              <span class="cart-badge">3</span>
+              <span class="cart-badge"><?php echo getCartCount(); ?></span>
             </a>
             <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
           <?php else: ?>
             <a href="cart.php" class="action-btn relative">
               <i class="fas fa-shopping-cart"></i>
-              <span class="cart-badge">0</span>
+              <span class="cart-badge"><?php echo getCartCount(); ?></span>
             </a>
             <a href="login.php" class="action-btn">
               <i class="fas fa-user"></i>
@@ -165,7 +170,7 @@ if (isset($_SESSION['username'])) {
             <form method="POST" action="admin_dash.php">
               <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
             </form>
-        	<form method="POST" action="customer_dash.php">
+            <form method="POST" action="customer_dash.php">
               <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Customer Dash</button>
             </form>
           </div>
@@ -174,7 +179,7 @@ if (isset($_SESSION['username'])) {
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (unchanged) -->
   <section class="hero-section">
     <div class="hero-container">
       <div class="hero-content">
@@ -212,38 +217,61 @@ if (isset($_SESSION['username'])) {
     </div>
   </section>
 
-  <!-- Features Section -->
+  <!-- Service Rating Banner (unchanged) -->
+  <?php
+  $avg_rating = 0;
+  $total_reviews = 0;
+  if (isset($conn)) {
+      $avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
+      $avg_result = mysqli_query($conn, $avg_sql);
+      if ($avg_result) {
+          $avg_data = mysqli_fetch_assoc($avg_result);
+          $avg_rating = round($avg_data['avg_rating'] ?? 0, 1);
+          $total_reviews = $avg_data['total_reviews'] ?? 0;
+      }
+  }
+  ?>
+  <div class="bg-emerald-100 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto mt-8 shadow-md">
+    <div class="flex items-center gap-3 text-center sm:text-left">
+        <div class="bg-emerald-200 text-emerald-800 rounded-full w-6 h-6 flex items-center justify-center">
+            <i class="fas fa-check text-xs"></i>
+        </div>
+        <div class="flex flex-col">
+            <span class="text-emerald-800 text-base">
+                Did you know? Our services have been rated 
+                <span class="text-emerald-900 font-semibold">&#9733; <?= $avg_rating ?>/5</span> 
+                by verified customers
+            </span>
+            <span class="text-emerald-700 text-base">(based on <?= $total_reviews ?> reviews)</span>
+        </div>
+    </div>
+    <a href="about_us.php#service-reviews" 
+       class="group text-emerald-900 text-base hover:underline font-medium mt-2 sm:mt-0 flex items-center gap-1">
+        See reviews 
+        <span class="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+    </a>
+  </div>
+
+  <!-- Features Section (unchanged) -->
   <section class="features-section">
     <div class="section-container">
       <div class="section-header">
         <h2 class="section-title">Why Choose LuxeHome</h2>
         <p class="section-description">We combine cutting-edge technology with elegant design to create smart home solutions that enhance your lifestyle.</p>
       </div>
-
       <div class="features-grid">
-        <!-- Feature 1 -->
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-gem text-emerald-700 text-xl"></i>
-          </div>
+          <div class="feature-icon"><i class="fas fa-gem text-emerald-700 text-xl"></i></div>
           <h3 class="feature-title">Premium Quality</h3>
           <p class="feature-description">Handpicked luxury smart devices from world-leading brands known for their exceptional quality and reliability.</p>
         </div>
-
-        <!-- Feature 2 -->
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-shield-alt text-emerald-700 text-xl"></i>
-          </div>
+          <div class="feature-icon"><i class="fas fa-shield-alt text-emerald-700 text-xl"></i></div>
           <h3 class="feature-title">Secure & Private</h3>
           <p class="feature-description">Military-grade encryption and privacy controls to protect your home and personal data from unauthorized access.</p>
         </div>
-
-        <!-- Feature 3 -->
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="fas fa-tools text-emerald-700 text-xl"></i>
-          </div>
+          <div class="feature-icon"><i class="fas fa-tools text-emerald-700 text-xl"></i></div>
           <h3 class="feature-title">Expert Installation</h3>
           <p class="feature-description">White-glove setup service by certified technicians who ensure your smart home system works flawlessly from day one.</p>
         </div>
@@ -251,7 +279,7 @@ if (isset($_SESSION['username'])) {
     </div>
   </section>
 
-  <!-- Shop by Room Section -->
+  <!-- Shop by Room Section (updated with links) -->
   <section class="rooms-section">
     <div class="section-container">
       <div class="section-header">
@@ -260,8 +288,7 @@ if (isset($_SESSION['username'])) {
       </div>
 
       <div class="rooms-grid-primary">
-        <!-- Living Room -->
-        <div class="room-card living-room">
+        <a href="products.php?catSearch=Living%20Room" class="room-card living-room">
           <div class="category-overlay"></div>
           <div class="room-card-content">
             <h3 class="room-card-title">Living Room</h3>
@@ -271,10 +298,9 @@ if (isset($_SESSION['username'])) {
               <i class="fas fa-arrow-right ml-2"></i>
             </div>
           </div>
-        </div>
+        </a>
 
-        <!-- Bedroom -->
-        <div class="room-card bedroom">
+        <a href="products.php?catSearch=Bedroom" class="room-card bedroom">
           <div class="category-overlay"></div>
           <div class="room-card-content">
             <h3 class="room-card-title">Bedroom</h3>
@@ -284,10 +310,9 @@ if (isset($_SESSION['username'])) {
               <i class="fas fa-arrow-right ml-2"></i>
             </div>
           </div>
-        </div>
+        </a>
 
-        <!-- Kitchen -->
-        <div class="room-card kitchen">
+        <a href="products.php?catSearch=Kitchen" class="room-card kitchen">
           <div class="category-overlay"></div>
           <div class="room-card-content">
             <h3 class="room-card-title">Kitchen</h3>
@@ -297,12 +322,11 @@ if (isset($_SESSION['username'])) {
               <i class="fas fa-arrow-right ml-2"></i>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <div class="rooms-grid-secondary">
-        <!-- Bathroom -->
-        <div class="room-card bathroom">
+        <a href="products.php?catSearch=Bathroom" class="room-card bathroom">
           <div class="category-overlay"></div>
           <div class="room-card-content">
             <h3 class="room-card-title">Bathroom</h3>
@@ -312,10 +336,9 @@ if (isset($_SESSION['username'])) {
               <i class="fas fa-arrow-right ml-2"></i>
             </div>
           </div>
-        </div>
+        </a>
 
-        <!-- Outdoor -->
-        <div class="room-card outdoor">
+        <a href="products.php?catSearch=Outdoor" class="room-card outdoor">
           <div class="category-overlay"></div>
           <div class="room-card-content">
             <h3 class="room-card-title">Outdoor</h3>
@@ -325,12 +348,12 @@ if (isset($_SESSION['username'])) {
               <i class="fas fa-arrow-right ml-2"></i>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
+  <!-- CTA Section (unchanged) -->
   <section class="cta-section">
     <div class="cta-container">
       <h2 class="cta-title">Ready to Transform Your Home?</h2>
@@ -347,7 +370,7 @@ if (isset($_SESSION['username'])) {
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Footer (social links removed) -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-grid">
@@ -361,20 +384,6 @@ if (isset($_SESSION['username'])) {
           <p class="brand-description">
             Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
           </p>
-          <div class="social-links">
-            <a href="#" class="social-link">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="social-link">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-link">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link">
-              <i class="fab fa-pinterest"></i>
-            </a>
-          </div>
         </div>
         <div class="footer-links">
           <h4 class="footer-heading">Quick Links</h4>
@@ -396,7 +405,7 @@ if (isset($_SESSION['username'])) {
       </div>
       <div class="footer-bottom">
         <p class="footer-copyright">
-          © 2023 LuxeHome. All rights reserved. | 
+          Â© 2023 LuxeHome. All rights reserved. | 
           <a href="#" class="footer-legal-link">Privacy Policy</a> | 
           <a href="#" class="footer-legal-link">Terms of Service</a>
         </p>

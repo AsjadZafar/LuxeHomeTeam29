@@ -1,16 +1,35 @@
-<?php
+<?php 
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// Check if user is logged in
 $logged_in = false;
 $username = "";
+$user_id = 0;
+
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
 
 if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
+    $user_id = $_SESSION['user_id']; // optional, if you need it for review deletion
 }
+
+require_once 'php_functions/dbh.php';
+
+// Fetch service reviews
+$service_review_sql = "
+    SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+    FROM service_reviews r
+    JOIN users u ON r.user_id = u.user_id
+    ORDER BY r.review_date DESC
+";
+$service_review_result = mysqli_query($conn, $service_review_sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -207,13 +226,13 @@ About Us | LuxeHome
                     <?php if ($logged_in): ?>
                         <a href="cart.php" class="action-btn relative hover:text-emerald-600">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">3</span>
+                            <span class="cart-badge"><?php echo getCartCount(); ?></span>
                         </a>
                         <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
                     <?php else: ?>
                         <a href="cart.php" class="action-btn relative hover:text-emerald-600">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">0</span>
+                            <span class="cart-badge"><?php echo getCartCount(); ?></span>
                         </a>
                         <a href="login.php" class="action-btn hover:text-emerald-600">
                             <i class="fas fa-user"></i>
@@ -273,13 +292,13 @@ About Us | LuxeHome
 
           <!-- Heading -->
           <h1 class="text-4xl sm:text-5xl font-bold leading-tight mt-4">
-            Book a Free Installation <br>
+            Book a Complimentary Installation <br>
             <span class="text-emerald-500">With Every Purchase</span>
           </h1> <!-- main heading with bold text, large size, and green text on the second line -->
 
           <!-- Paragraph -->
           <p class="text-lg text-gray-300 max-w-xl">
-            Enjoy a free installation service with every LuxeHome purchase,
+            Enjoy a complimentary installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.
           </p> <!-- paragraph under heading with light grey text, larger font, and limited width for readability -->
@@ -817,6 +836,205 @@ About Us | LuxeHome
       </div>
     </section>
 
+    <?php
+// Fetch all service reviews
+$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username, s.helpful_count,
+                (SELECT COUNT(*) FROM service_review_helpful h 
+                 WHERE h.review_id = s.review_id AND h.user_id = " . ($_SESSION['user_id'] ?? 0) . ") AS user_voted
+                FROM service_reviews s
+                JOIN users u ON s.user_id = u.user_id
+                ORDER BY s.review_date DESC";
+$service_result = mysqli_query($conn, $service_sql);
+
+// Fetch average rating & total reviews
+$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
+$avg_result = mysqli_query($conn, $avg_sql);
+$avg_data = mysqli_fetch_assoc($avg_result);
+$avg_rating = round($avg_data['avg_rating'], 1);
+$total_reviews = $avg_data['total_reviews'];
+?>
+
+<div id="service-reviews" class="scroll-mt-24">
+
+<!-- Blue Section: Responsive Three Parts -->
+<div class="w-full mb-6">
+    <div class="bg-[#0a0f1f] border flex flex-col sm:flex-row">
+        <!-- Left third- Installation Services -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+                <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clip-rule="evenodd" />
+                <path d="m10.076 8.64-2.201-2.2V4.874a.75.75 0 0 0-.364-.643l-3.75-2.25a.75.75 0 0 0-.916.113l-.75.75a.75.75 0 0 0-.113.916l2.25 3.75a.75.75 0 0 0 .643.364h1.564l2.062 2.062 1.575-1.297Z" />
+                <path fill-rule="evenodd" d="m12.556 17.329 4.183 4.182a3.375 3.375 0 0 0 4.773-4.773l-3.306-3.305a6.803 6.803 0 0 1-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 0 0-.167.063l-3.086 3.748Zm3.414-1.36a.75.75 0 0 1 1.06 0l1.875 1.876a.75.75 0 1 1-1.06 1.06L15.97 17.03a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-white text-center">Complimentary installation services</span>
+        </div>
+
+        <!-- Middle third- Free Shipping -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+                <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 1 1 6 0h3a.75.75 0 0 0 .75-.75V15Z" />
+                <path d="M8.25 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0ZM15.75 6.75a.75.75 0 0 0-.75.75v11.25c0 .087.015.17.042.248a3 3 0 0 1 5.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 0 0-3.732-10.104 1.837 1.837 0 0 0-1.47-.725H15.75Z" />
+                <path d="M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
+            </svg>
+            <span class="text-white text-center">Free shipping on all orders</span>
+        </div>
+
+        <!-- Right third- Free Returns -->
+<div class="flex-1 flex justify-center items-center px-4 py-4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+        <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" />
+    </svg>
+    <span class="text-white text-center">Free returns on all orders</span>
+</div>
+
+    </div>
+</div>
+
+<div>
+
+<!-- Heading and Subheading -->
+<div class="text-center mt-20">
+    <h2 class="text-3xl font-bold mb-8 text-gray-900">Customer Service Reviews</h2>
+    <p class="text-gray-600 text-md mt-2 mb-12">See what real customers are saying about our service</p>
+
+    <!-- Text below heading in green rectangle-->
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span>All reviews are from verified purchases</span>
+        </div>
+        <div class="text-right">
+            <span class="font-semibold text-lg">⭐ <?= $avg_rating ? $avg_rating : "0.0" ?>/5</span>
+            <span class="text-sm text-gray-600">(based on <?= $total_reviews ?> reviews)</span>
+        </div>
+    </div>
+</div>
+
+<!-- Review form -->
+<?php if ($logged_in): ?>
+<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-5xl mx-auto">
+    <h3 class="text-lg font-semibold mb-4 text-gray-900">Liked our service? Leave a Review</h3>
+
+    <!-- Rating -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+    <div class="flex gap-2 mb-4">
+        <?php for($i=1; $i<=5; $i++): ?>
+        <label class="cursor-pointer">
+            <input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
+            <i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
+        </label>
+        <?php endfor; ?>
+    </div>
+
+    <!-- Review Text -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+    <textarea name="review" rows="4" class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience with our service..." required></textarea>
+
+    <!-- Submit Button -->
+    <button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+        <i class="fas fa-paper-plane"></i> Submit Review
+    </button>
+</form>
+<?php else: ?>
+<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 max-w-3xl mx-auto text-center">
+    <p>
+        Have you used our service? You must be 
+        <a href="login.php" class="underline font-medium text-yellow-800 hover:text-yellow-900">logged in</a> 
+        to submit a review.
+    </p>
+</div>
+<?php endif; ?>
+
+<!-- Reviews List -->
+<?php if(mysqli_num_rows($service_result) > 0): ?>
+<div class="space-y-1 w-full mb-16">
+<?php while($review = mysqli_fetch_assoc($service_result)): ?>
+<div class="bg-white border rounded-lg p-5 shadow-sm">
+    <!-- Username and Date -->
+    <div class="flex justify-between items-center mb-2">
+        <div class="flex items-center gap-2">
+        <span class="font-semibold text-gray-800">
+            <?= htmlspecialchars($review['username']) ?>
+        </span>
+
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <i class="fas fa-check-circle"></i> Verified
+        </span>
+    </div>
+
+    <span class="text-sm text-gray-500">
+        <?= date("M d, Y", strtotime($review['review_date'])) ?>
+    </span>
+    </div>
+
+    <!-- Star Rating -->
+    <div class="text-yellow-400 mb-2">
+        <?php for($i=1;$i<=5;$i++): ?>
+            <?= $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>' ?>
+        <?php endfor; ?>
+    </div>
+
+    <!-- Review Text -->
+    <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
+
+    <!-- Helpful counter -->
+
+<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+    <div class="mt-1 text-sm flex items-center gap-4">
+
+        <?php if($review['user_voted'] > 0): ?>
+            <!-- Already voted -->
+            <span class="text-green-600 flex items-center gap-2">
+                <i class="fas fa-check"></i> You marked this as helpful
+            </span>
+        <?php else: ?>
+            <!-- Can vote -->
+            <span>Was this review helpful?</span>
+
+            <form action="php_functions/markHelpful.php" method="POST" class="inline">
+                <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+                <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
+                    <i class="fas fa-thumbs-up"></i> Yes
+                </button>
+            </form>
+        <?php endif; ?>
+
+        <span class="text-gray-500">
+            <?= $review['helpful_count'] ?? 0 ?> people found this helpful
+        </span>
+    </div>
+
+<?php elseif(!isset($_SESSION['user_id'])): ?>
+    <!-- Guest view -->
+    <div class="mt-1 text-sm text-gray-500">
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful . 
+        <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
+    </div>
+<?php endif; ?>
+
+    <!-- Delete button for customer or admin -->
+    <?php if(
+        (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']) || 
+        (isset($_SESSION['role']) && $_SESSION['role'] === 'admin')
+    ): ?>
+    <form action="php_functions/deleteServiceReview.php" method="POST" class="mt-1" onsubmit="return confirm('Are you sure you want to delete this review?');">
+        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+        <button type="submit" class="text-red-600 text-sm hover:underline">
+            <i class="fas fa-trash"></i> Delete Review
+        </button>
+    </form>
+    <?php endif; ?>
+</div>
+<?php endwhile; ?>
+</div>
+<?php else: ?>
+<p class="text-gray-500 text-center mb-16">No service reviews yet. Be the first to share your experience!</p>
+<?php endif; ?>
+
+</div>
+
+</section>
+
     <!-- Closing/About Us Summary Section -->
     <section class="relative pt-20 pb-20" style="
   background:
@@ -880,20 +1098,7 @@ About Us | LuxeHome
                     <p class="brand-description">
                         Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
                     </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
-                    </div>
+                    <!-- Social links removed -->
                 </div>
                 
                 <div class="footer-links">

@@ -7,16 +7,6 @@ error_reporting(E_ALL);
 $logged_in = false;
 $username = "";
 
-// Check if user is logged in
-if (isset($_SESSION['username']) && isset($_SESSION['user_id'])) {
-    $logged_in = true;
-    $username = $_SESSION['username'];
-} else {
-    // Redirect to login if not logged in
-    header("Location: login.php");
-    exit();
-}
-
 // Determine active tab
 $active_tab = 'home';
 if (isset($_GET['edit_account'])) {
@@ -103,7 +93,7 @@ if (isset($_GET['edit_account'])) {
                             <span>Dashboard Home</span>
                         </a>
                     </li>
-                     <li>
+     			<li>
                         <a href="customer_dash.php?warranty_view" class="tab <?php echo $active_tab == 'warranty_view' ? 'active' : ''; ?>">
                             <i class="fa fa-home fa-fw"></i> 
                             <span>Warranty Claims</span>
@@ -138,9 +128,9 @@ if (isset($_GET['edit_account'])) {
                         <i class="fas fa-tachometer-alt"></i>
                         <?php
                         switch($active_tab) {
-                            case 'warranty_view':
+                        	case 'warranty_view':
                                 echo 'Warrenty Claims';
-                                break;
+                        		break;
                             case 'edit_account':
                                 echo 'Account Settings';
                                 break;

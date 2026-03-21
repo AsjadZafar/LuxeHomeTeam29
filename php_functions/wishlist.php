@@ -8,14 +8,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_from_wishlist'
     exit();
 }
 
-// Handle add to cart from wishlist
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
-    // Add to cart logic here (depends on your cart implementation)
+// Handle add to cart from wishlist – also remove from wishlist
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToCart'])) {
+    $product_id = $_POST['product_id'];
+    
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = array();
     }
-    $_SESSION['cart'][] = $_POST['product_id'];
-    header('Location: customer_dash.php?wishlist');
+    // Simple list – if you want to avoid duplicates, check first
+    if (!in_array($product_id, $_SESSION['cart'])) {
+        $_SESSION['cart'][] = $product_id;
+    }
+    
+    // Remove from wishlist
+    removeFromWishlist($_SESSION['user_id'], $product_id);
+    
+    // Redirect to cart page
     exit();
 }
 ?>
@@ -39,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
                 
                 <?php if ($item['img']): ?>
                 <div style="text-align: center; margin-bottom: 1rem;">
-                    <img src="images/<?php echo htmlspecialchars($item['img']); ?>" 
+                    <img src="/product_image/<?php echo htmlspecialchars($item['img']); ?>" 
                          alt="<?php echo htmlspecialchars($item['name']); ?>"
                          style="width: 150px; height: 150px; object-fit: cover; border-radius: 0.5rem;">
                 </div>
@@ -47,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
                 
                 <h3><?php echo htmlspecialchars($item['name']); ?></h3>
                 <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem; height: 60px; overflow: hidden;">
-                    <?php echo substr(htmlspecialchars($item['description']), 0, 100); ?>...
+                    <?php echo substr(htmlspecialchars($item['description'] ?? ''), 0, 100); ?>...
                 </p>
-                <div class="wishlist-price">$<?php echo number_format($item['price'], 2); ?></div>
+                <div class="wishlist-price">&pound;<?php echo number_format($item['price'], 2); ?></div>
                 
-                <?php if ($item['installation_available']): ?>
+                <?php if (!empty($item['installation_available']) && $item['installation_available'] == 1): ?>
                 <p style="color: #059669; font-size: 0.75rem; margin-bottom: 1rem;">
                     <i class="fas fa-tools"></i>
                     Installation Available
@@ -59,16 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
                 <?php endif; ?>
                 
                 <div class="wishlist-actions">
-                    <a href="product.php?id=<?php echo $item['product_id']; ?>" class="btn-view btn-sm" style="flex: 1;">
+                    <a href="productDetails.php?id=<?php echo $item['product_id']; ?>" class="btn-view btn-sm" style="flex: 1;">
                         <i class="fas fa-eye"></i>
                         View
                     </a>
                     <form method="POST" style="flex: 1;">
                         <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>">
-                        <button type="submit" name="add_to_cart" class="btn-edit btn-sm" style="width: 100%;">
-                            <i class="fas fa-cart-plus"></i>
-                            Add to Cart
-                        </button>
                     </form>
                 </div>
             </div>

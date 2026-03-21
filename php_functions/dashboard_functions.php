@@ -72,19 +72,10 @@ function getUserOrders($user_id) {
     global $conn;
     
     $stmt = $conn->prepare("
-        SELECT 
-            o.order_id,
-            o.order_date,
-            COALESCE(o.total, 0) as total,
-            COUNT(oi.order_item_id) as item_count,
-            a.address_line1,
-            a.city,
-            a.postcode
+        SELECT o.*, a.address_line1, a.city, a.postcode
         FROM orders o 
         LEFT JOIN addresses a ON o.address_id = a.address_id 
-        LEFT JOIN order_items oi ON o.order_id = oi.order_id
         WHERE o.user_id = ? 
-        GROUP BY o.order_id
         ORDER BY o.order_date DESC
     ");
     $stmt->bind_param("i", $user_id);
@@ -159,7 +150,6 @@ function addToWishlist($user_id, $product_id) {
         return $stmt->execute();
     }
     return false;
-    return false;
 }
 
 function removeFromWishlist($user_id, $product_id) {
@@ -188,6 +178,21 @@ function get_order_details() {
     if (!isset($_SESSION['user_id'])) {
         return;
     }
+
+function getWishlistItems($user_id) {
+    global $conn;
+    $stmt = $conn->prepare("
+        SELECT p.product_id, p.name, p.price, p.img, p.description, p.installation_available
+        FROM wishlist w
+        JOIN products p ON w.product_id = p.product_id
+        WHERE w.user_id = ?
+        ORDER BY w.product_id DESC
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+}
     
     if (isset($_GET['edit_account'])) {
         include 'php_functions/edit_account.php';

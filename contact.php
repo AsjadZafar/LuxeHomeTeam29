@@ -10,6 +10,10 @@ if (isset($_SESSION['username'])) {
     $logged_in = true;
     $username = $_SESSION['username'];
 }
+
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,12 +116,12 @@ if (isset($_SESSION['username'])) {
                     <button class="action-btn"><i class="fas fa-search"></i></button>
                     <?php if ($logged_in): ?>
                     <a href="cart.php" class="action-btn relative">
-                        <i class="fas fa-shopping-cart"></i><span class="cart-badge">3</span>
+                        <i class="fas fa-shopping-cart"></i><span class="cart-badge"><?php echo getCartCount(); ?></span>
                     </a>
                     <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
                     <?php else: ?>
                     <a href="cart.php" class="action-btn relative">
-                        <i class="fas fa-shopping-cart"></i><span class="cart-badge">0</span>
+                        <i class="fas fa-shopping-cart"></i><span class="cart-badge"><?php echo getCartCount(); ?></span>
                     </a>
                     <a href="login.php" class="action-btn"><i class="fas fa-user"></i></a>
                     <?php endif; ?>
@@ -325,12 +329,7 @@ if (isset($_POST['submit_warranty'])) {
                         <div><h3 class="brand-name">LuxeHome</h3><p class="brand-tagline">Smart Living Elevated</p></div>
                     </div>
                     <p class="brand-description">Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
-                    </div>
+                    <!-- Social links removed -->
                 </div>
                 <div class="footer-links">
                     <h4 class="footer-heading">Quick Links</h4>
