@@ -252,8 +252,13 @@ if (isset($conn)) {
     </div>
 
     <!-- Link -->
-    <a href="about_us.php#service-reviews" class="text-emerald-900 text-base hover:underline font-medium mt-2 sm:mt-0">
-        See reviews →
+    <a href="about_us.php#service-reviews" 
+       class="group text-emerald-900 text-base hover:underline font-medium mt-2 sm:mt-0 flex items-center gap-1">
+       
+        See reviews 
+        <span class="transition-transform duration-200 group-hover:translate-x-1">
+            &rarr;
+        </span>
     </a>
 </div>
 
