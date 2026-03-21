@@ -1,8 +1,10 @@
 <?php 
+<?php 
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// Check if user is logged in
 // Check if user is logged in
 $logged_in = false;
 $username = "";
@@ -13,6 +15,23 @@ function getCartCount() {
 }
 
 if (isset($_SESSION['username'])) {
+    $logged_in = true;
+    $username = $_SESSION['username'];
+    $user_id = $_SESSION['user_id']; // optional, if you need it for review deletion
+}
+
+require_once 'php_functions/dbh.php';
+
+// Fetch service reviews
+$service_review_sql = "
+    SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+    FROM service_reviews r
+    JOIN users u ON r.user_id = u.user_id
+    ORDER BY r.review_date DESC
+";
+$service_review_result = mysqli_query($conn, $service_review_sql);
+?>
+
     $logged_in = true;
     $username = $_SESSION['username'];
     $user_id = $_SESSION['user_id']; // optional, if you need it for review deletion
@@ -293,11 +312,13 @@ About Us | LuxeHome
           <!-- Heading -->
           <h1 class="text-4xl sm:text-5xl font-bold leading-tight mt-4">
             Book a Complimentary Installation <br>
+            Book a Complimentary Installation <br>
             <span class="text-emerald-500">With Every Purchase</span>
           </h1> <!-- main heading with bold text, large size, and green text on the second line -->
 
           <!-- Paragraph -->
           <p class="text-lg text-gray-300 max-w-xl">
+            Enjoy a complimentary installation service with every LuxeHome purchase,
             Enjoy a complimentary installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.

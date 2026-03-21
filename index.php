@@ -18,6 +18,7 @@ function getCartCount() {
     return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

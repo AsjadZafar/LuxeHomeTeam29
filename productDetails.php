@@ -37,6 +37,32 @@ if (isset($_GET['id'])) {
 } else {
   die("No product ID Provided");
 }
+
+//SQL for Reviews
+
+$review_sql = "SELECT r.rating, r.review, r.review_date, u.username
+               FROM reviews r
+               JOIN users u ON r.user_id = u.user_id
+               WHERE r.product_id = $id
+               ORDER BY r.review_date DESC";
+
+$review_result = mysqli_query($conn, $review_sql);
+
+//SQL to VIEW the reviews
+
+$review_sql_view = "SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, 
+                   u.username, r.helpful_count,
+                   (SELECT COUNT(*) FROM review_helpful h 
+                    WHERE h.review_id = r.review_id 
+                    AND h.user_id = " . ($_SESSION['user_id'] ?? 0) . ") AS user_voted
+               FROM reviews r
+               JOIN users u ON r.user_id = u.user_id
+               WHERE r.product_id = $id
+               ORDER BY r.review_date DESC";
+
+$review_result_view = mysqli_query($conn, $review_sql_view);
+
+
 ?> 
 
 <!doctype html>
@@ -264,19 +290,283 @@ if (isset($_GET['id'])) {
         </div>
 
         <div class="flex gap-3">
-          <form action="php_functions/addToCart.php" method="POST" id="addToCartForm">
-            <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
-            <input type="hidden" name="quantity" id="quantityInput" value="1">
-            <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition-colors">
-              Add to Basket
-            </button>
-          </form>
-        </div>
+    <!-- Add to Cart Form -->
+    <form action="php_functions/addToCart.php" method="POST" id="addToCartForm" class="flex-1">
+        <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+        <input type="hidden" name="quantity" id="quantityInput" value="1">
+        <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+            <i class="fas fa-shopping-cart"></i> Add to Basket
+        </button>
+    </form>
+    
+    <!-- Add to Wishlist Form -->
+    <?php if ($logged_in): ?>
+    <form action="php_functions/addToWishlist.php" method="POST" id="addToWishlistForm">
+        <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+        <?php
+        // Check if already in wishlist
+        $already_in_wishlist = false;
+        if (isset($_SESSION['user_id'])) {
+            require_once 'php_functions/dashboard_functions.php';
+            global $conn;
+            $check = $conn->prepare("SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?");
+            $check->bind_param("ii", $_SESSION['user_id'], $row['product_id']);
+            $check->execute();
+            $result = $check->get_result();
+            $already_in_wishlist = $result->num_rows > 0;
+        }
+        ?>
+        <button type="submit" class="wishlist-btn <?php echo $already_in_wishlist ? 'bg-pink-600 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700'; ?> text-white px-4 py-2 rounded-md transition-colors" <?php echo $already_in_wishlist ? 'disabled' : ''; ?>>
+            <i class="fas fa-heart"></i> 
+            <?php echo $already_in_wishlist ? 'In Wishlist' : 'Add to Wishlist'; ?>
+        </button>
+    </form>
+    <?php else: ?>
+    <a href="login.php" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors inline-block">
+        <i class="fas fa-heart"></i> Login to Wishlist
+    </a>
+    <?php endif; ?>
+</div>
+
+<!-- Message display area for wishlist -->
+<p id="wishlistMsg" class="text-green-600 mt-4 hidden"></p>
 
         <p id="addedMsg" class="text-green-600 mt-4 hidden">Added to basket</p>
       </div>
     </div>
   </main>
+
+
+  <?php
+// Get average rating + total reviews for THIS product
+$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews 
+            FROM reviews 
+            WHERE product_id = $id";
+
+$avg_result = mysqli_query($conn, $avg_sql);
+$avg_data = mysqli_fetch_assoc($avg_result);
+
+$avg_rating = $avg_data['avg_rating'] !== null ? round($avg_data['avg_rating'], 1) : 0;
+$total_reviews = $avg_data['total_reviews'];
+?>
+
+<!-- Blue Section: Responsive Three Parts -->
+<div class="w-full mb-3 mt-3">
+    <div class="bg-[#0a0f1f] border flex flex-col sm:flex-row">
+        <!-- Left third- Installation Services -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+                <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clip-rule="evenodd" />
+                <path d="m10.076 8.64-2.201-2.2V4.874a.75.75 0 0 0-.364-.643l-3.75-2.25a.75.75 0 0 0-.916.113l-.75.75a.75.75 0 0 0-.113.916l2.25 3.75a.75.75 0 0 0 .643.364h1.564l2.062 2.062 1.575-1.297Z" />
+                <path fill-rule="evenodd" d="m12.556 17.329 4.183 4.182a3.375 3.375 0 0 0 4.773-4.773l-3.306-3.305a6.803 6.803 0 0 1-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 0 0-.167.063l-3.086 3.748Zm3.414-1.36a.75.75 0 0 1 1.06 0l1.875 1.876a.75.75 0 1 1-1.06 1.06L15.97 17.03a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-white text-center">Complimentary installation services</span>
+        </div>
+
+        <!-- Middle third- Free Shipping -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+                <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 1 1 6 0h3a.75.75 0 0 0 .75-.75V15Z" />
+                <path d="M8.25 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0ZM15.75 6.75a.75.75 0 0 0-.75.75v11.25c0 .087.015.17.042.248a3 3 0 0 1 5.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 0 0-3.732-10.104 1.837 1.837 0 0 0-1.47-.725H15.75Z" />
+                <path d="M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
+            </svg>
+            <span class="text-white text-center">Free shipping on all orders</span>
+        </div>
+
+        <!-- Right third- Free Returns -->
+<div class="flex-1 flex justify-center items-center px-4 py-4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+        <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" />
+    </svg>
+    <span class="text-white text-center">Free returns on all orders</span>
+</div>
+
+    </div>
+</div>
+
+<!-- Heading Section -->
+<div class="text-center mt-12">
+    <h2 class="text-3xl font-bold mb-4 text-gray-900">Customer Reviews</h2>
+    <p class="text-gray-600 mb-10">See what customers are saying about this product</p>
+
+    <!-- Green Info Box -->
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
+        
+        <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span>All reviews are from verified purchases</span>
+        </div>
+
+        <div class="text-right">
+            <span class="font-semibold text-lg">⭐ <?= $avg_rating ? $avg_rating : "0.0" ?>/5</span>
+            <span class="text-sm text-gray-600">(based on <?= $total_reviews ?> reviews)</span>
+        </div>
+
+    </div>
+</div>
+
+<!-- Review Form -->
+<?php if ($logged_in): ?>
+<form action="php_functions/addReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-5xl mx-auto">
+
+<input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+
+<h3 class="text-lg font-semibold mb-4 text-gray-900">Liked this product? Leave a Review</h3>
+
+<!-- Rating -->
+<label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+
+<div class="flex gap-2 mb-4">
+<?php for($i=1;$i<=5;$i++): ?>
+<label class="cursor-pointer">
+<input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
+<i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
+</label>
+<?php endfor; ?>
+</div>
+
+<!-- Review Text -->
+<label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+
+<textarea
+name="review"
+rows="4"
+class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+placeholder="Share your experience with this product..."
+required></textarea>
+
+<!-- Submit Button-->
+<button
+type="submit"
+class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+<i class="fas fa-paper-plane"></i> Submit Review
+</button>
+
+</form>
+
+<?php else: ?>
+
+<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 max-w-3xl mx-auto text-center">
+    <p>
+        Purchased this product? You must be 
+        <a href="login.php" class="underline font-medium text-yellow-800 hover:text-yellow-900">logged in</a> 
+        to leave a review.
+    </p>
+</div>
+
+<?php endif; ?>
+
+
+<!-- Reviews List -->
+<div id="reviews" class="mt-10">
+
+<?php if(mysqli_num_rows($review_result_view) > 0): ?>
+
+<div class="space-y-2 w-full mb-16">
+
+<?php while($review = mysqli_fetch_assoc($review_result_view)): ?>
+
+<div class="bg-white border rounded-lg p-5 shadow-sm">
+
+<!-- Username + Date -->
+<div class="flex justify-between items-center mb-2">
+
+    <div class="flex items-center gap-2">
+        <span class="font-semibold text-gray-800">
+            <?= htmlspecialchars($review['username']) ?>
+        </span>
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <i class="fas fa-check-circle"></i> Verified
+        </span>
+    </div>
+
+    <span class="text-sm text-gray-500">
+        <?= date("M d, Y", strtotime($review['review_date'])) ?>
+    </span>
+
+</div>
+
+<!-- Star Rating -->
+<div class="text-yellow-400 mb-2">
+<?php
+for($i=1; $i<=5; $i++){
+    echo $i <= $review['rating'] 
+        ? '<i class="fa fa-star"></i>' 
+        : '<i class="fa fa-star text-gray-300"></i>';
+}
+?>
+</div>
+
+<!-- Review Text -->
+<p class="text-gray-700 mb-3">
+<?= htmlspecialchars($review['review']) ?>
+</p>
+
+<!-- Helpful Section -->
+<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+
+    <div class="mt-1 text-sm flex items-center gap-4">
+
+        <?php if($review['user_voted'] > 0): ?>
+            <span class="text-green-600 flex items-center gap-2">
+                <i class="fas fa-check"></i> You marked this as helpful
+            </span>
+        <?php else: ?>
+            <span>Was this review helpful?</span>
+
+            <form action="/php_functions/markHelpfulProduct.php" method="POST" class="inline">
+                <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+                <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
+                    <i class="fas fa-thumbs-up"></i> Yes
+                </button>
+            </form>
+        <?php endif; ?>
+
+        <span class="text-gray-500">
+            <?= $review['helpful_count'] ?? 0 ?> people found this helpful
+        </span>
+    </div>
+
+<?php elseif(!isset($_SESSION['user_id'])): ?>
+
+    <div class="mt-1 text-sm text-gray-500">
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful . 
+        <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
+    </div>
+
+<?php endif; ?>
+
+<!-- Delete button -->
+<?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
+<form action="php_functions/deleteReview.php" method="POST" class="mt-1">
+    <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+    <input type="hidden" name="product_id" value="<?= $id ?>">
+    
+    <button type="submit" class="text-red-600 text-sm hover:underline">
+        <i class="fas fa-trash"></i> Delete Review
+    </button>
+</form>
+<?php endif; ?>
+
+</div>
+
+<?php endwhile; ?>
+
+</div>
+
+<?php else: ?>
+
+<p class="text-gray-500 text-center mb-16">
+No reviews yet. Be the first to review this product.
+</p>
+
+<?php endif; ?>
+
+</div>
+
+</div>
+
+<!--End of View the Review-->
 
   <!-- Footer -->
   <footer class="footer">

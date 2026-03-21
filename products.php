@@ -9,6 +9,8 @@ $username = "";
 if (isset($_SESSION['username'])) {
     $logged_in = true;
     $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
 }
 
 require_once 'php_functions/dbh.php';
@@ -18,6 +20,7 @@ function getCartCount() {
 }
 
 $search = "";
+$category = "";
 $category = "";
 
 $sql = "SELECT * FROM products WHERE 1";
@@ -199,6 +202,7 @@ if (!$result) {
     </section>
 
     <!-- Products Grid -->
+    <!-- Products Grid -->
     <div class="py-8">
         <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
         <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -216,7 +220,7 @@ if (!$result) {
             <?php } ?>
         </div>
     </div>
-  </main>
+</main>
 
   <!-- Footer (social links removed) -->
   <footer class="footer">
