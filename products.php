@@ -7,36 +7,39 @@ $logged_in = false;
 $username = "";
 
 if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
 }
 
 require_once 'php_functions/dbh.php';
 
 $search = "";
+$category = "";
 
+// Base query
 $sql = "SELECT * FROM products WHERE 1";
 
-// SEARCH (made flexible)
+// Search filter
 if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
     $search = mysqli_real_escape_string($conn, trim($_GET['search']));
-    
     $sql .= " AND (
-        LOWER(name) LIKE LOWER('%$search%') 
-        OR LOWER(description) LIKE LOWER('%$search%')
-        OR LOWER(category) LIKE LOWER('%$search%')
+        LOWER(name) LIKE '%" . strtolower($search) . "%' OR
+        LOWER(description) LIKE '%" . strtolower($search) . "%' OR
+        LOWER(TRIM(category)) LIKE '%" . strtolower($search) . "%'
     )";
 }
 
-// CATEGORY FILTER
-if (isset($_GET['catSearch']) && !empty($_GET['catSearch'])) {
+// Category filter
+if (isset($_GET['catSearch']) && !empty(trim($_GET['catSearch']))) {
     $category = mysqli_real_escape_string($conn, trim($_GET['catSearch']));
-    
-    $sql .= " AND LOWER(category) LIKE LOWER('%$category%')";
+    $sql .= " AND LOWER(TRIM(category)) LIKE '%" . strtolower($category) . "%'";
 }
 
 $result = mysqli_query($conn, $sql);
 
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
 ?>
 
 <!doctype html>
@@ -249,71 +252,70 @@ $result = mysqli_query($conn, $sql);
 
   <!-- Main Content -->
   <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Search Bar -->
     <section class="py-8 bg-gray-100">
-      <div class="max-w-6xl mx-auto px-4">
-        <form action="" method="GET">
-          <div class="bg-white rounded-xl shadow-sm p-6 flex gap-4 items-center">
-            
-            <!-- Search -->
-            <input 
-              id="searchInput" 
-              type="text" 
-              name="search"
-              placeholder="Search products, e.g. Smart Lamp, Thermostat"
-              class="w-full p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
-            />
+  <div class="max-w-6xl mx-auto px-4">
+    <form action="" method="GET">
+      <div class="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+        
+        <!-- Search -->
+        <input 
+          id="searchInput" 
+          type="text" 
+          name="search"
+          placeholder="Search products or categories"
+          value="<?= htmlspecialchars($search) ?>"
+          class="w-full md:flex-1 p-3 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+        />
 
-            <!-- NEED TO ADD CATEGORY!!!!! -->
-            <select id="categoryFilter" name="catSearch" class="p-3 border rounded-md">
-  <option value="">All categories</option>
-  <option value="Living Room" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Living Room") echo "selected"; ?>>Living Room</option>
-  <option value="Kitchen" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Kitchen") echo "selected"; ?>>Kitchen</option>
-  <option value="Bedroom" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Bedroom") echo "selected"; ?>>Bedroom</option>
-  <option value="Bathroom" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Bathroom") echo "selected"; ?>>Bathroom</option>
-  <option value="Outdoor" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Outdoor") echo "selected"; ?>>Outdoor</option>
-</select>
+        <!-- Category Filter -->
+        <select id="categoryFilter" name="catSearch" class="w-full md:w-48 p-3 border rounded-md">
+          <option value="">All categories</option>
+          <option value="Living Room" <?= ($category == 'Living Room') ? 'selected' : '' ?>>Living Room</option>
+          <option value="Kitchen" <?= ($category == 'Kitchen') ? 'selected' : '' ?>>Kitchen</option>
+          <option value="Bedroom" <?= ($category == 'Bedroom') ? 'selected' : '' ?>>Bedroom</option>
+          <option value="Bathroom" <?= ($category == 'Bathroom') ? 'selected' : '' ?>>Bathroom</option>
+          <option value="Outdoor" <?= ($category == 'Outdoor') ? 'selected' : '' ?>>Outdoor</option>
+        </select>
 
-            <button 
-              type="submit" 
-              class="bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
-            >
-              Search
-            </button>
+        <!-- Search Button -->
+        <button 
+          type="submit" 
+          class="w-full md:w-auto bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700"
+        >
+          Search
+        </button>
 
-          </div>
-        </form>
       </div>
-    </section>
+    </form>
+  </div>
+</section>
 
-    <!-- Products Grid with php -->
+    <!-- Products Grid -->
     <div class="py-8">
-      <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
-      <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 class="text-2xl font-semibold mb-6">Featured LuxeHome Products</h2>
+        <div id="productsGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <?php while($row = mysqli_fetch_assoc($result)) { ?>
+            <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
+                <a href="productDetails.php?id=<?= $row['product_id']; ?>" class="block">
+                    <img src="product_image/<?= $row['img']; ?>" 
+                         alt="<?= htmlspecialchars($row['name']); ?>" 
+                         class="w-full h-48 object-cover rounded-md mb-3">
 
-        <?php while($row = mysqli_fetch_assoc($result)) { ?>
-        <article class="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
-            <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="block">
-                <img src="product_image/<?php echo $row['img']; ?>" 
-                     alt="<?php echo htmlspecialchars($row['name']); ?>" 
-                     class="w-full h-48 object-cover rounded-md mb-3">
+                    <h3 class="font-semibold text-lg"><?= htmlspecialchars($row['name']); ?></h3>
 
-                <h3 class="font-semibold text-lg"><?php echo htmlspecialchars($row['name']); ?></h3>
+                    <p class="text-sm text-gray-500 mb-2">
+                        <?= substr($row['description'], 0, 60) . "..."; ?>
+                    </p>
 
-                <p class="text-sm text-gray-500 mb-2">
-                    <?php echo substr($row['description'], 0, 60) . "..."; ?>
-                </p>
-
-                <div class="flex items-center justify-between">
-                    <span class="text-emerald-600 font-semibold">&pound;<?php echo number_format($row['price'], 2); ?></span>
-                </div>
-            </a>
-        </article>
-        <?php } ?>
-
-      </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-emerald-600 font-semibold">&pound;<?= number_format($row['price'], 2); ?></span>
+                    </div>
+                </a>
+            </article>
+            <?php } ?>
+        </div>
     </div>
-  </main>
+</main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -368,7 +370,7 @@ $result = mysqli_query($conn, $sql);
       
       <div class="footer-bottom">
         <p class="footer-copyright">
-          � 2023 LuxeHome. All rights reserved. | 
+          © 2023 LuxeHome. All rights reserved. | 
           <a href="#" class="footer-legal-link">Privacy Policy</a> | 
           <a href="#" class="footer-legal-link">Terms of Service</a>
         </p>
