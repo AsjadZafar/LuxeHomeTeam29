@@ -17,15 +17,22 @@ $search = "";
 
 $sql = "SELECT * FROM products WHERE 1";
 
-// If user typed something in the search bar
+// SEARCH (made flexible)
 if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
     $search = mysqli_real_escape_string($conn, trim($_GET['search']));
-    $sql .= " AND (name LIKE '%$search%' OR description LIKE '%$search%')";
+    
+    $sql .= " AND (
+        LOWER(name) LIKE LOWER('%$search%') 
+        OR LOWER(description) LIKE LOWER('%$search%')
+        OR LOWER(category) LIKE LOWER('%$search%')
+    )";
 }
 
+// CATEGORY FILTER
 if (isset($_GET['catSearch']) && !empty($_GET['catSearch'])) {
-    $category = mysqli_real_escape_string($conn, $_GET['catSearch']);
-    $sql .= " AND category = '$category'";
+    $category = mysqli_real_escape_string($conn, trim($_GET['catSearch']));
+    
+    $sql .= " AND LOWER(category) LIKE LOWER('%$category%')";
 }
 
 $result = mysqli_query($conn, $sql);
