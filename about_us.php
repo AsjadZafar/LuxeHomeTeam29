@@ -850,8 +850,10 @@ $avg_rating = round($avg_data['avg_rating'], 1);
 $total_reviews = $avg_data['total_reviews'];
 ?>
 
+<div id="service-reviews" class="scroll-mt-24">
+
 <!-- Blue Section: Responsive Three Parts -->
-<div class="w-full mb-6" id="service-reviews" class="scroll-mt-24">
+<div class="w-full mb-6">
     <div class="bg-[#0a0f1f] border flex flex-col sm:flex-row">
         <!-- Left third- Installation Services -->
         <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
