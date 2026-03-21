@@ -884,6 +884,8 @@ $total_reviews = $avg_data['total_reviews'];
     </div>
 </div>
 
+<div id="service-reviews" class="scroll-mt-24">
+
 <!-- Heading and Subheading -->
 <div class="text-center mt-20">
     <h2 class="text-3xl font-bold mb-8 text-gray-900">Customer Service Reviews</h2>
@@ -1022,6 +1024,8 @@ $total_reviews = $avg_data['total_reviews'];
 <?php else: ?>
 <p class="text-gray-500 text-center mb-16">No service reviews yet. Be the first to share your experience!</p>
 <?php endif; ?>
+
+</div>
 
 </section>
 
