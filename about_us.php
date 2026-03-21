@@ -1,16 +1,35 @@
-<?php
+<?php 
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// Check if user is logged in
 $logged_in = false;
 $username = "";
+$user_id = 0;
+
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
 
 if (isset($_SESSION['username'])) {
-  $logged_in = true;
-  $username = $_SESSION['username'];
+    $logged_in = true;
+    $username = $_SESSION['username'];
+    $user_id = $_SESSION['user_id']; // optional, if you need it for review deletion
 }
+
+require_once 'php_functions/dbh.php';
+
+// Fetch service reviews
+$service_review_sql = "
+    SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
+    FROM service_reviews r
+    JOIN users u ON r.user_id = u.user_id
+    ORDER BY r.review_date DESC
+";
+$service_review_result = mysqli_query($conn, $service_review_sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -207,13 +226,13 @@ About Us | LuxeHome
                     <?php if ($logged_in): ?>
                         <a href="cart.php" class="action-btn relative hover:text-emerald-600">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">3</span>
+                            <span class="cart-badge"><?php echo getCartCount(); ?></span>
                         </a>
                         <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
                     <?php else: ?>
                         <a href="cart.php" class="action-btn relative hover:text-emerald-600">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">0</span>
+                            <span class="cart-badge"><?php echo getCartCount(); ?></span>
                         </a>
                         <a href="login.php" class="action-btn hover:text-emerald-600">
                             <i class="fas fa-user"></i>
@@ -240,115 +259,90 @@ About Us | LuxeHome
   <!-- main content area; hides horizontal overflow to prevent layout break and keep the page clean -->
 
     <!-- About Us Hero Section -->
-    <section class="relative bg-[#0a0f23] text-white overflow-hidden pt-20 pb-16 md:pt-28 md:pb-28">
-       <!-- dark blue background with white text for contrast, hides overflow, vertical padding ensures spacing and responsive layout for all screen sizes to improve readability and UX -->
+    <section class="relative bg-[#0a0f23] text-white overflow-hidden">
+      <!-- positioned relative for overlays, dark blue background, white text for readability, and hides any overflowing content -->
 
-      <!-- Premium Badge -->
-      <div class="absolute 
-      top-6 
-      sm:top-8 
-      md:top-10 
-      left-4 
-      sm:left-6 
-      md:left-10 
-      z-20">  <!-- container for badge, absolute positioning ensures it stands out above content, responsive spacing keeps layout consistent across devices and highlights premium features for users -->
+      <!-- Faint white overlay -->
+      <div class="absolute inset-0 bg-white/5 pointer-events-none z-0"></div>
+      <!-- faint white overlay covering the entire hero section -->
 
-        <div class="inline-flex items-center gap-1.5
-        bg-emerald-600/20
-        border border-emerald-400/30
-        backdrop-blur-md
-        text-emerald-400
-        px-2 py-1
-        sm:px-3 sm:py-1.5
-        text-[0.65rem] sm:text-xs md:text-sm
-        rounded-full
-        font-semibold
-        shadow-lg"> <!-- flex container, children centered vertically, horizontal gap between elements, green semi-transparent background for modern look, lighter border for contrast, medium blur for depth, responsive text size for readability, responsive padding for balance, fully rounded corners for pill shape, semi-bold text for emphasis, shadow to make element stand out for users -->
-
-          <i class="fas fa-star text-emerald-400 text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem]"></i>
-          <span>Prestige You Can Trust</span>
-
-        </div> <!-- Font Awesome star icon, green for brand consistency, responsive size for readability across devices, emphasizes trust and premium feel for users -->
-      </div>
-
-      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
-        <!-- maximum width constraint for readable content, horizontal padding for spacing, stacks items vertically on mobile and horizontally on desktop for responsive layout, keeps content aligned and user-friendly -->
+      <div class="max-w-7xl mx-auto px-0 flex flex-col md:flex-row md:items-stretch items-center w-full">
+        <!-- centered container with max width, flex layout column on mobile and row on desktop, and vertical alignment -->
 
         <!-- Left Side -->
-        <div class="relative md:w-1/2 space-y-6 z-10">
-         <!-- Left side container, relative positioning for layering control, half width on desktop for balanced layout, vertical spacing between children for readability and clean design -->
-          <h1 class="text-4xl sm:text-5xl font-bold leading-tight">
-             <!-- main heading, larger font on small screens and above for emphasis, bold text for visual hierarchy, tight line spacing for compact, clean appearance and readability -->
-            Book a Free Installation <br> <!-- line break for spacing, improves readability and separates call-to-action for users -->
-            <span class="text-emerald-500">With Every Purchase</span> <!-- green text for brand consistency, draws attention to key message for users -->
-          </h1>
+        <div class="relative w-full md:w-1/2 space-y-6 z-10 py-8 md:py-32 pl-6 md:pl-0 → pl-6 md:pl-6">
+          <!-- left side container with full width on mobile and half width on desktop, vertical spacing between items, positioned above background, and responsive padding top and bottom with slight left padding -->
 
-          <p class="text-lg text-gray-300 max-w-xl"> <!-- paragraph, larger text for readability, light grey text for subtle emphasis, maximum width for comfortable line length -->
-            Enjoy a free installation service with every LuxeHome purchase,
+          <!-- Premium Badge -->
+          <div class="inline-flex items-center gap-2
+                  bg-emerald-600/20
+                  border border-emerald-400/30
+                  backdrop-blur-md
+                  text-emerald-400
+                  px-3 py-1.5
+                  text-sm
+                  rounded-full
+                  font-semibold
+                  shadow-lg">
+            <!-- rounded badge with icon and text, uses green tones, small padding, shadow and blur effect, items arranged in a row -->
+            <i class="fas fa-star text-emerald-400 text-sm"></i>
+            <span> Prestige You Can Trust</span>
+            <!-- star icon with green color and small size, including descriptive text inside the badge -->
+          </div>
+
+          <!-- Heading -->
+          <h1 class="text-4xl sm:text-5xl font-bold leading-tight mt-4">
+            Book a Complimentary Installation <br>
+            <span class="text-emerald-500">With Every Purchase</span>
+          </h1> <!-- main heading with bold text, large size, and green text on the second line -->
+
+          <!-- Paragraph -->
+          <p class="text-lg text-gray-300 max-w-xl">
+            Enjoy a complimentary installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.
-            <!-- highlights free installation and customer support, builds trust, improves user confidence and reinforces brand reliability -->
-          </p>
+          </p> <!-- paragraph under heading with light grey text, larger font, and limited width for readability -->
 
-          <div class="flex gap-4 mt-6">  <!-- flex container for buttons, adds spacing and top margin, ensures buttons are evenly spaced and visually balanced for better user interaction -->
+          <!-- Buttons -->
+          <div class="flex gap-4 mt-6">
             <a href="products.php"
               class="px-6 py-3 bg-emerald-600 rounded-md font-semibold hover:bg-emerald-700 transition">
               Explore Collection →
             </a>
-            <!-- link to product page, padding inside button for clickable area, green background for brand consistency, rounded corners for modern look, bold text for emphasis, dark green on hover and smooth transition to provide interactive feedback for users -->
-
+            <!-- flex container for buttons with space between and top margin, button has green background, rounded corners, semi-bold text, padding, and smooth hover effect -->
             <a href="contact.php"
               class="px-6 py-3 border border-white rounded-md font-semibold hover:bg-white hover:text-[#0a0f23] transition">
-              Contact Our Team →
+              Contact Our Team
             </a>
-            <!-- link to contact page, padding inside button for clickable area, rounded corners for modern look, bold text for emphasis, white background and dark text on hover for clear feedback, smooth transition improves user interaction -->
+            <!-- button with white border, rounded corners, semi-bold text, padding, changes to white background and dark text on hover with smooth transition -->
           </div>
+
         </div>
 
         <!-- Right Side -->
-        <div class="relative md:w-1/2 flex items-center justify-center overflow-visible pr-8 sm:pr-12 md:pr-0"> <!-- Right side container, relative positioning for layering, width adjusts for different screen sizes for balanced layout, flex container centers children vertically and horizontally, allows overflow to be visible for design elements, responsive right padding maintains alignment and visual balance for users -->
+        <div class="relative w-full md:w-1/2 flex justify-center md:justify-end mt-4 md:mt-0">
+          <!-- right side container with full width on mobile and half width on desktop, centers content horizontally, adjusts alignment on desktop, and adds responsive top margin -->
+          <div class="w-full 
+          md:w-full 
+          md:max-w-none 
+          md:h-full 
+          md:aspect-square
+          overflow-hidden 
+          shadow-2xl
+          -mx-6 
+          md:mx-0">
+            <!-- right side image container with full width, full height on desktop, square aspect ratio, hides overflow, adds shadow, and responsive horizontal margin -->
 
-          <div class="absolute 
-    right-[-20%] sm:right-[-15%] md:right-[-28%]  
-    top-[50%] md:top-1/2 
-    -translate-y-1/2 
-    w-[120%] sm:w-[110%] md:w-[120%] 
-    aspect-[3/3.1] 
-    rounded-full 
-    z-0
-    opacity-80
-    blur-md" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
-          </div> <!-- absolute positioned, right offset adjusts for screen sizes, vertically centered and shifted for balance, width larger than parent for visual impact, aspect ratio for consistent shape, rounded for smooth edges, stacked behind elements for layering, semi-transparent and blurred for depth, diagonal gradient adds aesthetic and modern feel -->
-
-          <div class="relative text-center px-12 py-16 z-10 max-w-md overflow-visible
-      translate-x-12 sm:translate-x-8 md:translate-x-28 scale-110 sm:scale-105 md:scale-110">
-            <!-- container relative positioned, text centered for readability, horizontal and vertical padding for spacing, stacked in front of background curve for visual layering, max width medium for comfortable content width, overflow visible for overlapping elements, x translation and scale adjusted for responsive balance and emphasis on key content -->
-
-            <!-- Heroicons Earth Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-              class="w-32 h-32 md:w-60 md:h-60 text-[#0a0f23] mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-15">
-              <path fill-rule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM8.547 4.505a8.25 8.25 0 1 0 11.672 8.214l-.46-.46a2.252 2.252 0 0 1-.422-.586l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.211.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.654-.261a2.25 2.25 0 0 1-1.384-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.279-2.132Z"
-                clip-rule="evenodd" />
-            </svg>
-            <!-- SVG element, width and height adjust for desktop and smaller screens, scalable via viewBox, horizontally and vertically centered in parent, stacked behind text for depth, subtle opacity adds modern visual accent -->
-
-            <!-- Heading -->
-            <h3 class="relative z-10 text-2xl sm:text-4xl font-bold text-emerald-950 mt-4" style="color: #0a0f23;">
-              Excellence in Service
-            </h3>
-            <!-- subheading, relative positioning with z-10 to stay above other elements, font size 2xl on small screens and 4xl on desktop (responsive), bold text, dark blue #0a0f23 for readability, top margin mt-4 for spacing -->
-
-            <!-- Subtext -->
-            <p class="text-emerald-900 mt-2 max-w-sm mx-auto text-lg sm:text-xl">
-              Recognised by UK homeowners for exceptional care and support
-            </p>
-            <!-- paragraph, dark green text (text-emerald-900) for brand consistency, top margin mt-2 for spacing, max width max-w-sm for comfortable line length, centered mx-auto, text size text-lg on small screens and text-xl on desktop for readability -->
-          </div>
-
+            <!--Photo by Anita Chong on Unsplash-->
+            <img src="images/herosection/livingroom.jpg" alt="Luxury smart home interior"
+              class="w-full h-full object-cover hover:scale-105 transition duration-700">
+            <!-- image fills the container, maintains aspect ratio, covers entire area, and slightly scales up on hover with smooth transition -->
+            </div>
         </div>
+
       </div>
     </section>
+
 
     <!-- Meet the Team -->
     <!-- Team photos from Unsplash: https://unsplash.com -->
@@ -842,6 +836,205 @@ About Us | LuxeHome
       </div>
     </section>
 
+    <?php
+// Fetch all service reviews
+$service_sql = "SELECT s.review_id, s.user_id, s.review, s.rating, s.review_date, u.username, s.helpful_count,
+                (SELECT COUNT(*) FROM service_review_helpful h 
+                 WHERE h.review_id = s.review_id AND h.user_id = " . ($_SESSION['user_id'] ?? 0) . ") AS user_voted
+                FROM service_reviews s
+                JOIN users u ON s.user_id = u.user_id
+                ORDER BY s.review_date DESC";
+$service_result = mysqli_query($conn, $service_sql);
+
+// Fetch average rating & total reviews
+$avg_sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM service_reviews";
+$avg_result = mysqli_query($conn, $avg_sql);
+$avg_data = mysqli_fetch_assoc($avg_result);
+$avg_rating = round($avg_data['avg_rating'], 1);
+$total_reviews = $avg_data['total_reviews'];
+?>
+
+<div id="service-reviews" class="scroll-mt-24">
+
+<!-- Blue Section: Responsive Three Parts -->
+<div class="w-full mb-6">
+    <div class="bg-[#0a0f1f] border flex flex-col sm:flex-row">
+        <!-- Left third- Installation Services -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+                <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clip-rule="evenodd" />
+                <path d="m10.076 8.64-2.201-2.2V4.874a.75.75 0 0 0-.364-.643l-3.75-2.25a.75.75 0 0 0-.916.113l-.75.75a.75.75 0 0 0-.113.916l2.25 3.75a.75.75 0 0 0 .643.364h1.564l2.062 2.062 1.575-1.297Z" />
+                <path fill-rule="evenodd" d="m12.556 17.329 4.183 4.182a3.375 3.375 0 0 0 4.773-4.773l-3.306-3.305a6.803 6.803 0 0 1-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 0 0-.167.063l-3.086 3.748Zm3.414-1.36a.75.75 0 0 1 1.06 0l1.875 1.876a.75.75 0 1 1-1.06 1.06L15.97 17.03a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-white text-center">Complimentary installation services</span>
+        </div>
+
+        <!-- Middle third- Free Shipping -->
+        <div class="flex-1 flex justify-center items-center border-b sm:border-b-0 sm:border-r border-green-500 px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+                <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 1 1 6 0h3a.75.75 0 0 0 .75-.75V15Z" />
+                <path d="M8.25 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0ZM15.75 6.75a.75.75 0 0 0-.75.75v11.25c0 .087.015.17.042.248a3 3 0 0 1 5.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 0 0-3.732-10.104 1.837 1.837 0 0 0-1.47-.725H15.75Z" />
+                <path d="M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
+            </svg>
+            <span class="text-white text-center">Free shipping on all orders</span>
+        </div>
+
+        <!-- Right third- Free Returns -->
+<div class="flex-1 flex justify-center items-center px-4 py-4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white mr-2">
+        <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" />
+    </svg>
+    <span class="text-white text-center">Free returns on all orders</span>
+</div>
+
+    </div>
+</div>
+
+<div>
+
+<!-- Heading and Subheading -->
+<div class="text-center mt-20">
+    <h2 class="text-3xl font-bold mb-8 text-gray-900">Customer Service Reviews</h2>
+    <p class="text-gray-600 text-md mt-2 mb-12">See what real customers are saying about our service</p>
+
+    <!-- Text below heading in green rectangle-->
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 max-w-3xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span>All reviews are from verified purchases</span>
+        </div>
+        <div class="text-right">
+            <span class="font-semibold text-lg">⭐ <?= $avg_rating ? $avg_rating : "0.0" ?>/5</span>
+            <span class="text-sm text-gray-600">(based on <?= $total_reviews ?> reviews)</span>
+        </div>
+    </div>
+</div>
+
+<!-- Review form -->
+<?php if ($logged_in): ?>
+<form action="php_functions/addServiceReview.php" method="POST" class="mb-8 bg-gray-50 p-6 rounded-lg border max-w-5xl mx-auto">
+    <h3 class="text-lg font-semibold mb-4 text-gray-900">Liked our service? Leave a Review</h3>
+
+    <!-- Rating -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+    <div class="flex gap-2 mb-4">
+        <?php for($i=1; $i<=5; $i++): ?>
+        <label class="cursor-pointer">
+            <input type="radio" name="rating" value="<?= $i ?>" required class="hidden peer">
+            <i class="fa fa-star text-gray-300 peer-checked:text-yellow-400 text-xl transition-colors"></i>
+        </label>
+        <?php endfor; ?>
+    </div>
+
+    <!-- Review Text -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+    <textarea name="review" rows="4" class="w-full border rounded-md p-3 mb-4 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience with our service..." required></textarea>
+
+    <!-- Submit Button -->
+    <button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-md hover:bg-emerald-700 transition-colors">
+        <i class="fas fa-paper-plane"></i> Submit Review
+    </button>
+</form>
+<?php else: ?>
+<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 max-w-3xl mx-auto text-center">
+    <p>
+        Have you used our service? You must be 
+        <a href="login.php" class="underline font-medium text-yellow-800 hover:text-yellow-900">logged in</a> 
+        to submit a review.
+    </p>
+</div>
+<?php endif; ?>
+
+<!-- Reviews List -->
+<?php if(mysqli_num_rows($service_result) > 0): ?>
+<div class="space-y-1 w-full mb-16">
+<?php while($review = mysqli_fetch_assoc($service_result)): ?>
+<div class="bg-white border rounded-lg p-5 shadow-sm">
+    <!-- Username and Date -->
+    <div class="flex justify-between items-center mb-2">
+        <div class="flex items-center gap-2">
+        <span class="font-semibold text-gray-800">
+            <?= htmlspecialchars($review['username']) ?>
+        </span>
+
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <i class="fas fa-check-circle"></i> Verified
+        </span>
+    </div>
+
+    <span class="text-sm text-gray-500">
+        <?= date("M d, Y", strtotime($review['review_date'])) ?>
+    </span>
+    </div>
+
+    <!-- Star Rating -->
+    <div class="text-yellow-400 mb-2">
+        <?php for($i=1;$i<=5;$i++): ?>
+            <?= $i <= $review['rating'] ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star text-gray-300"></i>' ?>
+        <?php endfor; ?>
+    </div>
+
+    <!-- Review Text -->
+    <p class="text-gray-700 mb-3"><?= htmlspecialchars($review['review']) ?></p>
+
+    <!-- Helpful counter -->
+
+<?php if(isset($_SESSION['user_id']) && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
+    <div class="mt-1 text-sm flex items-center gap-4">
+
+        <?php if($review['user_voted'] > 0): ?>
+            <!-- Already voted -->
+            <span class="text-green-600 flex items-center gap-2">
+                <i class="fas fa-check"></i> You marked this as helpful
+            </span>
+        <?php else: ?>
+            <!-- Can vote -->
+            <span>Was this review helpful?</span>
+
+            <form action="php_functions/markHelpful.php" method="POST" class="inline">
+                <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+                <button type="submit" class="text-green-600 flex items-center gap-2 text-sm">
+                    <i class="fas fa-thumbs-up"></i> Yes
+                </button>
+            </form>
+        <?php endif; ?>
+
+        <span class="text-gray-500">
+            <?= $review['helpful_count'] ?? 0 ?> people found this helpful
+        </span>
+    </div>
+
+<?php elseif(!isset($_SESSION['user_id'])): ?>
+    <!-- Guest view -->
+    <div class="mt-1 text-sm text-gray-500">
+        <?= $review['helpful_count'] ?? 0 ?> people found this helpful . 
+        <a href="login.php" class="text-green-600 hover:underline">Log in</a> to mark as helpful
+    </div>
+<?php endif; ?>
+
+    <!-- Delete button for customer or admin -->
+    <?php if(
+        (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']) || 
+        (isset($_SESSION['role']) && $_SESSION['role'] === 'admin')
+    ): ?>
+    <form action="php_functions/deleteServiceReview.php" method="POST" class="mt-1" onsubmit="return confirm('Are you sure you want to delete this review?');">
+        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+        <button type="submit" class="text-red-600 text-sm hover:underline">
+            <i class="fas fa-trash"></i> Delete Review
+        </button>
+    </form>
+    <?php endif; ?>
+</div>
+<?php endwhile; ?>
+</div>
+<?php else: ?>
+<p class="text-gray-500 text-center mb-16">No service reviews yet. Be the first to share your experience!</p>
+<?php endif; ?>
+
+</div>
+
+</section>
+
     <!-- Closing/About Us Summary Section -->
     <section class="relative pt-20 pb-20" style="
   background:
@@ -905,20 +1098,7 @@ About Us | LuxeHome
                     <p class="brand-description">
                         Experience the pinnacle of intelligent living with our curated collection of premium smart home technology designed for modern lifestyles.
                     </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
-                    </div>
+                    <!-- Social links removed -->
                 </div>
                 
                 <div class="footer-links">
