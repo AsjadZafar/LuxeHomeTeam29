@@ -79,4 +79,3 @@ $result = mysqli_query($conn, $query);
     </div>
     <?php endif; ?>
 </div>
-
