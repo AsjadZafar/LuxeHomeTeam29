@@ -15,12 +15,17 @@ require_once 'php_functions/dbh.php';
 
 $search = "";
 
-$sql = "SELECT * FROM products";
+$sql = "SELECT * FROM products WHERE 1";
 
 // If user typed something in the search bar
 if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
     $search = mysqli_real_escape_string($conn, trim($_GET['search']));
-    $sql .= " WHERE name LIKE '%$search%' OR description LIKE '%$search%'";
+    $sql .= " AND (name LIKE '%$search%' OR description LIKE '%$search%')";
+}
+
+if (isset($_GET['catSearch']) && !empty($_GET['catSearch'])) {
+    $category = mysqli_real_escape_string($conn, $_GET['catSearch']);
+    $sql .= " AND category = '$category'";
 }
 
 $result = mysqli_query($conn, $sql);
@@ -254,13 +259,13 @@ $result = mysqli_query($conn, $sql);
 
             <!-- NEED TO ADD CATEGORY!!!!! -->
             <select id="categoryFilter" name="catSearch" class="p-3 border rounded-md">
-              <option value="">All categories</option>
-              <option value="Living Room">Living Room</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="Bedroom">Bedroom</option>
-              <option value="Bathroom">Bathroom</option>
-              <option value="Outdoor">Outdoor</option>
-            </select>
+  <option value="">All categories</option>
+  <option value="Living Room" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Living Room") echo "selected"; ?>>Living Room</option>
+  <option value="Kitchen" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Kitchen") echo "selected"; ?>>Kitchen</option>
+  <option value="Bedroom" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Bedroom") echo "selected"; ?>>Bedroom</option>
+  <option value="Bathroom" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Bathroom") echo "selected"; ?>>Bathroom</option>
+  <option value="Outdoor" <?php if(isset($_GET['catSearch']) && $_GET['catSearch']=="Outdoor") echo "selected"; ?>>Outdoor</option>
+</select>
 
             <button 
               type="submit" 
@@ -356,7 +361,7 @@ $result = mysqli_query($conn, $sql);
       
       <div class="footer-bottom">
         <p class="footer-copyright">
-          © 2023 LuxeHome. All rights reserved. | 
+          ï¿½ 2023 LuxeHome. All rights reserved. | 
           <a href="#" class="footer-legal-link">Privacy Policy</a> | 
           <a href="#" class="footer-legal-link">Terms of Service</a>
         </p>
