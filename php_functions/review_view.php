@@ -38,7 +38,7 @@ $result = mysqli_query($conn, $query);
             <tr>
                 <td>
                     <div style="display:flex; align-items:center; gap:0.75rem;">
-                        <img src="/LuxeHomeTeam29/product_image/<?php echo htmlspecialchars($row['img']); ?>"
+                        <img src="product_image/<?php echo htmlspecialchars($row['img']); ?>"
                              alt="<?php echo htmlspecialchars($row['product_name']); ?>"
                              style="width:50px; height:50px; object-fit:cover; border-radius:0.5rem;">
                         <span><?php echo htmlspecialchars($row['product_name']); ?></span>
@@ -54,16 +54,10 @@ $result = mysqli_query($conn, $query);
                 <td><?php echo date('M d, Y', strtotime($row['review_date'])); ?></td>
                 <td>
                     <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
-                        <a href="/LuxeHomeTeam29/productDetails.php?id=<?php echo $row['product_id']; ?>" class="btn-edit" style="font-size:0.8rem; padding:0.4rem 0.75rem;">
+                        <a href="productDetails.php?id=<?php echo $row['product_id']; ?>" class="btn-edit" style="font-size:0.8rem; padding:0.4rem 0.75rem;">
                             <i class="fas fa-eye"></i> View
                         </a>
-                        <form method="POST" action="/LuxeHomeTeam29/php_functions/deleteReview.php" onsubmit="return confirm('Delete this review?');">
-                            <input type="hidden" name="review_id" value="<?php echo $row['review_id']; ?>">
-                            <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-                            <button type="submit" class="btn-delete" style="font-size:0.8rem; padding:0.4rem 0.75rem;">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </form>
+
                     </div>
                 </td>
             </tr>
@@ -79,7 +73,7 @@ $result = mysqli_query($conn, $query);
         <p class="welcome-text" style="color:#b45309;">
             You haven't reviewed any products yet. Purchase a product and share your experience!
         </p>
-        <a href="/LuxeHomeTeam29/products.php" class="btn-submit" style="display:inline-flex; margin-top:1rem;">
+        <a href="products.php" class="btn-submit" style="display:inline-flex; margin-top:1rem;">
             <i class="fas fa-shopping-bag"></i> Browse Products
         </a>
     </div>
