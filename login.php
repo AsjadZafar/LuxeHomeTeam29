@@ -10,8 +10,11 @@ if (isset($_SESSION['username'])) {
   $logged_in = true;
   $username = $_SESSION['username'];
 }
-?>
 
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,33 +34,27 @@ if (isset($_SESSION['username'])) {
             border-radius: 50%;
             object-fit: cover;
         }
-        
         .nav-link {
             font-size: 0.875rem;
             font-weight: 500;
             color: #4b5563;
             transition: color 0.3s ease;
         }
-        
         .nav-link.active {
             color: #047857;
             border-bottom: 2px solid #047857;
             padding-bottom: 0.25rem;
         }
-        
         .nav-link:hover {
             color: #047857;
         }
-        
         .action-btn {
             color: #4b5563;
             transition: color 0.3s ease;
         }
-        
         .action-btn:hover {
             color: #047857;
         }
-        
         .cart-badge {
             position: absolute;
             top: -0.5rem;
@@ -75,7 +72,6 @@ if (isset($_SESSION['username'])) {
     </style>
 </head>
 <body>
-    <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Accessibility Panel -->
@@ -150,10 +146,7 @@ if (isset($_SESSION['username'])) {
       </div>
     </div>
 
-    <!-- Accessibility Panel Overlay -->
     <div id="panelOverlay" class="panel-overlay"></div>
-
-    <!-- Accessibility Toggle Button -->
     <button id="togglePanel" class="accessibility-toggle">
       <i class="fas fa-universal-access"></i>
     </button>
@@ -170,7 +163,6 @@ if (isset($_SESSION['username'])) {
                     </div>
                 </a>
 
-                <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="index.php" class="nav-link">Home</a>
                     <a href="products.php" class="nav-link">Shop</a>
@@ -178,7 +170,6 @@ if (isset($_SESSION['username'])) {
                     <a href="contact.php" class="nav-link">Contact</a>
                 </nav>
 
-                <!-- Actions -->
                 <div class="flex items-center space-x-4">
                     <button class="action-btn">
                         <i class="fas fa-search"></i>
@@ -187,13 +178,13 @@ if (isset($_SESSION['username'])) {
                     <?php if ($logged_in): ?>
                         <a href="cart.php" class="action-btn relative">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">3</span>
+                            <span class="cart-badge"><?php echo getCartCount(); ?></span>
                         </a>
                         <span class="text-gray-900 font-semibold"><?php echo htmlspecialchars($username) ?>!</span>
                     <?php else: ?>
                         <a href="cart.php" class="action-btn relative">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">0</span>
+                            <span class="cart-badge"><?php echo getCartCount(); ?></span>
                         </a>
                         <a href="login.php" class="action-btn">
                             <i class="fas fa-user"></i>
@@ -216,26 +207,20 @@ if (isset($_SESSION['username'])) {
         </div>
     </header>
 
-    <!-- Main Content -->
     <section id="main-content" class="login-section">
         <h2 class="title">Welcome to LuxeHome</h2>
         <p class="subtitle">Choose How To Login</p>
     
         <div class="login-container">
-
-            <!--Customer Login Box-->
             <div class="login-box">
                 <h3>Customer Login</h3>
                 <form action="php_functions/user_login.php" method="POST">
                     <label>Email</label>
                     <input type="email" name="email" required>
-
                     <label>Password</label>
                     <input type="password" name="password" required>
-
                     <button type="submit" class="login-btn">Login As Customer</button>
                 </form>
-                <!--Forgot Password-->
                 <div class="text-center"> 
                     <a href="#" class="forgot">Forgot Your Password?</a>
                     <p class="forgot-text">Don't Have An account?
@@ -244,18 +229,15 @@ if (isset($_SESSION['username'])) {
                 </div>
             </div>
 
-            <!--Admin Login-->
             <div class="login-box"> 
                 <h3>Admin Login</h3>
-                <form action="admin_dash.php"> 
+                <form action="php_functions/user_login.php" method="POST"> 
                     <label>Email</label>
-                    <input type="email" required>
-
+                    <input type="email" name="email" required>
                     <label>Password</label>
-                    <input type="password" required>
-                    <button type="submit" class="login-btn admin">Login As Admin</button>
+                    <input type="password" name="password" required>
+                    <button type="submit" class="login-btn">Login As Admin</button>
                 </form>
-                <!--Forgot Password-->
                 <div class="text-center"> 
                     <a href="#" class="forgot">Forgot Your Password?</a>
                     <p class="forgot-text">Don't Have An account?
@@ -266,50 +248,41 @@ if (isset($_SESSION['username'])) {
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer (social links removed) -->
     <footer class="bg-gray-900 text-gray-300 py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Brand -->
                 <div>
-                <div class="flex items-center space-x-3 mb-4">
-                    <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
-                    <div>
-                    <h3 class="text-lg font-bold text-white">LuxeHome</h3>
-                    <p class="text-sm text-gray-400">Smart Living Elevated</p>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="images/image.png" alt="LuxeHome logo" class="logo-img">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">LuxeHome</h3>
+                            <p class="text-sm text-gray-400">Smart Living Elevated</p>
+                        </div>
                     </div>
-                </div>
-                <p class="text-gray-400 text-sm mb-4">
-                    Experience the pinnacle of intelligent living with our curated collection of premium smart home technology
-                    designed for modern lifestyles.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
-                </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Experience the pinnacle of intelligent living with our curated collection of premium smart home technology
+                        designed for modern lifestyles.
+                    </p>
                 </div>
 
-                <!-- Quick Links -->
                 <div>
-                <h4 class="text-white font-semibold mb-3">Quick Links</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="index.php" class="hover:text-white">Home</a></li>
-                    <li><a href="products.php" class="hover:text-white">Shop</a></li>
-                    <li><a href="about_us.php" class="hover:text-white">About us</a></li>
-                    <li><a href="contact.php" class="hover:text-white">Contact</a></li>
-                </ul>
+                    <h4 class="text-white font-semibold mb-3">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.php" class="hover:text-white">Home</a></li>
+                        <li><a href="products.php" class="hover:text-white">Shop</a></li>
+                        <li><a href="about_us.php" class="hover:text-white">About us</a></li>
+                        <li><a href="contact.php" class="hover:text-white">Contact</a></li>
+                    </ul>
                 </div>
 
-                <!-- Contact -->
                 <div>
-                <h4 class="text-white font-semibold mb-3">Contact</h4>
-                <ul class="space-y-2 text-sm">
-                    <li>hello@luxehome.com</li>
-                    <li>1-800-LUXE-HOME</li>
-                    <li>Mon–Fri: 9am–6pm EST</li>
-                </ul>
+                    <h4 class="text-white font-semibold mb-3">Contact</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li>hello@luxehome.com</li>
+                        <li>1-800-LUXE-HOME</li>
+                        <li>Mon–Fri: 9am–6pm EST</li>
+                    </ul>
                 </div>
             </div>
 
