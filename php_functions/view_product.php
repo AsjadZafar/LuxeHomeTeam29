@@ -66,12 +66,7 @@ if (isset($_GET['id'])) {
                         <span>Warranty</span>
                     </a>
                 </li>
-                <li> 
-                    <a href="#">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Analytics</span>
-                    </a>
-                </li>
+                
             </ul>
         </div>
 
