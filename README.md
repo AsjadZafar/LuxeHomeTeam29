@@ -1,32 +1,28 @@
-LuxeHome
+# LuxeHome
 
-LuxeHome is a smart home e-commerce platform designed to provide users with a secure, intuitive, and premium shopping experience. The website allows homeowners to browse and purchase appliances and furniture for living rooms, kitchens, bedrooms, bathrooms, and outdoor spaces.
+**LuxeHome** is a smart home e-commerce website that gives users a safe, easy-to-use, and premium shopping experience. Users can browse and buy appliances and furniture for living rooms, kitchens, bedrooms, bathrooms, and outdoor areas.
 
-Features
+### Customer Features
+- Browse, search, and filter products  
+- Basket and checkout  
+- View order history and manage account  
+- Customer reviews with a “helpful” count  
+- “My Reviews” tab in the dashboard  
+- Submit warranty claims  
+- Book installation services  
 
-Customer Features:
+### Admin Features
+- Manage inventory and update products  
+- Process orders  
+- Manage customer details  
+- Moderate reviews and handle warranty claims  
 
-Product browsing, searching, and filtering
-Basket and checkout functionality
-Order history and account management
-Customer reviews with a “helpful” count
-“My Reviews” dashboard tab
-Warranty claim submission
-Installation service booking
+## Technology
+- **Frontend:** HTML, Tailwind CSS, JavaScript  
+- **Backend:** Laravel (PHP)  
+- **Database:** MySQL (phpMyAdmin)  
 
-Admin Features:
-
-Inventory management and product updates
-Order processing
-Customer detail management
-Review moderation and warranty claim processing
-Technology Stack
-Frontend: HTML, Tailwind CSS, JavaScript
-Backend: Laravel (PHP)
-Database: MySQL (managed via phpMyAdmin)
-Project Management and Version Control
-Version-controlled using GitHub with clear commit history
-Development and tasks tracked using Trello
-Modular code structure and documentation for maintainability and scalability
-Deployment
-Fully deployed online for live usage and testing
+## Project Management & Version Control
+- Code managed with **GitHub**  
+- Tasks tracked using **Trello**  
+- Code is organized and commented for easy updates 
