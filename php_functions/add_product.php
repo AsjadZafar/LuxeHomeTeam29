@@ -12,14 +12,11 @@ if(isset($_POST["add_product"])) {
     $product_quantity = $_POST['quantity'];
     $product_install = $_POST['installation_available'];
     $product_img = $_FILES['img']['name'];
-	$product_category = $_POST['product_category'];
+    $product_category = $_POST['product_category'];
 
     $tmp = explode(".",$product_img);
-
     $newfilename = round(microtime(true)). '.' .end($tmp);
-
     $uploadpath = "../product_image/". $newfilename;
-
     move_uploaded_file($_FILES['img']['tmp_name'], $uploadpath);
 
     $product_name = mysqli_real_escape_string($conn, $product_name);
@@ -28,7 +25,7 @@ if(isset($_POST["add_product"])) {
     $product_quantity = mysqli_real_escape_string($conn, $product_quantity);
     $product_install = mysqli_real_escape_string($conn, $product_install);
     $newfilename = mysqli_real_escape_string($conn, $newfilename);
-	$product_category = mysqli_real_escape_string($conn, $product_category);
+    $product_category = mysqli_real_escape_string($conn, $product_category);
 
     $sql = "INSERT into products(name,description,price,quantity,installation_available,img, category) 
     Values('$product_name','$product_description','$product_price','$product_quantity','$product_install','$newfilename', '$product_category')";
@@ -49,7 +46,13 @@ if(isset($_POST["add_product"])) {
     <link rel="icon" href="/images/image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/adminstyle.css"> 
+    <link rel="stylesheet" href="/css/adminstyle.css">
+    <style>
+        body { margin: 0; padding: 0; }
+        .admin-wrapper { display: flex; width: 100%; min-height: 100vh; }
+        .admin-sidebar { width: 280px; flex-shrink: 0; }
+        .admin-main { flex: 1; }
+    </style>
 </head>
 
 <body>
@@ -58,37 +61,11 @@ if(isset($_POST["add_product"])) {
         <div class="admin-sidebar">
             <h2>Admin Dashboard</h2>
             <ul> 
-                <li> 
-                    <a href="/admin_dash.php">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li> 
-                    <a href="add_product.php" class="active">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Add Products</span>
-                    </a>
-                </li>
-                <li> 
-                    <a href="view_product.php">
-                        <i class="fas fa-eye"></i>
-                        <span>View Products</span>
-                    </a>
-                </li>
-                <li> 
-                    <a href="/admin_users.php">
-                        <i class="fas fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
-                <li> 
-                    <a href="/admin_warranty.php">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Warranty</span>
-                    </a>
-                </li>
-                
+                <li><a href="/admin_dash.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li><a href="add_product.php" class="active"><i class="fas fa-plus-circle"></i><span>Add Products</span></a></li>
+                <li><a href="view_product.php"><i class="fas fa-eye"></i><span>View Products</span></a></li>
+                <li><a href="/admin_users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
+                <li><a href="/admin_warranty.php"><i class="fas fa-clipboard-list"></i><span>Warranty</span></a></li>
             </ul>
         </div>
 
@@ -98,17 +75,9 @@ if(isset($_POST["add_product"])) {
             <div class="admin-header">
                 <h1>Add New Product</h1>
                 <div style="display: flex; gap: 1rem; align-items: center;">
-                    <span style="color: #4b5563; font-weight: 500;">
-                        Welcome, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin'; ?>
-                    </span>
-                    <a href="/admin_dash.php" class="btn-edit" style="padding: 0.5rem 1rem;">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to Dashboard
-                    </a>
-                    <a href="/index.php" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </a>
+                    <span style="color: #4b5563; font-weight: 500;">Welcome, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin'; ?></span>
+                    <a href="/admin_dash.php" class="btn-edit" style="padding: 0.5rem 1rem;"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                    <a href="/index.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
 
@@ -116,93 +85,34 @@ if(isset($_POST["add_product"])) {
             <div class="admin-form-container">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h2 class="section-title">Add New Product to Store</h2>
-                    <a href="/admin_dash.php" class="btn-edit" style="padding: 0.75rem 1.5rem;">
-                        <i class="fas fa-tachometer-alt"></i>
-                        View Dashboard
-                    </a>
+                    <a href="/admin_dash.php" class="btn-edit" style="padding: 0.75rem 1.5rem;"><i class="fas fa-tachometer-alt"></i> View Dashboard</a>
                 </div>
                 
                 <p class="welcome-text" style="margin-bottom: 2rem;">Fill in the details below to add a new product to the LuxeHome store.</p>
                 
                 <?php if(isset($data) && $data): ?>
                 <div class="welcome-message" style="margin-bottom: 2rem; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
-                    <h2 class="welcome-title" style="color: #065f46;">
-                        <i class="fas fa-check-circle"></i>
-                        Product Added Successfully!
-                    </h2>
-                    <p class="welcome-text" style="color: #047857;">
-                        The product has been added to the database and is now available in the store.
-                    </p>
-                    <div style="margin-top: 1rem;">
-                        <a href="view_product.php" class="btn-edit" style="margin-right: 0.5rem;">
-                            <i class="fas fa-eye"></i>
-                            View All Products
-                        </a>
-                        <a href="/admin_dash.php" class="btn-submit" style="padding: 0.75rem 1.5rem;">
-                            <i class="fas fa-tachometer-alt"></i>
-                            Go to Dashboard
-                        </a>
-                    </div>
+                    <h2 class="welcome-title" style="color: #065f46;"><i class="fas fa-check-circle"></i> Product Added Successfully!</h2>
+                    <p class="welcome-text" style="color: #047857;">The product has been added to the database and is now available in the store.</p>
+                    <div style="margin-top: 1rem;"><a href="view_product.php" class="btn-edit" style="margin-right: 0.5rem;"><i class="fas fa-eye"></i> View All Products</a><a href="/admin_dash.php" class="btn-submit" style="padding: 0.75rem 1.5rem;"><i class="fas fa-tachometer-alt"></i> Go to Dashboard</a></div>
                 </div>
                 <?php endif; ?>
                 
                 <form action="" method="POST" enctype="multipart/form-data" class="admin-form">
-                    <div class="form-group">
-                        <label for="name">Product Name *</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="description">Description *</label>
-                        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="price">Price (£) *</label>
-                        <input type="number" id="price" name="price" class="form-control" step="0.01" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="quantity">Quantity *</label>
-                        <input type="number" id="quantity" name="quantity" class="form-control" required>
-                    </div>
-                    
-                     <div class="form-group">
-                        <label for="installation_available">Category *</label>
-                        <select id="product_category" name="product_category" class="form-control" required>
-                            <option value="Bedroom">Bedroom</option>
-                            <option value="Bathroom">Bathroom</option>
-                        	<option value="Kitchen">Kitchen</option>
-                        	<option value="Living Room">Living Room</option>
-                        	<option value="Outdoor">Outdoor</option>
-                        </select>
-                    </div>    
-                    
-                    <div class="form-group">
-                        <label for="installation_available">Installation Available *</label>
-                        <select id="installation_available" name="installation_available" class="form-control" required>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="img">Product Image *</label>
-                        <input type="file" id="img" name="img" class="form-control" accept="image/*" required>
-                        <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.25rem;">
-                            Upload a product image (JPG, PNG, etc.)
-                        </small>
-                    </div>
-                    
+                    <div class="form-group"><label for="name">Product Name *</label><input type="text" id="name" name="name" class="form-control" required></div>
+                    <div class="form-group"><label for="description">Description *</label><textarea id="description" name="description" class="form-control" rows="4" required></textarea></div>
+                    <div class="form-group"><label for="price">Price (£) *</label><input type="number" id="price" name="price" class="form-control" step="0.01" required></div>
+                    <div class="form-group"><label for="quantity">Quantity *</label><input type="number" id="quantity" name="quantity" class="form-control" required></div>
+                    <div class="form-group"><label for="product_category">Category *</label><select id="product_category" name="product_category" class="form-control" required>
+                        <option value="Bedroom">Bedroom</option><option value="Bathroom">Bathroom</option><option value="Kitchen">Kitchen</option><option value="Living Room">Living Room</option><option value="Outdoor">Outdoor</option>
+                    </select></div>
+                    <div class="form-group"><label for="installation_available">Installation Available *</label><select id="installation_available" name="installation_available" class="form-control" required>
+                        <option value="1">Yes</option><option value="0">No</option>
+                    </select></div>
+                    <div class="form-group"><label for="img">Product Image *</label><input type="file" id="img" name="img" class="form-control" accept="image/*" required><small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.25rem;">Upload a product image (JPG, PNG, etc.)</small></div>
                     <div class="form-group" style="margin-top: 2rem; display: flex; gap: 1rem;">
-                        <button type="submit" name="add_product" class="btn-submit">
-                            <i class="fas fa-save"></i>
-                            Add Product
-                        </button>
-                        <a href="/admin_dash.php" class="btn-edit" style="padding: 1rem 2rem; text-decoration: none;">
-                            <i class="fas fa-times"></i>
-                            Cancel
-                        </a>
+                        <button type="submit" name="add_product" class="btn-submit"><i class="fas fa-save"></i> Add Product</button>
+                        <a href="/admin_dash.php" class="btn-edit" style="padding: 1rem 2rem; text-decoration: none;"><i class="fas fa-times"></i> Cancel</a>
                     </div>
                 </form>
             </div>
@@ -212,31 +122,16 @@ if(isset($_POST["add_product"])) {
         document.addEventListener('DOMContentLoaded', function() {
             const currentPage = window.location.pathname.split('/').pop();
             const navLinks = document.querySelectorAll('.admin-sidebar a');
-            
             navLinks.forEach(link => {
                 const linkPage = link.getAttribute('href').split('/').pop();
-                if (currentPage === linkPage) {
-                    link.classList.add('active');
-                }
+                if (currentPage === linkPage) link.classList.add('active');
             });
-            
             const form = document.querySelector('.admin-form');
             if (form) {
                 const inputs = form.querySelectorAll('input, textarea, select');
-                
                 inputs.forEach(input => {
-                    input.addEventListener('invalid', function(e) {
-                        e.preventDefault();
-                        this.style.borderColor = '#ef4444';
-                        this.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
-                    });
-                    
-                    input.addEventListener('input', function() {
-                        if (this.checkValidity()) {
-                            this.style.borderColor = '#059669';
-                            this.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
-                        }
-                    });
+                    input.addEventListener('invalid', function(e) { e.preventDefault(); this.style.borderColor = '#ef4444'; this.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)'; });
+                    input.addEventListener('input', function() { if (this.checkValidity()) { this.style.borderColor = '#059669'; this.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)'; } });
                 });
             }
         });
