@@ -31,22 +31,6 @@ $service_review_sql = "
 $service_review_result = mysqli_query($conn, $service_review_sql);
 ?>
 
-    $logged_in = true;
-    $username = $_SESSION['username'];
-    $user_id = $_SESSION['user_id']; // optional, if you need it for review deletion
-}
-
-require_once 'php_functions/dbh.php';
-
-// Fetch service reviews
-$service_review_sql = "
-    SELECT r.review_id, r.user_id, r.review, r.rating, r.review_date, u.username
-    FROM service_reviews r
-    JOIN users u ON r.user_id = u.user_id
-    ORDER BY r.review_date DESC
-";
-$service_review_result = mysqli_query($conn, $service_review_sql);
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -263,10 +247,17 @@ About Us | LuxeHome
                         <form method="POST" action="php_functions/logout.php">
                             <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
                         </form>
-                        <form method="POST" action="admin_dash.php">
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
-                        </form>
+                         <?php if (!empty($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+              <form method="POST" action="admin_dash.php">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">
+              Admin Dash
+            </button>
+</form>
+<?php endif; ?>
                     </div>
+            <form method="POST" action="customer_dash.php">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Customer Dash</button>
+            </form>
                 <?php endif; ?>
             </div>
         </div>

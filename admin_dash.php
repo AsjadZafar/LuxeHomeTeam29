@@ -2,8 +2,8 @@
 session_start();
 require_once 'php_functions/dbh.php';
 
-// Optional: Restrict to logged-in users only
-if (!isset($_SESSION['username'])) {
+// Restrict access to admins only
+if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
     header('Location: login.php');
     exit();
 }

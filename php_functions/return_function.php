@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'dbh.php';
+$status = 'Pending';
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -25,10 +26,10 @@ if ($result->num_rows > 0) {
 }
 
 //  Insert return into database
-$stmt = $conn->prepare("INSERT INTO product_return (product_id, order_id, return_date)
-                        VALUES (?, ?, NOW())");
+$stmt = $conn->prepare("INSERT INTO product_return (product_id, order_id, return_date, status)
+                        VALUES (?, ?, NOW(), ?) ");
 
-$stmt->bind_param("ii", $product_id, $order_id);
+$stmt->bind_param("iis", $product_id, $order_id, $status);
 $stmt->execute();
 
 //  back to order page

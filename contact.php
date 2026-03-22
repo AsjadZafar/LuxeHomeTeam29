@@ -131,9 +131,17 @@ function getCartCount() {
                     <form method="POST" action="php_functions/logout.php">
                         <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
                     </form>
-                    <form method="POST" action="admin_dash.php">
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
-                    </form>
+                    
+                <?php if (!empty($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+                <form method="POST" action="admin_dash.php">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">
+              Admin Dash
+            </button>
+</form>
+<?php endif; ?>
+            <form method="POST" action="customer_dash.php">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Customer Dash</button>
+            </form>
                 </div>
                 <?php endif; ?>
             </div>
