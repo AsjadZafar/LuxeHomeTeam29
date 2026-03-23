@@ -1,7 +1,5 @@
 <?php
 session_start();
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 $logged_in = false;
 $username = "";
@@ -14,6 +12,10 @@ if (isset($_SESSION['username'])) {
 function getCartCount() {
     return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 }
+
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,15 +23,18 @@ function getCartCount() {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login | LuxeHome</title>
+
     <link rel="icon" href="images/image.png">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="login.css">
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/accessibility.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/login.css">
+
     <style>
         .logo-img {
-            width: 48px;
+            width: 48px;  
             height: 48px;
             border-radius: 50%;
             object-fit: cover;
@@ -71,80 +76,89 @@ function getCartCount() {
         }
     </style>
 </head>
+
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Accessibility Panel -->
-    <div id="accessibilityPanel" class="accessibility-panel">
-      <div class="accessibility-header">
+<!-- Accessibility Panel -->
+<div id="accessibilityPanel" class="accessibility-panel">
+    <div class="accessibility-header">
         <h2 class="accessibility-title">Accessibility Settings</h2>
         <p class="accessibility-subtitle">Customize your browsing experience</p>
         <button id="closePanel" class="accessibility-close">
-          <i class="fas fa-times"></i>
+            <i class="fas fa-times"></i>
         </button>
-      </div>
-      <div class="accessibility-content">
+    </div>
+
+    <div class="accessibility-content">
+        <!-- Visual -->
         <div class="accessibility-section">
-          <h3 class="accessibility-section-title">
-            <i class="fas fa-eye"></i>
-            Visual Preferences
-          </h3>
-          <div class="accessibility-options">
-            <div class="accessibility-option">
-              <input type="checkbox" id="darkMode">
-              <label for="darkMode">Dark Mode</label>
+            <h3 class="accessibility-section-title">
+                <i class="fas fa-eye"></i> Visual Preferences
+            </h3>
+
+            <div class="accessibility-options">
+                <div class="accessibility-option">
+                    <input type="checkbox" id="darkMode">
+                    <label for="darkMode">Dark Mode</label>
+                </div>
+
+                <div class="accessibility-option">
+                    <input type="checkbox" id="highContrast">
+                    <label for="highContrast">High Contrast</label>
+                </div>
+
+                <div class="accessibility-option">
+                    <label for="fontSize">Font Size</label>
+                    <input type="range" id="fontSize" min="0" max="3" value="1">
+                    <div id="fontSizeDisplay">Normal</div>
+                </div>
             </div>
-            <div class="accessibility-option">
-              <input type="checkbox" id="highContrast">
-              <label for="highContrast">High Contrast</label>
-            </div>
-            <div class="accessibility-option">
-              <label for="fontSize">Font Size</label>
-              <input type="range" id="fontSize" min="0" max="3" value="1">
-              <div class="font-size-display" id="fontSizeDisplay">Normal</div>
-            </div>
-          </div>
         </div>
 
+        <!-- Text -->
         <div class="accessibility-section">
-          <h3 class="accessibility-section-title">
-            <i class="fas fa-text-height"></i>
-            Text & Reading
-          </h3>
-          <div class="accessibility-options">
-            <div class="accessibility-option">
-              <input type="checkbox" id="dyslexiaFont">
-              <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
+            <h3 class="accessibility-section-title">
+                <i class="fas fa-text-height"></i> Text & Reading
+            </h3>
+
+            <div class="accessibility-options">
+                <div class="accessibility-option">
+                    <input type="checkbox" id="dyslexiaFont">
+                    <label for="dyslexiaFont">Dyslexia-Friendly Font</label>
+                </div>
+
+                <div class="accessibility-option">
+                    <input type="checkbox" id="lineSpacing">
+                    <label for="lineSpacing">Increased Line Spacing</label>
+                </div>
             </div>
-            <div class="accessibility-option">
-              <input type="checkbox" id="lineSpacing">
-              <label for="lineSpacing">Increased Line Spacing</label>
-            </div>
-          </div>
         </div>
 
+        <!-- Navigation -->
         <div class="accessibility-section">
-          <h3 class="accessibility-section-title">
-            <i class="fas fa-mouse-pointer"></i>
-            Navigation
-          </h3>
-          <div class="accessibility-options">
-            <div class="accessibility-option">
-              <input type="checkbox" id="focusIndicator">
-              <label for="focusIndicator">Enhanced Focus Indicators</label>
+            <h3 class="accessibility-section-title">
+                <i class="fas fa-mouse-pointer"></i> Navigation
+            </h3>
+
+            <div class="accessibility-options">
+                <div class="accessibility-option">
+                    <input type="checkbox" id="focusIndicator">
+                    <label for="focusIndicator">Enhanced Focus Indicators</label>
+                </div>
+
+                <div class="accessibility-option">
+                    <input type="checkbox" id="skipLinks">
+                    <label for="skipLinks">Enable Skip Links</label>
+                </div>
             </div>
-            <div class="accessibility-option">
-              <input type="checkbox" id="skipLinks">
-              <label for="skipLinks">Enable Skip Links</label>
-            </div>
-          </div>
         </div>
 
         <button id="resetSettings" class="accessibility-reset">
-          <i class="fas fa-undo"></i> Reset All Settings
+            <i class="fas fa-undo"></i> Reset All Settings
         </button>
-      </div>
     </div>
+</div>
 
     <div id="panelOverlay" class="panel-overlay"></div>
     <button id="togglePanel" class="accessibility-toggle">
@@ -197,15 +211,10 @@ function getCartCount() {
                     <form method="POST" action="php_functions/logout.php">
                         <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 text-sm">Log out</button>
                     </form>
-                    
-                    <form method="POST" action="admin_dash.php">
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Admin Dash</button>
-                    </form>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </header>
+
+               <div class="divider">
+                 <span>OR</span>
+                          </div>
 
     <section id="main-content" class="login-section">
         <h2 class="title">Welcome to LuxeHome</h2>
@@ -294,7 +303,8 @@ function getCartCount() {
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script src="js/accessibility.js"></script>
+<script src="js/script.js"></script>
+<script src="js/accessibility.js"></script>
+
 </body>
 </html>

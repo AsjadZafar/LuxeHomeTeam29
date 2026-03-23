@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+$logged_in = false;
+$username = "";
+
+if (isset($_SESSION['username'])) {
+  $logged_in = true;
+  $username = $_SESSION['username'];
+}
+
+function getCartCount() {
+    return isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>
-        Register | LuxeHome
+        Admin Login | LuxeHome
     </title>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -19,9 +35,11 @@
   <link rel="icon" href="images/image.png">
 
 </head>
-<body class ="bg-gray-50">
 
-  <!-- Accessibility Panel -->
+
+<body class="admin-body">
+
+<!-- Accessibility Panel -->
   <div id="accessibilityPanel" class="accessibility-panel">
     <div class="accessibility-header">
       <h2 class="accessibility-title">Accessibility Settings</h2>
@@ -101,49 +119,35 @@
     <i class="fas fa-universal-access"></i>
   </button>
 
-    <main id="main-content">
+   <main id="main-content">
 
-  <a href="index.php" class="back-homepage">Back to Home</a>
+<div class="admin-box">
 
-  <section class="login-section">
+<h2><i class="fas fa-user-lock"></i> Admin Login</h2>
+<p class="admin-subtitle">Restricted Access</p>
 
-    <div class="login-container">
+<form action="php_functions/user_login.php" method="POST">
 
-      <div class="login-box">
+<input type="email" name="email" placeholder="Email" required>
 
-        <h2 class="title">Register Here</h2>
-        <p class="subtitle">Become a part of the LuxeHome community</p>
+<input type="password" name="password" placeholder="Password" required>
 
-        <form action="register.php" method="POST">
+<button type="submit" class="admin-btn">Login</button>
 
-          <input type="text" name="username" placeholder="Full Name" required>
-          <input type="email" name="email" placeholder="Email address" required>
-          <input type="password" name="password" placeholder="Password" required>
-          <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+</form>
 
-          <button type="submit" class="login-btn">
-            Create LuxeHome Account
-          </button>
+<p class="backto-link">
+<a href="login.php">← Customer Login</a>
+</p>
 
-        </form>
+</div>
 
-        <div class="divider">
-          <span>OR</span>
-        </div>
 
-        <p class="forgot-text">
-          Already have an account?
-          <a href="login.php">Login here</a>
-        </p>
+   </main>
 
-      </div>
 
-    </div>
-
-  </section>
-
-</main>
 <script src="js/script.js"></script>
-    <script src="js/accessibility.js"></script>  
+    <script src="js/accessibility.js"></script>
+    
 </body>
 </html>

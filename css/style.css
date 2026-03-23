@@ -30,6 +30,39 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+}
+
+/* New Logo Text Styles */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.brand-tagline {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  margin-top: 2px;
 }
 
 .nav-link {
@@ -413,6 +446,8 @@
   background: white;
   height: 20rem;
   transition: all 0.3s ease;
+  background-size: cover;
+  background-position: center;
 }
 
 .room-card:hover {
@@ -420,40 +455,24 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.room-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  color: white;
+.living-room {
+  background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
 }
 
-.living-room::before {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  content: '🛋️';
+.bedroom {
+  background-image: url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
 }
 
-.bedroom::before {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  content: '🛏️';
+.kitchen {
+  background-image: url('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
 }
 
-.kitchen::before {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  content: '👨‍🍳';
+.bathroom {
+  background-image: url('https://images.unsplash.com/photo-1620626011761-996317b8d101?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
 }
 
-.bathroom::before {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-  content: '🚿';
-}
-
-.outdoor::before {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  content: '🌳';
+.outdoor {
+  background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
 }
 
 .room-card-content {
