@@ -40,7 +40,7 @@ $token = "";
        $confirm = $_POST['confirm_password'];
 
               if ($password !== $confirm) {
-                 $message = "Passwords do not match.";
+                 $message = "Passwords don't match.";
        
         $token_valid = true; 
 
@@ -99,6 +99,7 @@ $token = "";
     <title>Reset Password | LuxeHome</title>
 
     <link rel="icon" href="images/image.png">
+<script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
 
@@ -126,10 +127,18 @@ $token = "";
 
             <?php if ($token_valid) : ?>
                 <form method="POST">
-                    <input type="password" name="password" placeholder="New Password" required>
+                    
+     <input type="password"  name="password"  placeholder="New Password"  required
+    class="w-4/5 max-w-sm mx-auto block mb-4 px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+/>
+
+  <input  type="password"  name="confirm_password"  placeholder="Confirm Password"  required
+    class="w-4/5 max-w-sm mx-auto block mb-4 px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+/>
+            
                     <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
             
-                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    
 
      <button type="submit" class="login-btn">
                         Update Your Password
@@ -137,7 +146,7 @@ $token = "";
                 </form>
             <?php endif; ?>
 
-            <p class="back-link"><a href="login.php">Back to Login</a></p>
+            <p class="backto-link"><a href="login.php">Back to Login</a></p>
 
         </div>
     </div>
