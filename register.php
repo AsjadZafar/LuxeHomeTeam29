@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="accessibility-option">
           <label for="fontSize">Font Size</label>
           <input type="range" id="fontSize" min="0" max="3" value="1">
-          <div id="font-size-display">Normal</div>
+          <div id="fontSizeDisplay">Normal</div>
         </div>
       </div>
     </div>

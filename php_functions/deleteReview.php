@@ -26,6 +26,6 @@ if($review && $review['user_id'] == $user_id){
 
 }
 
-header("Location: ../product_details.php?id=".$product_id);
+header("Location: ../productDetails.php?id=".$product_id);
 exit();
 ?>

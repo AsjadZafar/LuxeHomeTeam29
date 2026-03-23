@@ -25,7 +25,7 @@ if (isset($_GET['view']) && is_numeric($_GET['view'])) {
                     <th>Price Each</th>
                     <th>Quantity</th>
                     <th>Subtotal</th>
-                    <th>Action</th>
+    				<th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,22 +52,21 @@ if (isset($_GET['view']) && is_numeric($_GET['view'])) {
                     <td>&pound;<?php echo number_format((float)$item['price_each'], 2); ?></td>
                     <td><?php echo $item['quantity']; ?></td>
                     <td>&pound;<?php echo number_format((float)$subtotal, 2); ?></td>
-                    <td> 
+           			<td>
+                    
+                    <div class="action-buttons">
+    				<form action="php_functions/return_function.php" method="POST" style="display:inline;">
+        			<input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
+       				 <input type="hidden" name="order_id" value="<?= $order_id ?>">
 
-                     <div class="action-buttons">
-                 <form action="php_functions/return_function.php" method="POST" style="display:inline;">
-            <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
-            <input type="hidden" name="order_id" value="<?= $order_id ?>">
-
-             <button type="submit"
+        	<button type="submit"
             class="btn-view btn-sm bg-red-600 hover:bg-red-700 text-white border-none">
             <i class="fas fa-undo"></i>
             Return
         </button>
     </form>
-</div>   
-</td>
-                </tr>
+</div> 
+ </td>
                 <?php endwhile; ?>
                 <tr style="font-weight: bold; background-color: #f9fafb;">
                     <td colspan="3" style="text-align: right;">Order Total:</td>
@@ -97,9 +96,9 @@ if (isset($_GET['view']) && is_numeric($_GET['view'])) {
             <tbody>
                 <?php while ($order = $orders->fetch_assoc()): ?>
                 <tr>
-                    <td>#<?php echo $order['order_id']; ?></td>
+                    <td><?php echo $order['order_id']; ?></td>
                     <td><?php echo date('M d, Y', strtotime($order['order_date'])); ?></td>
-                    <td><?php echo $order['item_count']; ?></td>
+                    <td><?php echo $order['total']; ?></td>
                     <td>&pound;<?php echo number_format((float)$order['total'], 2); ?></td>
                     <td>
                         <a href="customer_dash.php?your_orders&view=<?php echo $order['order_id']; ?>" class="btn-view btn-sm">

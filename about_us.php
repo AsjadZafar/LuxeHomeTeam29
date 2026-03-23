@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Check if user is logged in
+// Check if user is logged in
 $logged_in = false;
 $username = "";
 $user_id = 0;
@@ -29,6 +30,7 @@ $service_review_sql = "
 ";
 $service_review_result = mysqli_query($conn, $service_review_sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -300,11 +302,13 @@ About Us | LuxeHome
           <!-- Heading -->
           <h1 class="text-4xl sm:text-5xl font-bold leading-tight mt-4">
             Book a Complimentary Installation <br>
+            Book a Complimentary Installation <br>
             <span class="text-emerald-500">With Every Purchase</span>
           </h1> <!-- main heading with bold text, large size, and green text on the second line -->
 
           <!-- Paragraph -->
           <p class="text-lg text-gray-300 max-w-xl">
+            Enjoy a complimentary installation service with every LuxeHome purchase,
             Enjoy a complimentary installation service with every LuxeHome purchase,
             backed by our dedicated customer support to make your smart home
             setup effortless and stress-free.

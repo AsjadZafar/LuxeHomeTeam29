@@ -75,7 +75,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     } else {
         $_SESSION['error_message'] = 'Failed to add to wishlist or product already exists.';
     }
-    header('Location: ../product.php?id=' . $product_id);
+    header('Location: ../productDetails.php?id=' . $product_id);
     exit();
 }
 ?>

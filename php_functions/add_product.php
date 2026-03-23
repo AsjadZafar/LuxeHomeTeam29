@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
+require_once 'dbh.php';
 
 if(isset($_POST["add_product"])) {
     $product_name = $_POST['name'];
@@ -26,8 +27,8 @@ if(isset($_POST["add_product"])) {
     $newfilename = mysqli_real_escape_string($conn, $newfilename);
     $product_category = mysqli_real_escape_string($conn, $product_category);
 
-    $sql = "INSERT into products(name,description,price,quantity,installation_available,img) 
-    Values('$product_name','$product_description','$product_price','$product_quantity','$product_install','$newfilename')";
+    $sql = "INSERT into products(name,description,price,quantity,installation_available,img, category) 
+    Values('$product_name','$product_description','$product_price','$product_quantity','$product_install','$newfilename', '$product_category')";
 
     $data = mysqli_query($conn,$sql);
 

@@ -191,7 +191,6 @@ function getCartCount() {
             </div>
         </section>
 
-
         <!-- WARRANTY SECTION -->
          <?php
 // WARRANTY FORM PROCESSING (must be at top of file, before any HTML output)

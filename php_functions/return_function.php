@@ -27,7 +27,7 @@ if ($result->num_rows > 0) {
 
 //  Insert return into database
 $stmt = $conn->prepare("INSERT INTO product_return (product_id, order_id, return_date, status)
-                        VALUES (?, ?, NOW(), ?) ");
+                        VALUES (?, ?, NOW(), ?)");
 
 $stmt->bind_param("iis", $product_id, $order_id, $status);
 $stmt->execute();

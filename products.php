@@ -261,7 +261,7 @@ if (!$result) {
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copyright">Â© 2023 LuxeHome. All rights reserved. | <a href="#" class="footer-legal-link">Privacy Policy</a> | <a href="#" class="footer-legal-link">Terms of Service</a></p>
+        <p class="footer-copyright">© 2023 LuxeHome. All rights reserved. | <a href="#" class="footer-legal-link">Privacy Policy</a> | <a href="#" class="footer-legal-link">Terms of Service</a></p>
       </div>
     </div>
   </footer>
