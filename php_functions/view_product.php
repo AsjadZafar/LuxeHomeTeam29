@@ -104,9 +104,10 @@ if (isset($_GET['id'])) {
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
-                                <th>Quantity</th>
+                                <th>Quantity</th>              				
                                 <th>Installation</th>
                                 <th>Actions</th>
+                				<th>Category</th>
                             </tr>
                         </thead>
                         <tbody>
